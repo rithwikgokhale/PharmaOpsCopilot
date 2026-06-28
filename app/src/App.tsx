@@ -1,9 +1,21 @@
 import { useState } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { NavLink, Route, Routes } from "react-router-dom";
 import { BatchSelector } from "./components/BatchSelector";
 import { DataProvider, useData } from "./context/DataContext";
+import { AboutPage } from "./pages/AboutPage";
+import { CopilotPage } from "./pages/CopilotPage";
 import { DashboardPage } from "./pages/DashboardPage";
+import { DataModelPage } from "./pages/DataModelPage";
+import { EvalPage } from "./pages/EvalPage";
 import "./styles.css";
+
+const NAV = [
+  { to: "/", label: "Dashboard", end: true },
+  { to: "/copilot", label: "Copilot" },
+  { to: "/cdf", label: "CDF-ready" },
+  { to: "/evals", label: "Evals" },
+  { to: "/about", label: "About" },
+];
 
 function AppHeader({
   selectedBatchId,
@@ -31,11 +43,13 @@ function AppHeader({
           <p className="text-sm text-slate-500">Batch Deviation Triage</p>
         </div>
         <div className="flex flex-wrap items-center gap-4">
-          <BatchSelector
-            batches={batches}
-            selectedId={selectedBatchId}
-            onSelect={onBatchChange}
-          />
+          {batches.length > 0 && (
+            <BatchSelector
+              batches={batches}
+              selectedId={selectedBatchId}
+              onSelect={onBatchChange}
+            />
+          )}
           <label className="flex items-center gap-2 text-sm text-slate-600">
             <input
               type="checkbox"
@@ -45,15 +59,26 @@ function AppHeader({
             />
             Demo Mode
           </label>
-          <nav className="flex gap-3 text-sm">
-            <Link to="/" className="font-medium text-brand-600 hover:underline">
-              Dashboard
-            </Link>
-            <span className="text-slate-300">|</span>
-            <span className="text-slate-400">Copilot (Phase 2)</span>
-          </nav>
         </div>
       </div>
+      <nav className="mx-auto flex max-w-[1600px] gap-1 px-4">
+        {NAV.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.end}
+            className={({ isActive }) =>
+              `border-b-2 px-3 py-2 text-sm font-medium transition-colors ${
+                isActive
+                  ? "border-brand-600 text-brand-700"
+                  : "border-transparent text-slate-500 hover:text-slate-800"
+              }`
+            }
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
     </header>
   );
 }
@@ -74,13 +99,12 @@ function AppShell() {
         <Routes>
           <Route
             path="/"
-            element={
-              <DashboardPage
-                selectedBatchId={selectedBatchId}
-                demoMode={demoMode}
-              />
-            }
+            element={<DashboardPage selectedBatchId={selectedBatchId} demoMode={demoMode} />}
           />
+          <Route path="/copilot" element={<CopilotPage selectedBatchId={selectedBatchId} />} />
+          <Route path="/cdf" element={<DataModelPage />} />
+          <Route path="/evals" element={<EvalPage />} />
+          <Route path="/about" element={<AboutPage />} />
         </Routes>
       </main>
       <footer className="border-t border-slate-200 bg-white py-3 text-center text-xs text-slate-500">

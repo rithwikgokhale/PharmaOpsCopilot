@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AssetTree } from "../components/AssetTree";
 import { CopilotPanel } from "../components/CopilotPanel";
+import { DataQualityPanel } from "../components/DataQualityPanel";
 import { DeviationSummary } from "../components/DeviationSummary";
 import { EventTimeline } from "../components/EventTimeline";
 import { EvidencePanel } from "../components/EvidencePanel";
@@ -131,11 +132,13 @@ export function DashboardPage({ selectedBatchId, demoMode }: Props) {
             notes={notes}
             documents={documents}
           />
+
+          <DataQualityPanel batchId={selectedBatchId} />
         </main>
 
         <aside className="col-span-12 lg:col-span-3">
-          <div className="h-full min-h-[320px]">
-            <CopilotPanel />
+          <div className="sticky top-4 h-[640px]">
+            <CopilotPanel batchId={selectedBatchId} compact />
           </div>
         </aside>
       </div>

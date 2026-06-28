@@ -12,12 +12,15 @@
     "preview": "vite preview",
     "generate-data": "python3 scripts/generate_synthetic_pharma_data.py && node scripts/copy-data-to-public.mjs",
     "typecheck": "tsc --noEmit",
+    "eval": "tsx evals/run_eval.ts",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
     "express": "^4.21.2",
+    "openai": "^6.45.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",

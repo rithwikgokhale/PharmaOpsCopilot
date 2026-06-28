@@ -6,7 +6,9 @@
 
 ## What this is
 
-A local-first React dashboard that models a pharma pilot plant batch deviation (Batch **B-104**) using synthetic data. The architecture mirrors Cognite Data Fusion concepts (assets, equipment, time series, activities, files) via an `IDataProvider` abstraction so a future `CdfDataProvider` could replace local JSON files.
+A local-first React dashboard **and evidence-grounded copilot** that models a pharma pilot plant batch deviation (Batch **B-104**) using synthetic data. The architecture mirrors Cognite Data Fusion concepts (assets, equipment, time series, activities, files) via an `IDataProvider` abstraction so a future `CdfDataProvider` could replace local JSON files.
+
+The copilot answers questions like *"Why was Batch B-104 delayed, and what should I check before escalating?"* by assembling a deterministic evidence packet (events, anomalies, time-series stats, work orders, operator notes, SOP sections) **before** any LLM reasoning, so every citation is real and release/safety decisions are deferred to human review. It runs fully without an OpenAI key (deterministic engine); add a key to enrich the narrative.
 
 ## Quick start
 
@@ -21,29 +23,46 @@ npm run generate-data
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). Default batch: **B-104**.
+Open [http://localhost:5173](http://localhost:5173). Default batch: **B-104**. The Vite dev server proxies `/api/*` to the Express backend on port 3001.
+
+Run the eval suite from the CLI:
+
+```bash
+npm run eval        # 12 cases, deterministic mode → evals/results.json
+```
 
 ## Environment variables
 
-Copy `.env.example` to `.env` (not committed):
+OpenAI is **optional** — the copilot and evals run deterministically without a key. To enable LLM-enriched narratives, copy `.env.example` to `.env` (not committed):
 
 ```
 OPENAI_API_KEY=your_key_here
 OPENAI_MODEL=gpt-4.1-mini
 ```
 
-OpenAI is only needed for Phase 2 (copilot). The dashboard runs without it.
+The key is only ever read server-side (`server/agent/llm.ts`) and is never exposed to the browser.
 
 ## Project structure
 
 ```
 app/src/adapters/     IDataProvider, LocalDataProvider, CdfDataProvider.stub
-app/src/components/   Dashboard UI (asset tree, timeline, charts)
+app/src/components/   Dashboard + copilot UI
+app/src/pages/        Dashboard, Copilot, CDF-ready, Evals, About
+app/src/agent/        Frontend API client + shared contract
 data/generated/       Synthetic JSON (source of truth)
-data/documents/       SOP markdown files
+data/documents/       SOP markdown files (sectioned with cite IDs)
 scripts/              Python data generator
-server/               Express API stub (copilot in Phase 2)
+server/agent/         Orchestrator, tools, evidence builder, guardrails, eval runner
+server/retrieval/     Keyword document retriever (RAG Option A)
+evals/                12 eval cases + runner
 ```
+
+## Agent design
+
+- **Evidence-first.** `server/agent/evidenceBuilder.ts` gathers facts via deterministic tools; the LLM only reasons over that packet. Citations come from data, never the model.
+- **Guardrails.** Release / GMP / safety questions are declined and routed to QA. A post-processor neutralizes overreaching phrasing (`server/agent/guardrails.ts`).
+- **Scoped intents.** Triage, release-decision, maintenance review, shift handover, data gaps, SOP reference, audience framing.
+- **Evaluated.** 12 cases check required mentions, banned phrases, and expected evidence IDs — run them from the **Evals** tab or `npm run eval`.
 
 ## Demo question
 
@@ -65,11 +84,11 @@ The dashboard surfaces: CIP delay, pH drift, temperature excursion, operator not
 
 See [COGNITE_MAPPING.md](./COGNITE_MAPPING.md) for details.
 
-## Build phases
+## Limitations
 
-- **Phase 1 (current):** Scaffold, synthetic data, dashboard for B-104
-- **Phase 2:** Server-side copilot, evidence packet, evals, guardrails
-- **Phase 3:** CDF mapping page, polish, demo script, deploy
+- Synthetic data only; not validated for any GxP/regulatory use.
+- Keyword retrieval (no vector DB yet) — adequate for the bounded SOP set.
+- Single demo deviation (B-104) is fully modeled; other batches are simpler.
 
 ## License
 
