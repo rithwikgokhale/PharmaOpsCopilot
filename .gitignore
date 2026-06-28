@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+.env.local
+.DS_Store
+*.log
+evals/results.json
+.vite/
+coverage/
+__pycache__/
+*.pyc
+.python-version

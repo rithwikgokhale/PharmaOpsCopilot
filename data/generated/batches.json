@@ -1,0 +1,66 @@
+[
+  {
+    "id": "B-101",
+    "name": "Batch B-101",
+    "productCode": "MAB-001",
+    "status": "complete",
+    "currentPhase": "complete",
+    "plannedStart": "2025-06-11T08:00:00",
+    "actualStart": "2025-06-11T08:05:00",
+    "plannedEnd": "2025-06-11T20:00:00",
+    "actualEnd": "2025-06-11T19:50:00",
+    "primaryEquipmentId": "BIO-101",
+    "primaryAssetId": "BIOREACTOR-TRAIN-A"
+  },
+  {
+    "id": "B-102",
+    "name": "Batch B-102",
+    "productCode": "MAB-001",
+    "status": "complete",
+    "currentPhase": "complete",
+    "plannedStart": "2025-06-13T08:00:00",
+    "actualStart": "2025-06-13T08:25:00",
+    "plannedEnd": "2025-06-13T20:00:00",
+    "actualEnd": "2025-06-13T20:40:00",
+    "primaryEquipmentId": "BIO-101",
+    "primaryAssetId": "BIOREACTOR-TRAIN-A",
+    "notes": "Minor delay at batch start"
+  },
+  {
+    "id": "B-103",
+    "name": "Batch B-103",
+    "productCode": "MAB-001",
+    "status": "complete",
+    "currentPhase": "complete",
+    "plannedStart": "2025-06-14T08:00:00",
+    "actualStart": "2025-06-14T08:00:00",
+    "plannedEnd": "2025-06-14T20:00:00",
+    "actualEnd": "2025-06-14T19:55:00",
+    "primaryEquipmentId": "BIO-101",
+    "primaryAssetId": "BIOREACTOR-TRAIN-A"
+  },
+  {
+    "id": "B-104",
+    "name": "Batch B-104",
+    "productCode": "MAB-001",
+    "status": "deviation",
+    "currentPhase": "fermentation",
+    "plannedStart": "2025-06-15T08:00:00",
+    "actualStart": "2025-06-15T08:22:00",
+    "plannedEnd": "2025-06-15T20:00:00",
+    "primaryEquipmentId": "BIO-101",
+    "primaryAssetId": "BIOREACTOR-TRAIN-A",
+    "deviationId": "DEV-104",
+    "notes": "Delayed start; temperature excursion and pH correction during fermentation"
+  },
+  {
+    "id": "B-105",
+    "name": "Batch B-105",
+    "productCode": "MAB-001",
+    "status": "planned",
+    "currentPhase": "planned",
+    "plannedStart": "2025-06-16T08:00:00",
+    "primaryEquipmentId": "BIO-101",
+    "primaryAssetId": "BIOREACTOR-TRAIN-A"
+  }
+]

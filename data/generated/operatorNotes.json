@@ -1,0 +1,29 @@
+[
+  {
+    "id": "NOTE-B104-001",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T10:20:00",
+    "author": "J. Martinez",
+    "content": "Manual valve position checked on VLV-203 \u2014 slight sticking observed during transfer line check.",
+    "equipmentId": "VLV-203",
+    "completeness": "partial"
+  },
+  {
+    "id": "NOTE-B104-002",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T10:19:00",
+    "author": "J. Martinez",
+    "content": "Added buffer per SOP-BIO-OPS section 4.2 after pH low alarm. Volume logged in batch record.",
+    "equipmentId": "BIO-101",
+    "completeness": "complete"
+  },
+  {
+    "id": "NOTE-B104-003",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T08:25:00",
+    "author": "S. Chen",
+    "content": "Batch start delayed due to extended CIP hold. Conductivity finally met threshold at 08:05.",
+    "equipmentId": "CIP-201",
+    "completeness": "complete"
+  }
+]

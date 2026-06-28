@@ -1,0 +1,22 @@
+[
+  {
+    "id": "AREA-FERM",
+    "siteId": "SITE-CHI-PILOT",
+    "name": "Fermentation Suite"
+  },
+  {
+    "id": "AREA-UTIL",
+    "siteId": "SITE-CHI-PILOT",
+    "name": "Utilities/CIP Area"
+  },
+  {
+    "id": "AREA-FILL",
+    "siteId": "SITE-CHI-PILOT",
+    "name": "Fill/Finish Line"
+  },
+  {
+    "id": "AREA-QA",
+    "siteId": "SITE-CHI-PILOT",
+    "name": "QA Review"
+  }
+]

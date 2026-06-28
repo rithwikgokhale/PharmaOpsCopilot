@@ -1,0 +1,106 @@
+[
+  {
+    "id": "SIG-TEMP-101",
+    "equipmentId": "BIO-101",
+    "name": "Temperature",
+    "externalId": "BIO-101.temperature_c",
+    "unit": "\u00b0C",
+    "range": {
+      "target": 37.0,
+      "min": 36.5,
+      "max": 37.5,
+      "unit": "\u00b0C"
+    }
+  },
+  {
+    "id": "SIG-PH-101",
+    "equipmentId": "BIO-101",
+    "name": "pH",
+    "externalId": "BIO-101.ph",
+    "unit": "pH",
+    "range": {
+      "target": 7.1,
+      "min": 6.95,
+      "max": 7.25,
+      "unit": "pH"
+    }
+  },
+  {
+    "id": "SIG-AG-101",
+    "equipmentId": "BIO-101",
+    "name": "Agitation",
+    "externalId": "BIO-101.agitation_rpm",
+    "unit": "rpm",
+    "range": {
+      "target": 180,
+      "min": 170,
+      "max": 190,
+      "unit": "rpm"
+    }
+  },
+  {
+    "id": "SIG-PRES-101",
+    "equipmentId": "BIO-101",
+    "name": "Pressure",
+    "externalId": "BIO-101.pressure_bar",
+    "unit": "bar",
+    "range": {
+      "target": 1.2,
+      "min": 1.0,
+      "max": 1.4,
+      "unit": "bar"
+    }
+  },
+  {
+    "id": "SIG-DO-101",
+    "equipmentId": "BIO-101",
+    "name": "Dissolved Oxygen",
+    "externalId": "BIO-101.dissolved_oxygen_pct",
+    "unit": "%",
+    "range": {
+      "target": 50,
+      "min": 40,
+      "max": 60,
+      "unit": "%"
+    }
+  },
+  {
+    "id": "SIG-COND-201",
+    "equipmentId": "CIP-201",
+    "name": "CIP Conductivity",
+    "externalId": "CIP-201.conductivity_ms_cm",
+    "unit": "mS/cm",
+    "range": {
+      "target": 0.05,
+      "min": 0.0,
+      "max": 0.1,
+      "unit": "mS/cm"
+    }
+  },
+  {
+    "id": "SIG-RT-201",
+    "equipmentId": "CIP-201",
+    "name": "CIP Return Temp",
+    "externalId": "CIP-201.return_temperature_c",
+    "unit": "\u00b0C",
+    "range": {
+      "target": 75.0,
+      "min": 70.0,
+      "max": 80.0,
+      "unit": "\u00b0C"
+    }
+  },
+  {
+    "id": "SIG-FLOW-205",
+    "equipmentId": "PUMP-205",
+    "name": "Transfer Flow",
+    "externalId": "PUMP-205.flow_lpm",
+    "unit": "L/min",
+    "range": {
+      "target": 12.0,
+      "min": 10.0,
+      "max": 14.0,
+      "unit": "L/min"
+    }
+  }
+]

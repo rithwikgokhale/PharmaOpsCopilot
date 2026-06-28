@@ -1,0 +1,33 @@
+[
+  {
+    "id": "FERMENTATION-SUITE",
+    "areaId": "AREA-FERM",
+    "name": "Fermentation Suite",
+    "assetType": "production_area"
+  },
+  {
+    "id": "BIOREACTOR-TRAIN-A",
+    "areaId": "AREA-FERM",
+    "parentAssetId": "FERMENTATION-SUITE",
+    "name": "Bioreactor Train A",
+    "assetType": "train"
+  },
+  {
+    "id": "CIP-SKID-201",
+    "areaId": "AREA-UTIL",
+    "name": "CIP Skid 201",
+    "assetType": "utility"
+  },
+  {
+    "id": "UTILITIES-WFI",
+    "areaId": "AREA-UTIL",
+    "name": "WFI Utilities",
+    "assetType": "utility"
+  },
+  {
+    "id": "FILL-LINE-401",
+    "areaId": "AREA-FILL",
+    "name": "Fill Line 401",
+    "assetType": "packaging"
+  }
+]

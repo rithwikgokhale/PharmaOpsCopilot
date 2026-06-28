@@ -1,0 +1,252 @@
+[
+  {
+    "id": "EVT-B104-001",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T07:00:00",
+    "title": "CIP cycle started",
+    "description": "Pre-batch CIP initiated on BIO-101 train",
+    "category": "process",
+    "equipmentId": "CIP-201",
+    "assetId": "CIP-SKID-201",
+    "severity": "info",
+    "sourceSystem": "MES"
+  },
+  {
+    "id": "EVT-B104-002",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T07:30:00",
+    "title": "CIP hold \u2014 conductivity threshold not met",
+    "description": "Conductivity above rinse threshold; hold extended",
+    "category": "process",
+    "equipmentId": "CIP-201",
+    "severity": "warning",
+    "sourceSystem": "Historian"
+  },
+  {
+    "id": "EVT-B104-003",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T08:05:00",
+    "title": "CIP cycle complete",
+    "description": "Conductivity threshold achieved after extended hold",
+    "category": "process",
+    "equipmentId": "CIP-201",
+    "severity": "info"
+  },
+  {
+    "id": "EVT-B104-004",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T08:22:00",
+    "title": "Batch started",
+    "description": "Fermentation phase initiated \u2014 22 min late vs plan",
+    "category": "process",
+    "equipmentId": "BIO-101",
+    "assetId": "BIOREACTOR-TRAIN-A",
+    "severity": "info",
+    "sourceSystem": "MES"
+  },
+  {
+    "id": "EVT-B104-005",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T09:40:00",
+    "title": "pH drift detected",
+    "description": "pH trending below target range",
+    "category": "alarm",
+    "equipmentId": "PH-101",
+    "severity": "warning",
+    "sourceSystem": "Historian"
+  },
+  {
+    "id": "EVT-B104-006",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T10:05:00",
+    "title": "pH low alarm",
+    "description": "pH below acceptable lower limit (6.95)",
+    "category": "alarm",
+    "equipmentId": "PH-101",
+    "severity": "alarm",
+    "sourceSystem": "Historian"
+  },
+  {
+    "id": "EVT-B104-007",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T10:12:00",
+    "title": "Temperature excursion",
+    "description": "Temperature above upper acceptable limit",
+    "category": "alarm",
+    "equipmentId": "TT-101",
+    "severity": "alarm",
+    "sourceSystem": "Historian"
+  },
+  {
+    "id": "EVT-B104-008",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T10:14:00",
+    "title": "Agitator speed dip",
+    "description": "Agitation briefly below minimum setpoint",
+    "category": "alarm",
+    "equipmentId": "AG-101",
+    "severity": "warning"
+  },
+  {
+    "id": "EVT-B104-009",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T10:18:00",
+    "title": "Operator buffer addition",
+    "description": "Manual buffer added per SOP after pH alarm",
+    "category": "operator_action",
+    "equipmentId": "BIO-101",
+    "severity": "info",
+    "sourceSystem": "MES"
+  },
+  {
+    "id": "EVT-B104-010",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T10:30:00",
+    "title": "Temperature returned to range",
+    "description": "Temperature within acceptable limits",
+    "category": "process",
+    "equipmentId": "TT-101",
+    "severity": "info"
+  },
+  {
+    "id": "EVT-B104-011",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T11:15:00",
+    "title": "Deviation DEV-104 opened",
+    "description": "Temperature excursion and delayed pH correction",
+    "category": "quality",
+    "equipmentId": "BIO-101",
+    "severity": "alarm",
+    "sourceSystem": "QMS"
+  },
+  {
+    "id": "EVT-B104-012",
+    "batchId": "B-104",
+    "timestamp": "2025-06-15T11:20:00",
+    "title": "QA review pending",
+    "description": "Batch record and deviation under QA review",
+    "category": "quality",
+    "severity": "warning",
+    "sourceSystem": "QMS"
+  },
+  {
+    "id": "EVT-B-101-001",
+    "batchId": "B-101",
+    "timestamp": "2025-06-11T07:05:00",
+    "title": "CIP cycle complete",
+    "category": "process",
+    "equipmentId": "CIP-201",
+    "severity": "info"
+  },
+  {
+    "id": "EVT-B-101-002",
+    "batchId": "B-101",
+    "timestamp": "2025-06-11T08:05:00",
+    "title": "Batch started",
+    "category": "process",
+    "equipmentId": "BIO-101",
+    "assetId": "BIOREACTOR-TRAIN-A",
+    "severity": "info"
+  },
+  {
+    "id": "EVT-B-101-003",
+    "batchId": "B-101",
+    "timestamp": "2025-06-11T10:05:00",
+    "title": "Fermentation phase stable",
+    "category": "process",
+    "equipmentId": "BIO-101",
+    "severity": "info"
+  },
+  {
+    "id": "EVT-B-101-END",
+    "batchId": "B-101",
+    "timestamp": "2025-06-11T19:05:00",
+    "title": "Batch complete",
+    "category": "process",
+    "equipmentId": "BIO-101",
+    "severity": "info"
+  },
+  {
+    "id": "EVT-B-102-001",
+    "batchId": "B-102",
+    "timestamp": "2025-06-13T07:25:00",
+    "title": "CIP cycle complete",
+    "category": "process",
+    "equipmentId": "CIP-201",
+    "severity": "info"
+  },
+  {
+    "id": "EVT-B-102-002",
+    "batchId": "B-102",
+    "timestamp": "2025-06-13T08:25:00",
+    "title": "Batch started",
+    "category": "process",
+    "equipmentId": "BIO-101",
+    "assetId": "BIOREACTOR-TRAIN-A",
+    "severity": "info"
+  },
+  {
+    "id": "EVT-B-102-003",
+    "batchId": "B-102",
+    "timestamp": "2025-06-13T10:25:00",
+    "title": "Fermentation phase stable",
+    "category": "process",
+    "equipmentId": "BIO-101",
+    "severity": "info"
+  },
+  {
+    "id": "EVT-B-102-004",
+    "batchId": "B-102",
+    "timestamp": "2025-06-13T08:50:00",
+    "title": "Minor start delay logged",
+    "category": "process",
+    "equipmentId": "BIO-101",
+    "severity": "warning"
+  },
+  {
+    "id": "EVT-B-102-END",
+    "batchId": "B-102",
+    "timestamp": "2025-06-13T19:25:00",
+    "title": "Batch complete",
+    "category": "process",
+    "equipmentId": "BIO-101",
+    "severity": "info"
+  },
+  {
+    "id": "EVT-B-103-001",
+    "batchId": "B-103",
+    "timestamp": "2025-06-14T07:00:00",
+    "title": "CIP cycle complete",
+    "category": "process",
+    "equipmentId": "CIP-201",
+    "severity": "info"
+  },
+  {
+    "id": "EVT-B-103-002",
+    "batchId": "B-103",
+    "timestamp": "2025-06-14T08:00:00",
+    "title": "Batch started",
+    "category": "process",
+    "equipmentId": "BIO-101",
+    "assetId": "BIOREACTOR-TRAIN-A",
+    "severity": "info"
+  },
+  {
+    "id": "EVT-B-103-003",
+    "batchId": "B-103",
+    "timestamp": "2025-06-14T10:00:00",
+    "title": "Fermentation phase stable",
+    "category": "process",
+    "equipmentId": "BIO-101",
+    "severity": "info"
+  },
+  {
+    "id": "EVT-B-103-END",
+    "batchId": "B-103",
+    "timestamp": "2025-06-14T19:00:00",
+    "title": "Batch complete",
+    "category": "process",
+    "equipmentId": "BIO-101",
+    "severity": "info"
+  }
+]

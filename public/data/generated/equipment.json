@@ -1,0 +1,62 @@
+[
+  {
+    "id": "BIO-101",
+    "assetId": "BIOREACTOR-TRAIN-A",
+    "name": "Bioreactor",
+    "tag": "BIO-101",
+    "equipmentType": "bioreactor",
+    "manufacturer": "SynthBio",
+    "serialNumber": "SB-101-2022",
+    "status": "operational"
+  },
+  {
+    "id": "PH-101",
+    "assetId": "BIOREACTOR-TRAIN-A",
+    "name": "pH Probe",
+    "tag": "PH-101",
+    "equipmentType": "sensor",
+    "manufacturer": "MeasureTech",
+    "serialNumber": "MT-PH-8841",
+    "status": "operational"
+  },
+  {
+    "id": "TT-101",
+    "assetId": "BIOREACTOR-TRAIN-A",
+    "name": "Temperature Sensor",
+    "tag": "TT-101",
+    "equipmentType": "sensor",
+    "status": "operational"
+  },
+  {
+    "id": "AG-101",
+    "assetId": "BIOREACTOR-TRAIN-A",
+    "name": "Agitator",
+    "tag": "AG-101",
+    "equipmentType": "agitator",
+    "status": "operational"
+  },
+  {
+    "id": "CIP-201",
+    "assetId": "CIP-SKID-201",
+    "name": "CIP Skid",
+    "tag": "CIP-201",
+    "equipmentType": "cip_skid",
+    "status": "operational"
+  },
+  {
+    "id": "VLV-203",
+    "assetId": "BIOREACTOR-TRAIN-A",
+    "name": "Transfer Valve",
+    "tag": "VLV-203",
+    "equipmentType": "valve",
+    "status": "operational"
+  },
+  {
+    "id": "PUMP-205",
+    "assetId": "BIOREACTOR-TRAIN-A",
+    "name": "Transfer Pump",
+    "tag": "PUMP-205",
+    "equipmentType": "pump",
+    "status": "operational"
+  }
+]

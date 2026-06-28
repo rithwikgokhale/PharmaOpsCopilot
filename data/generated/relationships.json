@@ -1,0 +1,98 @@
+[
+  {
+    "id": "REL-001",
+    "sourceType": "batch",
+    "sourceId": "B-104",
+    "targetType": "equipment",
+    "targetId": "BIO-101",
+    "relationshipType": "uses"
+  },
+  {
+    "id": "REL-002",
+    "sourceType": "equipment",
+    "sourceId": "BIO-101",
+    "targetType": "equipment",
+    "targetId": "PH-101",
+    "relationshipType": "has_component"
+  },
+  {
+    "id": "REL-003",
+    "sourceType": "equipment",
+    "sourceId": "BIO-101",
+    "targetType": "equipment",
+    "targetId": "TT-101",
+    "relationshipType": "has_component"
+  },
+  {
+    "id": "REL-004",
+    "sourceType": "equipment",
+    "sourceId": "BIO-101",
+    "targetType": "equipment",
+    "targetId": "AG-101",
+    "relationshipType": "has_component"
+  },
+  {
+    "id": "REL-005",
+    "sourceType": "equipment",
+    "sourceId": "CIP-201",
+    "targetType": "equipment",
+    "targetId": "BIO-101",
+    "relationshipType": "supports_cleaning"
+  },
+  {
+    "id": "REL-006",
+    "sourceType": "workOrder",
+    "sourceId": "WO-731",
+    "targetType": "equipment",
+    "targetId": "PH-101",
+    "relationshipType": "maintains"
+  },
+  {
+    "id": "REL-007",
+    "sourceType": "workOrder",
+    "sourceId": "WO-744",
+    "targetType": "equipment",
+    "targetId": "VLV-203",
+    "relationshipType": "maintains"
+  },
+  {
+    "id": "REL-008",
+    "sourceType": "workOrder",
+    "sourceId": "WO-752",
+    "targetType": "equipment",
+    "targetId": "CIP-201",
+    "relationshipType": "maintains"
+  },
+  {
+    "id": "REL-009",
+    "sourceType": "deviation",
+    "sourceId": "DEV-104",
+    "targetType": "batch",
+    "targetId": "B-104",
+    "relationshipType": "affects"
+  },
+  {
+    "id": "REL-010",
+    "sourceType": "deviation",
+    "sourceId": "DEV-104",
+    "targetType": "equipment",
+    "targetId": "BIO-101",
+    "relationshipType": "affects"
+  },
+  {
+    "id": "REL-011",
+    "sourceType": "document",
+    "sourceId": "DOC-SOP-DEV",
+    "targetType": "deviation",
+    "targetId": "DEV-104",
+    "relationshipType": "references"
+  },
+  {
+    "id": "REL-012",
+    "sourceType": "document",
+    "sourceId": "DOC-SHIFT-B104",
+    "targetType": "batch",
+    "targetId": "B-104",
+    "relationshipType": "references"
+  }
+]

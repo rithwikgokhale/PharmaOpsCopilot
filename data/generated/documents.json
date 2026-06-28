@@ -1,0 +1,202 @@
+[
+  {
+    "id": "DOC-SOP-DEV",
+    "title": "SOP: Batch Deviation Procedure",
+    "documentType": "sop",
+    "filePath": "data/documents/SOP-BATCH-DEVIATION.md",
+    "relatedBatchId": null,
+    "relatedDeviationId": "DEV-104",
+    "relatedEquipmentIds": null,
+    "sections": [
+      {
+        "id": "SOP-DEV-001",
+        "title": "Purpose and Scope",
+        "content": "This procedure defines the steps for documenting, investigating, and escalating batch deviations at the Chicago Pharma Pilot Plant. All deviations must be reviewed by QA before batch disposition."
+      },
+      {
+        "id": "SOP-DEV-002",
+        "title": "Deviation Classification",
+        "content": "Classify deviations as minor, major, or critical based on impact to product quality, patient safety, and data integrity. Temperature excursions during fermentation are typically classified as major pending impact assessment."
+      },
+      {
+        "id": "SOP-DEV-003",
+        "title": "Immediate Actions",
+        "content": "Upon detection of an out-of-spec condition: (1) document the event timestamp, (2) notify shift supervisor, (3) preserve historian data, (4) do not make batch release decisions without QA review."
+      },
+      {
+        "id": "SOP-DEV-004",
+        "title": "Investigation Requirements",
+        "content": "Investigations must include: affected equipment list, time-series evidence, operator intervention records, related work orders, and calibration status of involved instruments."
+      },
+      {
+        "id": "SOP-DEV-005",
+        "title": "Escalation Criteria",
+        "content": "Escalate to QA within 4 hours for major deviations. Do not close deviation until root cause analysis is documented and corrective actions are assigned."
+      },
+      {
+        "id": "SOP-DEV-006",
+        "title": "Batch Disposition",
+        "content": "Only QA may disposition a batch. Manufacturing supervisors may recommend hold or continue processing but cannot authorize release."
+      }
+    ],
+    "tags": [
+      "deviation",
+      "qa",
+      "escalation"
+    ]
+  },
+  {
+    "id": "DOC-SOP-CIP",
+    "title": "SOP: CIP Cleaning Procedure",
+    "documentType": "sop",
+    "filePath": "data/documents/SOP-CIP-CLEANING.md",
+    "relatedBatchId": null,
+    "relatedDeviationId": null,
+    "relatedEquipmentIds": [
+      "CIP-201"
+    ],
+    "sections": [
+      {
+        "id": "SOP-CIP-001",
+        "title": "Purpose",
+        "content": "Defines clean-in-place procedures for bioreactor trains including conductivity rinse verification."
+      },
+      {
+        "id": "SOP-CIP-002",
+        "title": "Conductivity Acceptance",
+        "content": "Final rinse conductivity must be below 0.10 mS/cm before batch release from CIP. Extended holds are permitted but must be documented with start/end timestamps."
+      },
+      {
+        "id": "SOP-CIP-003",
+        "title": "Hold Conditions",
+        "content": "If conductivity threshold is not met within expected window, hold the CIP cycle and notify utilities. Do not proceed to batch start until acceptance criteria are met."
+      },
+      {
+        "id": "SOP-CIP-004",
+        "title": "Sensor Verification",
+        "content": "CIP conductivity sensor response time should be verified per PM schedule WO-752. Stale sensor data may cause extended rinse cycles."
+      }
+    ],
+    "tags": [
+      "cip",
+      "cleaning"
+    ]
+  },
+  {
+    "id": "DOC-SOP-BIO",
+    "title": "SOP: Bioreactor Operations",
+    "documentType": "sop",
+    "filePath": "data/documents/SOP-BIOREACTOR-OPERATIONS.md",
+    "relatedBatchId": null,
+    "relatedDeviationId": null,
+    "relatedEquipmentIds": [
+      "BIO-101"
+    ],
+    "sections": [
+      {
+        "id": "SOP-BIO-OPS-001",
+        "title": "Operating Ranges",
+        "content": "Fermentation temperature target 37.0\u00b0C (acceptable 36.5\u201337.5\u00b0C). pH target 7.10 (acceptable 6.95\u20137.25). Agitation target 180 rpm (acceptable 170\u2013190 rpm)."
+      },
+      {
+        "id": "SOP-BIO-OPS-002",
+        "title": "pH Control",
+        "content": "If pH trends below lower limit, operator may add buffer per approved addition chart. Document volume, lot number, and timestamp in batch record."
+      },
+      {
+        "id": "SOP-BIO-OPS-003",
+        "title": "Temperature Excursions",
+        "content": "Temperature above 37.5\u00b0C for more than 15 minutes requires deviation initiation and QA notification."
+      },
+      {
+        "id": "SOP-BIO-OPS-004",
+        "title": "Agitator Monitoring",
+        "content": "Agitator speed below 170 rpm during fermentation must be investigated. Check mechanical coupling and drive motor current."
+      }
+    ],
+    "tags": [
+      "bioreactor",
+      "fermentation"
+    ]
+  },
+  {
+    "id": "DOC-BMR-B104",
+    "title": "Batch Record Excerpt: B-104",
+    "documentType": "batch_record",
+    "filePath": "data/documents/BATCH-RECORD-B-104.md",
+    "relatedBatchId": "B-104",
+    "relatedDeviationId": "DEV-104",
+    "relatedEquipmentIds": [
+      "BIO-101"
+    ],
+    "sections": [
+      {
+        "id": "BMR-B104-001",
+        "title": "Batch Header",
+        "content": "Batch B-104, Product MAB-001, Bioreactor BIO-101. Planned start 2025-06-15 08:00, actual start 08:22 (delayed)."
+      },
+      {
+        "id": "BMR-B104-002",
+        "title": "CIP Record",
+        "content": "Pre-batch CIP started 07:00. Extended hold 07:30\u201308:05 due to conductivity. CIP complete 08:05."
+      },
+      {
+        "id": "BMR-B104-003",
+        "title": "Fermentation Log",
+        "content": "Fermentation initiated 08:22. pH low alarm 10:05. Manual buffer addition 10:18. Temperature excursion 10:12\u201310:30."
+      },
+      {
+        "id": "BMR-B104-004",
+        "title": "Deviation Reference",
+        "content": "Deviation DEV-104 opened 11:15 for temperature excursion and delayed pH correction. QA review pending."
+      },
+      {
+        "id": "BMR-B104-009",
+        "title": "Open Items",
+        "content": "Calibration verification for PH-101 pending. Valve inspection VLV-203 noted by operator. QA disposition not complete."
+      }
+    ],
+    "tags": [
+      "batch",
+      "B-104"
+    ]
+  },
+  {
+    "id": "DOC-SHIFT-B104",
+    "title": "Shift Handover: B-104",
+    "documentType": "shift_note",
+    "filePath": "data/documents/SHIFT-HANDOVER-B-104.md",
+    "relatedBatchId": "B-104",
+    "relatedDeviationId": "DEV-104",
+    "relatedEquipmentIds": [
+      "BIO-101",
+      "VLV-203"
+    ],
+    "sections": [
+      {
+        "id": "SHIFT-B104-NOTE-001",
+        "title": "Shift Summary",
+        "content": "Outgoing shift reports Batch B-104 in fermentation with open deviation DEV-104. Batch started 22 minutes late after CIP hold."
+      },
+      {
+        "id": "SHIFT-B104-NOTE-002",
+        "title": "Watchouts",
+        "content": "Monitor pH trend \u2014 probe calibration due per WO-731. Transfer valve VLV-203 showed slight sticking during manual check. Temperature returned to range at 10:30."
+      },
+      {
+        "id": "SHIFT-B104-NOTE-003",
+        "title": "Open Actions",
+        "content": "QA review pending for DEV-104. Maintenance to inspect VLV-203 per WO-744. Verify PH-101 calibration status before next shift."
+      },
+      {
+        "id": "SHIFT-B104-NOTE-004",
+        "title": "Data Gaps",
+        "content": "Manual buffer addition volume confirmed but valve position before/after not fully documented. Recommend completing in batch record."
+      }
+    ],
+    "tags": [
+      "shift",
+      "handover"
+    ]
+  }
+]

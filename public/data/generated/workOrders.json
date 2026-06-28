@@ -1,0 +1,35 @@
+[
+  {
+    "id": "WO-731",
+    "title": "pH probe calibration due",
+    "description": "PH-101 calibration due within 7 days per PM schedule",
+    "status": "scheduled",
+    "priority": "medium",
+    "equipmentId": "PH-101",
+    "dueDate": "2025-06-22",
+    "createdAt": "2025-06-01T08:00:00",
+    "sourceSystem": "CMMS"
+  },
+  {
+    "id": "WO-744",
+    "title": "Transfer valve inspection",
+    "description": "Inspect VLV-203 for sticking; lubricate stem per PM",
+    "status": "open",
+    "priority": "high",
+    "equipmentId": "VLV-203",
+    "dueDate": "2025-06-18",
+    "createdAt": "2025-06-10T10:00:00",
+    "sourceSystem": "CMMS"
+  },
+  {
+    "id": "WO-752",
+    "title": "CIP conductivity sensor check",
+    "description": "Verify CIP-201 conductivity sensor response time",
+    "status": "open",
+    "priority": "medium",
+    "equipmentId": "CIP-201",
+    "dueDate": "2025-06-20",
+    "createdAt": "2025-06-12T14:00:00",
+    "sourceSystem": "CMMS"
+  }
+]
