@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { CheckCircle2, ShieldAlert } from "lucide-react";
+import { staggerContainer, fadeUpItem } from "../utils/motion";
 
 interface DataQualityFlag {
   id: string;
@@ -42,44 +45,56 @@ export function DataQualityPanel({ batchId }: { batchId: string }) {
   const safeToAct = !deviationOpen && flags.length === 0;
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-3">
+    <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-card dark:border-slate-700 dark:bg-brand-800">
       <div className="mb-2 flex items-center justify-between">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
           Data Quality
         </h3>
         <span
-          className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
-            safeToAct ? "bg-green-100 text-green-800" : "bg-amber-100 text-amber-800"
+          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+            safeToAct
+              ? "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200"
+              : "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200"
           }`}
         >
+          {safeToAct ? <CheckCircle2 size={12} /> : <ShieldAlert size={12} />}
           {safeToAct ? "No blocking flags" : "Human review before acting"}
         </span>
       </div>
 
       {loading ? (
-        <p className="text-sm text-slate-400">Checking data quality…</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">Checking data quality…</p>
       ) : flags.length === 0 ? (
-        <p className="text-sm text-slate-500">No data quality issues detected for this batch.</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          No data quality issues detected for this batch.
+        </p>
       ) : (
-        <ul className="space-y-1.5">
+        <motion.ul variants={staggerContainer} initial="hidden" animate="show" className="space-y-1.5">
           {flags.map((f) => (
-            <li key={f.id} className="rounded border border-amber-200 bg-amber-50 p-2 text-sm">
+            <motion.li
+              variants={fadeUpItem}
+              key={f.id}
+              className="rounded-lg border border-amber-200 bg-amber-50 p-2 text-sm dark:border-amber-800/60 dark:bg-amber-900/20"
+            >
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-semibold uppercase text-amber-700">
+                <span className="text-[11px] font-semibold uppercase text-amber-700 dark:text-amber-300">
                   {CATEGORY_LABELS[f.category] ?? f.category}
                 </span>
                 <span className="flex gap-1">
                   {f.evidenceIds.map((id) => (
-                    <span key={id} className="rounded bg-white px-1 font-mono text-[10px] text-amber-700">
+                    <span
+                      key={id}
+                      className="rounded bg-white px-1 font-mono text-[10px] text-amber-700 dark:bg-brand-900 dark:text-amber-300"
+                    >
                       {id}
                     </span>
                   ))}
                 </span>
               </div>
-              <p className="mt-0.5 text-amber-900">{f.message}</p>
-            </li>
+              <p className="mt-0.5 text-amber-900 dark:text-amber-200">{f.message}</p>
+            </motion.li>
           ))}
-        </ul>
+        </motion.ul>
       )}
     </div>
   );

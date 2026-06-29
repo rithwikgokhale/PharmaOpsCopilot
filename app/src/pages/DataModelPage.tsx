@@ -4,8 +4,8 @@ export function DataModelPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-bold text-slate-900">CDF-ready architecture</h1>
-        <p className="text-sm text-slate-600">
+        <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">CDF-ready architecture</h1>
+        <p className="text-sm text-slate-600 dark:text-slate-300">
           How the local prototype maps onto Cognite Data Fusion, Flows, and Atlas AI.
         </p>
       </div>
