@@ -136,6 +136,7 @@ export function CopilotResponseView({ resp }: { resp: CopilotResponse }) {
                         key={id}
                         type="button"
                         onClick={() => copyId(id)}
+                        aria-label={`Copy evidence ID ${id}`}
                         className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] text-slate-600 transition-colors hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
                       >
                         {id}
@@ -227,6 +228,7 @@ export function CopilotResponseView({ resp }: { resp: CopilotResponse }) {
                 <button
                   type="button"
                   onClick={() => copyId(e.id)}
+                  aria-label={`Copy evidence ID ${e.id}`}
                   className={`rounded border px-1.5 py-0.5 font-mono text-[10px] transition-transform hover:scale-105 ${EVIDENCE_STYLES[e.type]}`}
                 >
                   {e.id}

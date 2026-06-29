@@ -1,0 +1,8 @@
+{
+  "generatedAt": "2026-06-29T00:00:00.000Z",
+  "mode": "deterministic",
+  "total": 12,
+  "passed": 12,
+  "failed": 0,
+  "note": "Sample output — run npm run eval locally for fresh results (evals/results.json is gitignored)."
+}

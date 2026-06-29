@@ -21,7 +21,11 @@ let client: OpenAI | null = null;
 
 function getClient(): OpenAI {
   if (!client) {
-    client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    client = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+      timeout: 20_000,
+      maxRetries: 1,
+    });
   }
   return client;
 }
@@ -46,6 +50,7 @@ export async function generateNarrative(
     const completion = await getClient().chat.completions.create({
       model: getModelName(),
       temperature: 0.2,
+      max_tokens: 900,
       response_format: { type: "json_object" },
       messages: [
         { role: "system", content: systemPrompt },
@@ -68,7 +73,12 @@ export async function generateNarrative(
       whatToCheckNext: Array.isArray(parsed.whatToCheckNext) ? parsed.whatToCheckNext.map(String) : [],
     };
   } catch (err) {
-    console.error("[llm] generateNarrative failed, falling back to deterministic:", err);
+    const msg = err instanceof Error ? err.message : String(err);
+    const isTimeout = /timeout|timed out|abort/i.test(msg);
+    console.error(
+      `[llm] generateNarrative failed${isTimeout ? " (timeout)" : ""}, falling back to deterministic:`,
+      msg
+    );
     return null;
   }
 }

@@ -13,7 +13,7 @@ const TONES: Record<NonNullable<Props["tone"]>, string> = {
 export function StatusDot({ tone = "info", pulse = true }: Props) {
   const color = TONES[tone];
   return (
-    <span className="relative inline-flex h-2 w-2 shrink-0">
+    <span className="relative inline-flex h-2 w-2 shrink-0" aria-hidden>
       {pulse && (
         <span
           className={`absolute inline-flex h-full w-full animate-pulse-ring rounded-full ${color} opacity-75`}

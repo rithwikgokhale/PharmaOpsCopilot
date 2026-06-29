@@ -44,6 +44,17 @@ export function TimeSeriesPanel({ signal, points, anomalies, showBrush = false }
     notify(`Asked copilot about ${a.id}`, "info");
   };
 
+  if (points.length === 0) {
+    return (
+      <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500 dark:border-slate-600 dark:bg-brand-900/40 dark:text-slate-400">
+        <h4 className="font-semibold text-slate-700 dark:text-slate-300">{signal.name}</h4>
+        <p className="mt-1">No time-series data for this batch. Batch B-104 is the fully modeled demo.</p>
+      </div>
+    );
+  }
+
+  const chartLabel = `${signal.name} time series, target ${signal.range.target} ${signal.unit}, acceptable range ${signal.range.min} to ${signal.range.max} ${signal.unit}`;
+
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-card transition-shadow hover:shadow-card-hover dark:border-slate-700 dark:bg-brand-800">
       <div className="mb-2 flex items-center justify-between">
@@ -55,6 +66,7 @@ export function TimeSeriesPanel({ signal, points, anomalies, showBrush = false }
           Target {signal.range.target} · Range {signal.range.min}–{signal.range.max}
         </span>
       </div>
+      <div role="img" aria-label={chartLabel}>
       <ResponsiveContainer width="100%" height={showBrush ? 210 : 180}>
         <LineChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
           <defs>
@@ -132,6 +144,7 @@ export function TimeSeriesPanel({ signal, points, anomalies, showBrush = false }
           )}
         </LineChart>
       </ResponsiveContainer>
+      </div>
       {signalAnomalies.length > 0 && (
         <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
           Tip: click a shaded anomaly to ask the copilot about it.

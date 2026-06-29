@@ -1,5 +1,9 @@
 # PharmaOps Copilot
 
+[![Evals](https://img.shields.io/badge/evals-12%2F12%20passing-brightgreen)](./EVALS.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Project docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://rithwikgokhale.github.io/PharmaOpsCopilot/)
+
 **Batch Deviation Triage Prototype** — a Cognite-inspired, CDF-ready field engineering demo for pharma manufacturing deviation triage.
 
 > This is not a validated GxP application and should not be used for real batch release, QA disposition, safety, or regulatory decisions. It is a field-engineering prototype demonstrating how contextualized industrial data and LLM-based reasoning could support human-reviewed deviation triage.
@@ -24,6 +28,17 @@ npm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173). Default batch: **B-104**. The Vite dev server proxies `/api/*` to the Express backend on port 3001.
+
+**Project documentation site** (architecture, demo script, setup): after enabling GitHub Pages, visit [https://rithwikgokhale.github.io/PharmaOpsCopilot/](https://rithwikgokhale.github.io/PharmaOpsCopilot/). Build locally with `cd site && npm install && npm run dev`.
+
+## Testing and evals
+
+```bash
+npm test          # Vitest unit + integration tests (guardrails, tools, orchestrator, evals)
+npm run eval      # 12 cases, deterministic mode → evals/results.json
+```
+
+The eval suite verifies required mentions, banned release/safety phrasing, and expected evidence IDs. See [EVALS.md](./EVALS.md) and [evals/results.sample.json](./evals/results.sample.json) for reference output.
 
 Run the eval suite from the CLI:
 

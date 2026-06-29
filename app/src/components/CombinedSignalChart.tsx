@@ -65,6 +65,16 @@ export function CombinedSignalChart({ signals, seriesData }: Props) {
       return next;
     });
 
+  if (data.length === 0) {
+    return (
+      <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500 dark:border-slate-600 dark:bg-brand-900/40 dark:text-slate-400">
+        No time-series data for this batch. Switch to Batch B-104 for the full demo storyline.
+      </div>
+    );
+  }
+
+  const activeNames = signals.filter((s) => active.has(s.id)).map((s) => s.name).join(", ");
+
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-card dark:border-slate-700 dark:bg-brand-800">
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
@@ -80,6 +90,8 @@ export function CombinedSignalChart({ signals, seriesData }: Props) {
                 key={sig.id}
                 type="button"
                 onClick={() => toggle(sig.id)}
+                aria-pressed={on}
+                aria-label={`${on ? "Hide" : "Show"} ${sig.name} series`}
                 className={`flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] transition-all ${
                   on
                     ? "border-transparent text-white"
@@ -90,6 +102,7 @@ export function CombinedSignalChart({ signals, seriesData }: Props) {
                 <span
                   className="h-2 w-2 rounded-full"
                   style={{ backgroundColor: on ? "rgba(255,255,255,0.9)" : COLORS[i % COLORS.length] }}
+                  aria-hidden
                 />
                 {sig.name}
               </button>
@@ -97,6 +110,10 @@ export function CombinedSignalChart({ signals, seriesData }: Props) {
           })}
         </div>
       </div>
+      <div
+        role="img"
+        aria-label={`Combined normalized signals chart showing ${activeNames || "no active series"}`}
+      >
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke={dark ? "#1e3a52" : "#e2e8f0"} />
@@ -147,6 +164,7 @@ export function CombinedSignalChart({ signals, seriesData }: Props) {
           />
         </LineChart>
       </ResponsiveContainer>
+      </div>
       <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
         50% = range midpoint · values outside 0–100% are out of spec. Drag the brush to zoom.
       </p>
