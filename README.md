@@ -42,19 +42,14 @@ npm run eval      # 12 cases, deterministic mode → evals/results.json
 
 The eval suite verifies required mentions, banned release/safety phrasing, and expected evidence IDs. See [EVALS.md](./EVALS.md) and [evals/results.sample.json](./evals/results.sample.json) for reference output.
 
-Run the eval suite from the CLI:
-
-```bash
-npm run eval        # 12 cases, deterministic mode → evals/results.json
-```
-
 ## Environment variables
 
-OpenAI is **optional** — the copilot and evals run deterministically without a key. To enable LLM-enriched narratives, copy `.env.example` to `.env` (not committed):
+OpenAI is **optional** — the copilot and evals run deterministically without a key. Copy `.env.example` to `.env` (not committed). Only `OPENAI_API_KEY` and `OPENAI_MODEL` are used today; embedding settings are reserved for future vector retrieval.
 
 ```
 OPENAI_API_KEY=your_key_here
 OPENAI_MODEL=gpt-4.1-mini
+PORT=3001
 ```
 
 The key is only ever read server-side (`server/agent/llm.ts`) and is never exposed to the browser.
