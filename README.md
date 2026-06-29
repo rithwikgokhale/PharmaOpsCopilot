@@ -4,7 +4,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Project docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://rithwikgokhale.github.io/PharmaOpsCopilot/)
 
-**Batch Deviation Triage Prototype** — a Cognite-inspired, CDF-ready field engineering demo for pharma manufacturing deviation triage.
+**[Project website →](https://rithwikgokhale.github.io/PharmaOpsCopilot/)** — architecture, screenshots, agent design, evals, setup guide, and CDF-ready mapping.
+
+**Batch Deviation Triage Prototype** — a Cognite-inspired, CDF-ready demo for pharma manufacturing deviation triage. Local-first React dashboard + evidence-grounded copilot over synthetic Batch **B-104** data (events, time series, work orders, SOPs). Runs without OpenAI; optional LLM enriches narrative only after deterministic evidence is assembled.
 
 > This is not a validated GxP application and should not be used for real batch release, QA disposition, safety, or regulatory decisions. It is a field-engineering prototype demonstrating how contextualized industrial data and LLM-based reasoning could support human-reviewed deviation triage.
 
@@ -29,7 +31,7 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173). Default batch: **B-104**. The Vite dev server proxies `/api/*` to the Express backend on port 3001.
 
-**Project documentation site** (architecture, demo script, setup): after enabling GitHub Pages, visit [https://rithwikgokhale.github.io/PharmaOpsCopilot/](https://rithwikgokhale.github.io/PharmaOpsCopilot/). Build locally with `cd site && npm install && npm run dev`.
+For screenshots, architecture diagrams, and the full walkthrough, see the **[project website](https://rithwikgokhale.github.io/PharmaOpsCopilot/)**. Build the docs site locally with `cd site && npm install && npm run dev`.
 
 ## Testing and evals
 
