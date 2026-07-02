@@ -12,6 +12,7 @@ interface Props {
 }
 
 interface Turn {
+  id: string;
   question: string;
   response?: CopilotResponse;
   error?: string;
@@ -77,14 +78,16 @@ export function CopilotPanel({ batchId, compact = false }: Props) {
     const q = question.trim();
     if (!q) return;
     setInput("");
-    const idx = turns.length;
-    setTurns((prev) => [...prev, { question: q, loading: true }]);
+    // Key each turn by a unique id (not array index) so concurrent submits
+    // can't mis-associate responses.
+    const turnId = crypto.randomUUID();
+    setTurns((prev) => [...prev, { id: turnId, question: q, loading: true }]);
     try {
       const response = await askCopilot({ batchId, question: q });
-      setTurns((prev) => prev.map((t, i) => (i === idx ? { ...t, response, loading: false } : t)));
+      setTurns((prev) => prev.map((t) => (t.id === turnId ? { ...t, response, loading: false } : t)));
     } catch (e) {
       const error = e instanceof Error ? e.message : "Request failed";
-      setTurns((prev) => prev.map((t, i) => (i === idx ? { ...t, error, loading: false } : t)));
+      setTurns((prev) => prev.map((t) => (t.id === turnId ? { ...t, error, loading: false } : t)));
     }
   }
 
@@ -126,8 +129,8 @@ export function CopilotPanel({ batchId, compact = false }: Props) {
           </div>
         )}
 
-        {turns.map((turn, i) => (
-          <div key={i} className="space-y-2">
+        {turns.map((turn) => (
+          <div key={turn.id} className="space-y-2">
             <motion.div
               initial={{ opacity: 0, x: 12 }}
               animate={{ opacity: 1, x: 0 }}
@@ -177,6 +180,7 @@ export function CopilotPanel({ batchId, compact = false }: Props) {
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            aria-label={`Ask the copilot about Batch ${batchId}`}
             placeholder={`Ask about Batch ${batchId}…`}
             className="flex-1 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm transition-colors focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-400/40 dark:border-slate-600 dark:bg-brand-900 dark:text-slate-100"
           />

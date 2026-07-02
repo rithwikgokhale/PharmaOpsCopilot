@@ -336,6 +336,9 @@ def signals() -> list[dict]:
 
 
 def main() -> None:
+    # Seeded so regeneration is reproducible — demo visuals and any future
+    # snapshot tests stay stable across runs.
+    random.seed(42)
     print("Generating synthetic pharma data...")
     entities = base_entities()
     batches = batch_schedule()

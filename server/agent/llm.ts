@@ -8,6 +8,7 @@
  */
 
 import OpenAI from "openai";
+import { z } from "zod";
 
 export function isLlmEnabled(): boolean {
   return Boolean(process.env.OPENAI_API_KEY);
@@ -30,12 +31,27 @@ function getClient(): OpenAI {
   return client;
 }
 
-export interface LlmNarrative {
-  answer: string;
-  whatHappened: string[];
-  contributingFactors: { factor: string; confidence: "low" | "medium" | "high"; evidenceIds: string[] }[];
-  whatToCheckNext: string[];
-}
+/**
+ * Schema for the model's JSON output. Lenient by design: wrong-typed fields
+ * collapse to safe defaults rather than rejecting the whole narrative, and
+ * anything irrecoverable falls back to the deterministic response.
+ */
+const llmNarrativeSchema = z.object({
+  answer: z.string().catch(""),
+  whatHappened: z.array(z.coerce.string()).catch([]),
+  contributingFactors: z
+    .array(
+      z.object({
+        factor: z.coerce.string().catch(""),
+        confidence: z.enum(["low", "medium", "high"]).catch("low"),
+        evidenceIds: z.array(z.coerce.string()).catch([]),
+      })
+    )
+    .catch([]),
+  whatToCheckNext: z.array(z.coerce.string()).catch([]),
+});
+
+export type LlmNarrative = z.infer<typeof llmNarrativeSchema>;
 
 /**
  * Asks the model to produce ONLY narrative fields, grounded in the supplied
@@ -59,19 +75,12 @@ export async function generateNarrative(
     });
     const content = completion.choices[0]?.message?.content;
     if (!content) return null;
-    const parsed = JSON.parse(content) as Partial<LlmNarrative>;
-    return {
-      answer: typeof parsed.answer === "string" ? parsed.answer : "",
-      whatHappened: Array.isArray(parsed.whatHappened) ? parsed.whatHappened.map(String) : [],
-      contributingFactors: Array.isArray(parsed.contributingFactors)
-        ? parsed.contributingFactors.map((f) => ({
-            factor: String(f.factor ?? ""),
-            confidence: (["low", "medium", "high"].includes(String(f.confidence)) ? f.confidence : "low") as "low" | "medium" | "high",
-            evidenceIds: Array.isArray(f.evidenceIds) ? f.evidenceIds.map(String) : [],
-          }))
-        : [],
-      whatToCheckNext: Array.isArray(parsed.whatToCheckNext) ? parsed.whatToCheckNext.map(String) : [],
-    };
+    const validated = llmNarrativeSchema.safeParse(JSON.parse(content));
+    if (!validated.success) {
+      console.error("[llm] response failed schema validation, falling back to deterministic");
+      return null;
+    }
+    return validated.data;
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     const isTimeout = /timeout|timed out|abort/i.test(msg);

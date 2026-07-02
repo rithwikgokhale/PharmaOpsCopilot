@@ -1,0 +1,12 @@
+dist
+app/dist
+dist-server
+node_modules
+site/dist
+site/node_modules
+public/data
+data/generated
+evals/results.json
+evals/results.sample.json
+package-lock.json
+site/package-lock.json

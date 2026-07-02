@@ -29,20 +29,28 @@ export function DataQualityPanel({ batchId }: { batchId: string }) {
   const [flags, setFlags] = useState<DataQualityFlag[]>([]);
   const [deviationOpen, setDeviationOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
     fetch(`/api/batch/${batchId}/evidence`)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("not found"))))
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`API returned ${r.status}`))))
       .then((packet: EvidencePacketLite) => {
         setFlags(packet.dataQuality);
         setDeviationOpen(Boolean(packet.deviation && packet.deviation.status !== "closed"));
       })
-      .catch(() => setFlags([]))
+      .catch(() => {
+        // Distinguish "API unreachable" from "no flags" — never show a green
+        // all-clear when we simply couldn't check.
+        setFlags([]);
+        setDeviationOpen(false);
+        setError("Data quality could not be checked — the copilot API is not reachable.");
+      })
       .finally(() => setLoading(false));
   }, [batchId]);
 
-  const safeToAct = !deviationOpen && flags.length === 0;
+  const safeToAct = !error && !deviationOpen && flags.length === 0;
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-card dark:border-slate-700 dark:bg-brand-800">
@@ -58,12 +66,14 @@ export function DataQualityPanel({ batchId }: { batchId: string }) {
           }`}
         >
           {safeToAct ? <CheckCircle2 size={12} /> : <ShieldAlert size={12} />}
-          {safeToAct ? "No blocking flags" : "Human review before acting"}
+          {safeToAct ? "No blocking flags" : error ? "Status unknown" : "Human review before acting"}
         </span>
       </div>
 
       {loading ? (
         <p className="text-sm text-slate-500 dark:text-slate-400">Checking data quality…</p>
+      ) : error ? (
+        <p className="text-sm text-amber-700 dark:text-amber-300">{error}</p>
       ) : flags.length === 0 ? (
         <p className="text-sm text-slate-500 dark:text-slate-400">
           No data quality issues detected for this batch.

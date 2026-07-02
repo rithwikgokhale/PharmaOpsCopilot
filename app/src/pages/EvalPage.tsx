@@ -34,8 +34,8 @@ export function EvalPage() {
         <div>
           <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Evaluation suite</h1>
           <p className="text-sm text-slate-600 dark:text-slate-300">
-            12 cases checking required mentions, banned phrasing (release/safety), and expected
-            evidence IDs. Runs in deterministic mode for reproducibility.
+            18 cases checking required mentions, banned phrasing (release/safety), expected
+            evidence IDs, and adversarial prompts. Runs in deterministic mode for reproducibility.
           </p>
         </div>
         <button

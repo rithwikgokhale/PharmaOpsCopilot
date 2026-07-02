@@ -42,7 +42,7 @@ const SHOTS = [
   {
     src: `${BASE}screenshots/evals-passing.png`,
     alt: "Eval suite showing 12 of 12 passing",
-    caption: "Evals — 12/12 deterministic cases verifying guardrails and citations.",
+    caption: "Evals — deterministic eval suite verifying guardrails and citations.",
   },
   {
     src: `${BASE}screenshots/cdf-ready-architecture.png`,

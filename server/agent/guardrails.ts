@@ -27,6 +27,7 @@ const RELEASE_SAFETY_PATTERNS = [
   /\bdisposition\b/i,
   /\b(approve|approval|reject|sign[\s-]?off)\b/i,
   /\bis (it|this batch|the batch) safe\b/i,
+  /\b(the )?batch is safe\b/i,
   /\bcan (qa|we|i)\b.*\b(release|approve|ship|dispose)\b/i,
   /\bgmp\b/i,
 ];

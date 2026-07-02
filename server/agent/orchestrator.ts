@@ -13,7 +13,6 @@ import { buildEvidencePacket, type EvidencePacket } from "./evidenceBuilder";
 import {
   classifyIntent,
   HUMAN_REVIEW_DISCLAIMER,
-  isReleaseSafetyDecision,
   sanitizeStringList,
   sanitizeText,
 } from "./guardrails";
