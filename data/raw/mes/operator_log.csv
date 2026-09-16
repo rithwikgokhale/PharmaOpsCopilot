@@ -1,0 +1,4 @@
+ENTRY_ID,BATCH_NO,ENTRY_TS,OPERATOR,EQUIP,COMPLETE_FLAG,ENTRY_TEXT
+LOG-104-001,B104,10:20,"MARTINEZ, J",VLV203,P,Manual valve position checked on VLV-203 — slight sticking observed during transfer line check.
+LOG-104-002,B104,15-JUN-2025 10:19:00,"MARTINEZ, J",BR-101,Y,Added buffer per SOP-BIO-OPS section 4.2 after pH low alarm. Volume logged in batch record.
+LOG-104-003,B104,15-JUN-2025 08:25:00,"CHEN, S",CIP201,Y,Batch start delayed due to extended CIP hold. Conductivity finally met threshold at 08:05.

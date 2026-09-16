@@ -1,0 +1,11 @@
+ASSET_ID,PARENT_ID,LEVEL,NAME,TYPE,DESCRIPTION
+SITE-CHI-PILOT,,SITE,Chicago Pharma Pilot Plant,site,Synthetic pilot plant for batch deviation triage demo
+AREA-FERM,SITE-CHI-PILOT,AREA,Fermentation Suite,area,
+AREA-UTIL,SITE-CHI-PILOT,AREA,Utilities/CIP Area,area,
+AREA-FILL,SITE-CHI-PILOT,AREA,Fill/Finish Line,area,
+AREA-QA,SITE-CHI-PILOT,AREA,QA Review,area,
+FERMENTATION-SUITE,AREA-FERM,ASSET,Fermentation Suite,production_area,
+BIOREACTOR-TRAIN-A,FERMENTATION-SUITE,ASSET,Bioreactor Train A,train,
+CIP-SKID-201,AREA-UTIL,ASSET,CIP Skid 201,utility,
+UTILITIES-WFI,AREA-UTIL,ASSET,WFI Utilities,utility,
+FILL-LINE-401,AREA-FILL,ASSET,Fill Line 401,packaging,

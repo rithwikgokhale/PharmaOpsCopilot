@@ -1,19 +1,43 @@
 #!/usr/bin/env python3
-"""Generate synthetic pharma batch data for PharmaOps Copilot prototype."""
+"""Generate synthetic pharma batch data for PharmaOps Copilot prototype.
+
+This script produces the *source-system view* of the plant: siloed, messy files
+under data/raw/ that look like exports from the systems a real site runs —
+
+  IT  MES (batch records, batch events, electronic logbook)
+  IT  CMMS (SAP-style equipment master + work orders)
+  IT  QMS (deviation records, quality events, document register)
+  OT  Historian (tag list, datapoints as UTC epoch ms, alarms, batch event frames)
+  ET  Engineering register (asset hierarchy, equipment register, instrument index,
+      operating limits)
+      Analytics (anomaly-detection output)
+
+The same underlying "truth" is written into every silo, but each system uses its
+own identifiers, naming conventions, units, timestamp formats, and status
+vocabularies — plus a few duplicates, gaps, and orphan records. Resolving that
+into the unified model the dashboard and copilot consume is the job of
+scripts/contextualize.py, which is what a CDF contextualization pipeline does
+for real. Run both with `npm run generate-data`.
+"""
 
 from __future__ import annotations
 
+import csv
 import json
 import math
 import random
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT_DIR = ROOT / "data" / "generated"
+RAW_DIR = ROOT / "data" / "raw"
 
 # B-104 anchor date
 B104_DATE = datetime(2025, 6, 15)
+
+# Plant clocks (MES, CMMS, QMS) run in local time with no zone marker. The
+# historian exports UTC epoch milliseconds. Chicago in June is UTC-05:00.
+PLANT_UTC_OFFSET_HOURS = -5
 
 SIGNAL_RANGES = {
     "BIO-101.temperature_c": {"target": 37.0, "min": 36.5, "max": 37.5, "unit": "°C"},
@@ -42,12 +66,92 @@ def ts(dt: datetime) -> str:
     return dt.strftime("%Y-%m-%dT%H:%M:%S")
 
 
-def write_json(name: str, data: object) -> None:
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    path = OUT_DIR / name
+def write_json(rel: str, data: object) -> None:
+    path = RAW_DIR / rel
+    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
     print(f"  wrote {path.relative_to(ROOT)}")
+
+
+def write_csv(rel: str, header: list[str], rows: list[list[object]]) -> None:
+    path = RAW_DIR / rel
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(header)
+        w.writerows(rows)
+    print(f"  wrote {path.relative_to(ROOT)} ({len(rows)} rows)")
+
+
+# --- source-system formatting helpers -------------------------------------------
+
+def mes_ts(iso: str | None) -> str:
+    """MES exports DD-MON-YYYY HH:MM:SS in plant local time."""
+    if not iso:
+        return ""
+    return datetime.fromisoformat(iso).strftime("%d-%b-%Y %H:%M:%S").upper()
+
+
+def epoch_ms(iso: str) -> int:
+    """Historian stores UTC epoch ms; convert from naive plant-local time."""
+    local = datetime.fromisoformat(iso)
+    utc = local - timedelta(hours=PLANT_UTC_OFFSET_HOURS)
+    return int(utc.replace(tzinfo=timezone.utc).timestamp() * 1000)
+
+
+def mes_batch_no(batch_id: str) -> str:
+    """MES and QMS drop the hyphen: B-104 -> B104."""
+    return batch_id.replace("-", "")
+
+
+MES_STATUS = {"complete": "COMP", "deviation": "DEVN", "planned": "PLND", "running": "RUN", "delayed": "DLYD"}
+MES_PHASE = {"complete": "COMP", "fermentation": "FERM", "planned": "PLND", "cip": "CIP", "inoculation": "INOC", "harvest": "HARV", "hold": "HOLD"}
+MES_EVENT_TYPE = {"process": "PROC", "operator_action": "OPER", "quality": "QUAL", "alarm": "ALRM", "maintenance": "MAINT", "document": "DOC"}
+MES_SEVERITY = {"info": "I", "warning": "W", "alarm": "A"}
+# MES names units its own way.
+MES_UNIT_ALIAS = {"BIO-101": "BR-101", "CIP-201": "CIP201", "TT-101": "BR-101-TT", "PH-101": "BR-101-PH", "AG-101": "BR-101-AGIT", "VLV-203": "VLV203", "PUMP-205": "PMP205"}
+MES_COMPLETE_FLAG = {"complete": "Y", "partial": "P", "incomplete": "N"}
+
+# Historian tag per instrument/loop. Units use historian spelling; the CIP
+# return-temperature tag is configured in Fahrenheit.
+HISTORIAN_TAGS = {
+    "BIO-101.temperature_c": ("CHI.BR101.TT101.PV", "DEGC"),
+    "BIO-101.ph": ("CHI.BR101.PH101.PV", "PH"),
+    "BIO-101.agitation_rpm": ("CHI.BR101.AG101.SPD.PV", "RPM"),
+    "BIO-101.pressure_bar": ("CHI.BR101.PT101.PV", "BARG"),
+    "BIO-101.dissolved_oxygen_pct": ("CHI.BR101.DO101.PV", "PCT"),
+    "CIP-201.conductivity_ms_cm": ("CHI.CIP201.CT201.PV", "MS/CM"),
+    "CIP-201.return_temperature_c": ("CHI.CIP201.TT202.RET.PV", "DEGF"),
+    "PUMP-205.flow_lpm": ("CHI.BR101.FT205.PV", "LPM"),
+}
+# Representative historian tag for equipment that raises alarms.
+HISTORIAN_ALARM_TAG = {
+    "PH-101": "CHI.BR101.PH101.PV",
+    "TT-101": "CHI.BR101.TT101.PV",
+    "AG-101": "CHI.BR101.AG101.SPD.PV",
+    "CIP-201": "CHI.CIP201.CT201.PV",
+    "BIO-101": "CHI.BR101.TT101.PV",
+}
+HISTORIAN_PRIORITY = {"alarm": 1, "warning": 2, "info": 3}
+
+# CMMS (SAP-style) equipment numbers and functional locations. Note the stray
+# space in the pH probe location and the "PMP" abbreviation for the pump — the
+# kind of drift that accumulates in a real equipment master.
+CMMS_EQUIPMENT = {
+    "BIO-101": ("10004401", "CHI-FERM-TRA-BIO101"),
+    "PH-101": ("10004402", "CHI-FERM-TRA-PH 101"),
+    "TT-101": ("10004403", "CHI-FERM-TRA-TT101"),
+    "AG-101": ("10004404", "CHI-FERM-TRA-AG101"),
+    "CIP-201": ("10004410", "CHI-UTIL-CIP-CIP201"),
+    "VLV-203": ("10004411", "CHI-FERM-TRA-VLV203"),
+    "PUMP-205": ("10004412", "CHI-FERM-TRA-PMP205"),
+}
+CMMS_STATUS = {"scheduled": "CRTD", "open": "REL", "in_progress": "INPR", "closed": "TECO"}
+CMMS_PRIORITY = {"high": "1", "medium": "2", "low": "3"}
+QMS_SEVERITY = {"alarm": "High", "warning": "Medium", "info": "Low"}
+QMS_CLASSIFICATION = {"minor": "Minor", "major": "Major", "critical": "Critical"}
+QMS_STATE = {"open": "Open", "under_review": "Under Review", "closed": "Closed"}
 
 
 def base_entities() -> dict:
@@ -253,111 +357,229 @@ def operator_notes() -> list[dict]:
     ]
 
 
-def load_doc_sections() -> list[dict]:
-    docs_dir = ROOT / "data" / "documents"
-    documents = []
-
-    doc_defs = [
-        ("DOC-SOP-DEV", "SOP: Batch Deviation Procedure", "sop", None, "DEV-104", [], "SOP-BATCH-DEVIATION.md", ["deviation", "qa", "escalation"]),
-        ("DOC-SOP-CIP", "SOP: CIP Cleaning Procedure", "sop", None, None, ["CIP-201"], "SOP-CIP-CLEANING.md", ["cip", "cleaning"]),
-        ("DOC-SOP-BIO", "SOP: Bioreactor Operations", "sop", None, None, ["BIO-101"], "SOP-BIOREACTOR-OPERATIONS.md", ["bioreactor", "fermentation"]),
-        ("DOC-BMR-B104", "Batch Record Excerpt: B-104", "batch_record", "B-104", "DEV-104", ["BIO-101"], "BATCH-RECORD-B-104.md", ["batch", "B-104"]),
-        ("DOC-SHIFT-B104", "Shift Handover: B-104", "shift_note", "B-104", "DEV-104", ["BIO-101", "VLV-203"], "SHIFT-HANDOVER-B-104.md", ["shift", "handover"]),
+def document_register() -> list[dict]:
+    """QMS document control register. Section parsing happens in contextualize."""
+    return [
+        {"doc_no": "DOC-SOP-DEV", "title": "SOP: Batch Deviation Procedure", "doc_type": "SOP", "file": "SOP-BATCH-DEVIATION.md", "batch_ref": None, "deviation_ref": "DEV-104", "equipment_refs": "", "keywords": "deviation; qa; escalation"},
+        {"doc_no": "DOC-SOP-CIP", "title": "SOP: CIP Cleaning Procedure", "doc_type": "SOP", "file": "SOP-CIP-CLEANING.md", "batch_ref": None, "deviation_ref": None, "equipment_refs": "CIP-201", "keywords": "cip; cleaning"},
+        {"doc_no": "DOC-SOP-BIO", "title": "SOP: Bioreactor Operations", "doc_type": "SOP", "file": "SOP-BIOREACTOR-OPERATIONS.md", "batch_ref": None, "deviation_ref": None, "equipment_refs": "BIO-101", "keywords": "bioreactor; fermentation"},
+        {"doc_no": "DOC-BMR-B104", "title": "Batch Record Excerpt: B-104", "doc_type": "BMR", "file": "BATCH-RECORD-B-104.md", "batch_ref": "B104", "deviation_ref": "DEV-104", "equipment_refs": "BIO-101", "keywords": "batch; B-104"},
+        {"doc_no": "DOC-SHIFT-B104", "title": "Shift Handover: B-104", "doc_type": "SHIFT", "file": "SHIFT-HANDOVER-B-104.md", "batch_ref": "B104", "deviation_ref": "DEV-104", "equipment_refs": "BIO-101; VLV-203", "keywords": "shift; handover"},
     ]
 
-    for doc_id, title, doc_type, batch_id, dev_id, equip_ids, filename, tags in doc_defs:
-        path = docs_dir / filename
-        sections = []
-        if path.exists():
-            content = path.read_text(encoding="utf-8")
-            current_id = None
-            current_title = None
-            current_lines: list[str] = []
-            for line in content.splitlines():
-                if line.startswith("## "):
-                    if current_id:
-                        sections.append({"id": current_id, "title": current_title or "", "content": "\n".join(current_lines).strip()})
-                    header = line[3:].strip()
-                    if " — " in header:
-                        current_id, current_title = header.split(" — ", 1)
-                    else:
-                        current_id = header.replace(" ", "-").upper()[:20]
-                        current_title = header
-                    current_lines = []
-                elif current_id:
-                    current_lines.append(line)
-            if current_id:
-                sections.append({"id": current_id, "title": current_title or "", "content": "\n".join(current_lines).strip()})
-        documents.append({
-            "id": doc_id,
-            "title": title,
-            "documentType": doc_type,
-            "filePath": f"data/documents/{filename}",
-            "relatedBatchId": batch_id,
-            "relatedDeviationId": dev_id,
-            "relatedEquipmentIds": equip_ids or None,
-            "sections": sections,
-            "tags": tags,
-        })
-    return documents
+
+def with_source_systems(events: list[dict]) -> list[dict]:
+    """Every event originates somewhere. Fill the few that were left blank."""
+    default = {"alarm": "Historian", "process": "MES", "operator_action": "MES", "quality": "QMS", "maintenance": "CMMS", "document": "QMS"}
+    for e in events:
+        e.setdefault("sourceSystem", default[e["category"]])
+    return events
 
 
-def relationships() -> list[dict]:
-    rels = [
-        ("REL-001", "batch", "B-104", "equipment", "BIO-101", "uses"),
-        ("REL-002", "equipment", "BIO-101", "equipment", "PH-101", "has_component"),
-        ("REL-003", "equipment", "BIO-101", "equipment", "TT-101", "has_component"),
-        ("REL-004", "equipment", "BIO-101", "equipment", "AG-101", "has_component"),
-        ("REL-005", "equipment", "CIP-201", "equipment", "BIO-101", "supports_cleaning"),
-        ("REL-006", "workOrder", "WO-731", "equipment", "PH-101", "maintains"),
-        ("REL-007", "workOrder", "WO-744", "equipment", "VLV-203", "maintains"),
-        ("REL-008", "workOrder", "WO-752", "equipment", "CIP-201", "maintains"),
-        ("REL-009", "deviation", "DEV-104", "batch", "B-104", "affects"),
-        ("REL-010", "deviation", "DEV-104", "equipment", "BIO-101", "affects"),
-        ("REL-011", "document", "DOC-SOP-DEV", "deviation", "DEV-104", "references"),
-        ("REL-012", "document", "DOC-SHIFT-B104", "batch", "B-104", "references"),
-    ]
-    return [{"id": r[0], "sourceType": r[1], "sourceId": r[2], "targetType": r[3], "targetId": r[4], "relationshipType": r[5]} for r in rels]
+# --- silo writers ---------------------------------------------------------------
 
+def write_engineering_register(entities: dict) -> None:
+    """ET: the engineering asset register and instrument index."""
+    site, areas, assets, equipment = entities["site"], entities["areas"], entities["assets"], entities["equipment"]
+    rows: list[list[object]] = [[site["id"], "", "SITE", site["name"], "site", site["description"]]]
+    for a in areas:
+        rows.append([a["id"], a["siteId"], "AREA", a["name"], "area", ""])
+    for a in assets:
+        rows.append([a["id"], a.get("parentAssetId") or a["areaId"], "ASSET", a["name"], a["assetType"], ""])
+    write_csv("engineering/asset_register.csv", ["ASSET_ID", "PARENT_ID", "LEVEL", "NAME", "TYPE", "DESCRIPTION"], rows)
 
-def signals() -> list[dict]:
-    result = []
+    parent_equip = {"PH-101": "BIO-101", "TT-101": "BIO-101", "AG-101": "BIO-101"}
+    serves = {"CIP-201": "BIO-101"}
+    rows = []
+    for e in equipment:
+        rows.append([e["tag"], e["name"], e["equipmentType"], e["assetId"], parent_equip.get(e["id"], ""), serves.get(e["id"], ""), e.get("manufacturer", ""), e.get("serialNumber", ""), e["status"].upper()])
+    write_csv("engineering/equipment_register.csv", ["TAG", "NAME", "TYPE", "PARENT_ASSET", "PARENT_EQUIP", "SERVES", "MANUFACTURER", "SERIAL_NO", "STATUS"], rows)
+
+    # Instrument index: the loop id, the P&ID instrument tag, the historian tag
+    # the loop is *supposed* to be logged to, and the target CDF external id.
+    # The pH loop's historian tag was entered with a hyphen the historian does
+    # not use — a classic index/historian mismatch.
+    instrument_tag = {"BIO-101.temperature_c": "TT-101", "BIO-101.ph": "PH-101", "BIO-101.agitation_rpm": "AG-101", "BIO-101.pressure_bar": "PT-101", "BIO-101.dissolved_oxygen_pct": "DO-101", "CIP-201.conductivity_ms_cm": "CT-201", "CIP-201.return_temperature_c": "TT-202", "PUMP-205.flow_lpm": "FT-205"}
+    rows = []
     for sig_id, equip_id, ext_id, name in SIGNAL_META:
-        rng = SIGNAL_RANGES[ext_id]
-        result.append({
-            "id": sig_id,
-            "equipmentId": equip_id,
-            "name": name,
-            "externalId": ext_id,
-            "unit": rng["unit"],
-            "range": {"target": rng["target"], "min": rng["min"], "max": rng["max"], "unit": rng["unit"]},
+        hist_tag, _ = HISTORIAN_TAGS[ext_id]
+        if ext_id == "BIO-101.ph":
+            hist_tag = "CHI.BR101.PH-101.PV"
+        rows.append([sig_id, instrument_tag[ext_id], name, equip_id, hist_tag, ext_id, SIGNAL_RANGES[ext_id]["unit"]])
+    write_csv("engineering/instrument_index.csv", ["LOOP_ID", "INSTRUMENT_TAG", "SERVICE", "EQUIPMENT", "HISTORIAN_TAG", "CDF_EXTERNAL_ID", "ENG_UNITS"], rows)
+
+    rows = []
+    for sig_id, _, ext_id, _ in SIGNAL_META:
+        r = SIGNAL_RANGES[ext_id]
+        rows.append([sig_id, r["target"], r["min"], r["max"], r["unit"]])
+    write_csv("engineering/operating_limits.csv", ["LOOP_ID", "TARGET", "LO", "HI", "UNITS"], rows)
+
+
+def write_mes(batches: list[dict], events: list[dict], notes: list[dict]) -> None:
+    """IT: MES batch records, batch events, and the electronic logbook."""
+    rows: list[list[object]] = []
+    for b in batches:
+        rows.append([mes_batch_no(b["id"]), b["productCode"], MES_STATUS[b["status"]], MES_PHASE[b["currentPhase"]], MES_UNIT_ALIAS[b["primaryEquipmentId"]], mes_ts(b["plannedStart"]), mes_ts(b.get("actualStart")), mes_ts(b.get("plannedEnd")), mes_ts(b.get("actualEnd")), b.get("notes", "")])
+    write_csv("mes/batch_records.csv", ["BATCH_NO", "PROD_CODE", "STATUS", "PHASE", "UNIT", "PLAN_START", "ACT_START", "PLAN_END", "ACT_END", "REMARKS"], rows)
+
+    rows = []
+    for e in events:
+        if e["sourceSystem"] != "MES":
+            continue
+        # One event was left without a severity by the operator.
+        sev = "" if e["id"] == "EVT-B104-003" else MES_SEVERITY[e.get("severity", "info")]
+        row = [e["id"], mes_batch_no(e["batchId"]), mes_ts(e["timestamp"]), MES_EVENT_TYPE[e["category"]], MES_UNIT_ALIAS.get(e.get("equipmentId", ""), ""), sev, e["title"], e.get("description", "")]
+        rows.append(row)
+        # MES double-posted the batch-start event.
+        if e["id"] == "EVT-B104-004":
+            rows.append(list(row))
+    write_csv("mes/batch_events.csv", ["EVENT_ID", "BATCH_NO", "EVENT_TS", "EVENT_TYPE", "UNIT", "SEVERITY", "EVENT_TEXT", "EVENT_DETAIL"], rows)
+
+    rows = []
+    for n in notes:
+        num = n["batchId"].split("-")[1]
+        seq = n["id"].rsplit("-", 1)[1]
+        surname, initial = n["author"].split(". ")[1], n["author"].split(".")[0]
+        # The first logbook entry only has a time — the operator did not fill the date.
+        entry_ts = datetime.fromisoformat(n["timestamp"]).strftime("%H:%M") if n["id"] == "NOTE-B104-001" else mes_ts(n["timestamp"])
+        rows.append([f"LOG-{num}-{seq}", mes_batch_no(n["batchId"]), entry_ts, f"{surname.upper()}, {initial}", MES_UNIT_ALIAS.get(n.get("equipmentId", ""), ""), MES_COMPLETE_FLAG[n["completeness"]], n["content"]])
+    write_csv("mes/operator_log.csv", ["ENTRY_ID", "BATCH_NO", "ENTRY_TS", "OPERATOR", "EQUIP", "COMPLETE_FLAG", "ENTRY_TEXT"], rows)
+
+
+def write_historian(batches: list[dict], events: list[dict], series: list[dict]) -> None:
+    """OT: historian tag list, datapoints (UTC epoch ms), alarms, batch event frames."""
+    rows: list[list[object]] = []
+    for _, _, ext_id, name in SIGNAL_META:
+        tag, units = HISTORIAN_TAGS[ext_id]
+        rows.append([tag, name, units, "Float32"])
+    # A WFI flow tag that nobody has added to the instrument index yet.
+    rows.append(["CHI.WFI.FT301.PV", "WFI supply flow", "LPM", "Float32"])
+    write_csv("historian/tags.csv", ["TAG", "DESCRIPTION", "ENG_UNITS", "POINT_TYPE"], rows)
+
+    ext_by_sig = {sig_id: ext_id for sig_id, _, ext_id, _ in SIGNAL_META}
+    rows = []
+    for s in series:
+        tag, units = HISTORIAN_TAGS[ext_by_sig[s["signalId"]]]
+        for p in s["points"]:
+            value = p["value"]
+            if units == "DEGF":
+                value = value * 9 / 5 + 32
+            rows.append([tag, epoch_ms(p["timestamp"]), repr(float(value))])
+    write_csv("historian/datapoints.csv", ["TAG", "TS_EPOCH_MS", "VALUE"], rows)
+
+    rows = []
+    for e in events:
+        if e["sourceSystem"] != "Historian":
+            continue
+        rows.append([e["id"], HISTORIAN_ALARM_TAG[e["equipmentId"]], epoch_ms(e["timestamp"]), MES_EVENT_TYPE[e["category"]], HISTORIAN_PRIORITY[e.get("severity", "warning")], e["title"], e.get("description", ""), e["batchId"]])
+    write_csv("historian/alarms.csv", ["ALARM_ID", "TAG", "TS_EPOCH_MS", "CLASS", "PRIORITY", "ALARM_TEXT", "ALARM_DETAIL", "BATCH_CTX"], rows)
+
+    # Event frames: the historian's own notion of a batch window (PI EventFrame style).
+    rows = []
+    for b in batches:
+        matching = [s for s in series if s["batchId"] == b["id"]]
+        if not matching:
+            continue
+        start = min(s["points"][0]["timestamp"] for s in matching)
+        end = max(s["points"][-1]["timestamp"] for s in matching)
+        rows.append([f"EF-{b['id']}", b["id"], epoch_ms(start), epoch_ms(end)])
+    write_csv("historian/batch_event_frames.csv", ["EF_ID", "BATCH_NO", "START_EPOCH_MS", "END_EPOCH_MS"], rows)
+
+
+def write_cmms(entities: dict, wos: list[dict]) -> None:
+    """IT: SAP-style CMMS equipment master and work orders."""
+    rows: list[list[object]] = []
+    for e in entities["equipment"]:
+        eq_no, func_loc = CMMS_EQUIPMENT[e["id"]]
+        rows.append([eq_no, func_loc, e["name"].upper(), e["equipmentType"].upper(), e.get("manufacturer", ""), e.get("serialNumber", ""), "INST"])
+    # An orphan: a WFI pump that exists in the CMMS but not in the engineering register.
+    rows.append(["10009999", "CHI-UTIL-WFI-PMP301", "WFI DISTRIBUTION PUMP", "PUMP", "", "", "INST"])
+    write_csv("cmms/equipment_master.csv", ["EQUIPMENT_NO", "FUNC_LOC", "DESCRIPTION", "OBJECT_TYPE", "MANUFACTURER", "SERIAL_NO", "SYS_STATUS"], rows)
+
+    records = []
+    for wo in wos:
+        eq_no, func_loc = CMMS_EQUIPMENT[wo["equipmentId"]]
+        created = datetime.fromisoformat(wo["createdAt"])
+        rec = {
+            "order_no": wo["id"].split("-")[1].zfill(7),
+            "order_type": "PM02",
+            "equipment_no": eq_no,
+            "func_loc": func_loc,
+            "short_text": wo["title"],
+            "long_text": wo["description"],
+            "sys_status": CMMS_STATUS[wo["status"]],
+            "priority": CMMS_PRIORITY[wo["priority"]],
+            "basic_finish": wo["dueDate"].replace("-", "") if wo.get("dueDate") else "",
+            "created_on": created.strftime("%Y%m%d"),
+            "created_at": created.strftime("%H%M%S"),
+            "revision": 1,
+        }
+        records.append(rec)
+        # The valve inspection order was re-released; the export carries both revisions.
+        if wo["id"] == "WO-744":
+            rev2 = dict(rec)
+            rev2["revision"] = 2
+            rev2["long_text"] = rec["long_text"] + " Re-released after scheduling conflict."
+            records.append(rev2)
+    # An order on the orphan WFI pump — nothing in the plant model to attach it to.
+    records.append({"order_no": "0000760", "order_type": "PM01", "equipment_no": "10009999", "func_loc": "CHI-UTIL-WFI-PMP301", "short_text": "WFI pump seal replacement", "long_text": "Replace mechanical seal on WFI distribution pump", "sys_status": "REL", "priority": "2", "basic_finish": "20250625", "created_on": "20250613", "created_at": "091500", "revision": 1})
+    write_json("cmms/work_orders.json", records)
+
+
+def write_qms(devs: list[dict], events: list[dict]) -> None:
+    """IT: QMS deviation records, quality events, and document register."""
+    records = []
+    for d in devs:
+        num = d["id"].split("-")[1]
+        records.append({
+            "record_id": f"DR-2025-{num.zfill(4)}",
+            "deviation_no": d["id"],
+            "batch_ref": mes_batch_no(d["batchId"]),
+            "title": d["title"],
+            "description": d["description"],
+            "classification": QMS_CLASSIFICATION[d["severity"]],
+            "state": QMS_STATE[d["status"]],
+            "opened": d["openedAt"] + ".000",
+            "impacted_equipment": "; ".join(d["equipmentIds"]),
+            "linked_events": ", ".join(d["relatedEventIds"]),
         })
-    return result
+    write_json("qms/deviations.json", records)
+
+    qevents = []
+    for e in events:
+        if e["sourceSystem"] != "QMS":
+            continue
+        qevents.append({
+            "event_ref": e["id"],
+            "batch_ref": mes_batch_no(e["batchId"]),
+            "occurred": e["timestamp"] + ".000",
+            "type": "Quality",
+            "severity": QMS_SEVERITY[e.get("severity", "info")],
+            "summary": e["title"],
+            "detail": e.get("description", ""),
+            "equipment": e.get("equipmentId"),
+        })
+    write_json("qms/quality_events.json", qevents)
+    write_json("qms/document_register.json", document_register())
 
 
 def main() -> None:
     # Seeded so regeneration is reproducible — demo visuals and any future
     # snapshot tests stay stable across runs.
     random.seed(42)
-    print("Generating synthetic pharma data...")
+    print("Generating synthetic source-system data into data/raw/ ...")
     entities = base_entities()
     batches = batch_schedule()
+    events = with_source_systems(all_events(batches))
+    series = all_time_series(batches)
 
-    write_json("site.json", entities["site"])
-    write_json("areas.json", entities["areas"])
-    write_json("assets.json", entities["assets"])
-    write_json("equipment.json", entities["equipment"])
-    write_json("batches.json", batches)
-    write_json("deviations.json", deviations())
-    write_json("events.json", all_events(batches))
-    write_json("signals.json", signals())
-    write_json("timeSeries.json", all_time_series(batches))
-    write_json("anomalyWindows.json", anomaly_windows())
-    write_json("workOrders.json", work_orders())
-    write_json("operatorNotes.json", operator_notes())
-    write_json("relationships.json", relationships())
-    write_json("documents.json", load_doc_sections())
-    print("Done.")
+    write_engineering_register(entities)
+    write_mes(batches, events, operator_notes())
+    write_historian(batches, events, series)
+    write_cmms(entities, work_orders())
+    write_qms(deviations(), events)
+    write_json("analytics/anomaly_windows.json", anomaly_windows())
+    print("Done. Next: python3 scripts/contextualize.py")
 
 
 if __name__ == "__main__":

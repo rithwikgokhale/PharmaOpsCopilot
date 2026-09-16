@@ -13,7 +13,7 @@
   {
     "id": "WO-744",
     "title": "Transfer valve inspection",
-    "description": "Inspect VLV-203 for sticking; lubricate stem per PM",
+    "description": "Inspect VLV-203 for sticking; lubricate stem per PM Re-released after scheduling conflict.",
     "status": "open",
     "priority": "high",
     "equipmentId": "VLV-203",

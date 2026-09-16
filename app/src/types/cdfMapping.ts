@@ -1,6 +1,15 @@
 /**
- * Maps local domain objects to future Cognite CDF / CDM concepts.
- * See: https://docs.cognite.com/cdf/dm/dm_reference/dm_core_data_model
+ * Maps local domain objects to Cognite Data Fusion concepts.
+ *
+ * The target is the ISA-88/95 Manufacturing data model deployment pack
+ * (batch and discrete manufacturing on top of the Core Data Model), with
+ * high-volume events in Records and a small deviation extension view. Toolkit
+ * YAML for the extension lives in cdf/modules/pharmaops_deviation/.
+ *
+ * See:
+ *   https://docs.cognite.com/cdf/deploy/cdf_toolkit/references/packages/isa_data_model
+ *   https://docs.cognite.com/cdf/dm/records/concepts/records_and_streams
+ *   https://docs.cognite.com/cdf/build/industrial_mcp
  */
 
 export interface CdfMappingEntry {
@@ -12,67 +21,85 @@ export interface CdfMappingEntry {
 
 export const CDF_MAPPINGS: CdfMappingEntry[] = [
   {
-    localType: "Site / Area / Asset",
-    cdfConcept: "CogniteAsset",
-    cdfView: "cdf_cdm:CogniteAsset(v1)",
-    notes:
-      "Hierarchical asset tree. Areas and sites are parent CogniteAsset nodes.",
+    localType: "Site / Area",
+    cdfConcept: "ISA-95 Site → Area",
+    cdfView: "isa_manufacturing:Site, Area",
+    notes: "Organizational hierarchy levels 4–3. All hierarchy nodes link to ISAAsset (CogniteAsset) for navigation.",
   },
   {
-    localType: "Equipment",
-    cdfConcept: "CogniteEquipment",
-    cdfView: "cdf_cdm:CogniteEquipment(v1)",
-    notes:
-      "Physical devices linked to CogniteAsset via direct relation (asset property).",
+    localType: "Asset (Bioreactor Train A, CIP Skid)",
+    cdfConcept: "ISA-95 ProcessCell / Unit",
+    cdfView: "isa_manufacturing:ProcessCell, Unit",
+    notes: "The bioreactor train is a ProcessCell; BIO-101 is the Unit that executes the batch.",
   },
   {
-    localType: "TimeSeriesSignal + points",
-    cdfConcept: "CogniteTimeSeries",
-    cdfView: "cdf_cdm:CogniteTimeSeries(v1)",
-    notes:
-      "Metadata via Instances API; datapoints via Time Series API. Linked to equipment/assets.",
+    localType: "Equipment (sensors, valves, pump)",
+    cdfConcept: "Equipment / EquipmentModule",
+    cdfView: "isa_manufacturing:Equipment · CogniteEquipment",
+    notes: "PH-101, TT-101, AG-101 are components of Unit BIO-101; the CIP skid serves the unit.",
   },
   {
-    localType: "Batch / CIP cycle / Deviation",
-    cdfConcept: "CogniteActivity",
-    cdfView: "cdf_cdm:CogniteActivity(v1)",
-    notes:
-      "Domain-specific extension of CogniteActivity for batch lifecycle and quality events.",
+    localType: "Batch",
+    cdfConcept: "ISA-88 Batch",
+    cdfView: "isa_manufacturing:Batch",
+    notes: "One execution of a Recipe on a Unit. Links to Recipe, WorkOrder, Site, and Phase.",
+  },
+  {
+    localType: "Batch phase (CIP, fermentation …)",
+    cdfConcept: "ISA-88 Phase / Operation",
+    cdfView: "isa_manufacturing:Phase, Operation · CogniteActivity",
+    notes: "Procedural elements with start/end; the CIP hold and fermentation phases become Phase instances.",
+  },
+  {
+    localType: "Deviation (DEV-104)",
+    cdfConcept: "PharmaDeviation (extension view)",
+    cdfView: "sp_pharmaops_model:PharmaDeviation",
+    notes: "Small extension: status, severity, openedAt, batch, equipment, relatedEvents. Toolkit YAML in cdf/modules/.",
+  },
+  {
+    localType: "Process events, alarms, operator actions",
+    cdfConcept: "Records",
+    cdfView: "sp_pharmaops_records:BatchEvent (usedFor: record)",
+    notes: "High-volume, immutable, linked to batch and equipment — navigable in both directions without bloating the graph.",
+  },
+  {
+    localType: "TimeSeriesSignal + datapoints",
+    cdfConcept: "ISATimeSeries",
+    cdfView: "isa_manufacturing:ISATimeSeries · CogniteTimeSeries",
+    notes: "Historian tags matched to instrument-index loops; datapoints via the Time Series API.",
   },
   {
     localType: "WorkOrder",
-    cdfConcept: "CogniteMaintenanceOrder",
-    cdfView: "cdf_idm:CogniteMaintenanceOrder(v1)",
-    notes: "CMMS work orders linked to equipment via mainAsset relation.",
+    cdfConcept: "ISA WorkOrder",
+    cdfView: "isa_manufacturing:WorkOrder · CogniteActivity",
+    notes: "CMMS orders linked to Equipment and Batch. CogniteMaintenanceOrder (IDM) is the alternative for SAP-PM-shaped data.",
   },
   {
-    localType: "Document / SOP",
-    cdfConcept: "CogniteFile",
-    cdfView: "cdf_cdm:CogniteFile(v1)",
-    notes:
-      "Markdown/PDF SOPs and batch records. Linked to assets via assets property.",
+    localType: "Operator notes, SOPs, batch record, shift handover",
+    cdfConcept: "ISAFile / CogniteFile",
+    cdfView: "isa_manufacturing:ISAFile",
+    notes: "Files linked to batch, deviation, and equipment; sectioned for citation.",
   },
   {
-    localType: "Source system tag",
+    localType: "Source system (MES, Historian, CMMS, QMS)",
     cdfConcept: "CogniteSourceSystem",
-    notes: "MES, Historian, CMMS provenance on sourceable entities.",
+    cdfView: "cdf_cdm:CogniteSourceSystem",
+    notes: "Provenance on every sourceable instance — the contextualization report shows how each was resolved.",
   },
   {
-    localType: "Relationship",
-    cdfConcept: "Direct relations / edges",
-    notes:
-      "Batch→Equipment, Equipment→TimeSeries, Deviation→Document via data model edges.",
+    localType: "Copilot tools",
+    cdfConcept: "Atlas AI agent (agents as code)",
+    cdfView: "cdf/modules/…/agents/pharmaops_triage.Agent.yaml",
+    notes: "query · queryTimeSeriesDatapoints · askDocument, plus an SOP-derived skill and a CLI eval suite generated from the local evals.",
   },
   {
-    localType: "AI Copilot",
-    cdfConcept: "Atlas AI Agent",
-    notes:
-      "Scoped agent with tools: queryKnowledgeGraph, queryTimeSeriesDatapoints, askDocument.",
+    localType: "MCP server (server/mcp)",
+    cdfConcept: "Industrial MCP",
+    notes: "Same tool vocabulary. Today: local stdio server over synthetic data. On CDF: point Claude / Cursor / Copilot at Industrial MCP instead.",
   },
   {
     localType: "React web app",
     cdfConcept: "Flows custom app",
-    notes:
-      "Hosted in CDF iframe; auth via connectToHostApp() from @cognite/app-sdk.",
+    notes: "Hosted in CDF; auth via connectToHostApp() from @cognite/app-sdk.",
   },
 ];

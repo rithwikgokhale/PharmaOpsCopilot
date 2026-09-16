@@ -90,6 +90,14 @@
   {
     "id": "REL-012",
     "sourceType": "document",
+    "sourceId": "DOC-BMR-B104",
+    "targetType": "batch",
+    "targetId": "B-104",
+    "relationshipType": "references"
+  },
+  {
+    "id": "REL-013",
+    "sourceType": "document",
     "sourceId": "DOC-SHIFT-B104",
     "targetType": "batch",
     "targetId": "B-104",

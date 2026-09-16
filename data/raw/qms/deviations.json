@@ -1,0 +1,14 @@
+[
+  {
+    "record_id": "DR-2025-0104",
+    "deviation_no": "DEV-104",
+    "batch_ref": "B104",
+    "title": "Temperature excursion and delayed pH correction",
+    "description": "During fermentation, temperature exceeded upper limit for 18 minutes. pH drifted below range; manual buffer addition required.",
+    "classification": "Major",
+    "state": "Under Review",
+    "opened": "2025-06-15T11:15:00.000",
+    "impacted_equipment": "BIO-101; PH-101; TT-101; AG-101",
+    "linked_events": "EVT-B104-005, EVT-B104-006, EVT-B104-007, EVT-B104-008, EVT-B104-009, EVT-B104-011"
+  }
+]

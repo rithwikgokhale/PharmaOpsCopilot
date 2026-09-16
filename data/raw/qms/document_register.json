@@ -1,0 +1,52 @@
+[
+  {
+    "doc_no": "DOC-SOP-DEV",
+    "title": "SOP: Batch Deviation Procedure",
+    "doc_type": "SOP",
+    "file": "SOP-BATCH-DEVIATION.md",
+    "batch_ref": null,
+    "deviation_ref": "DEV-104",
+    "equipment_refs": "",
+    "keywords": "deviation; qa; escalation"
+  },
+  {
+    "doc_no": "DOC-SOP-CIP",
+    "title": "SOP: CIP Cleaning Procedure",
+    "doc_type": "SOP",
+    "file": "SOP-CIP-CLEANING.md",
+    "batch_ref": null,
+    "deviation_ref": null,
+    "equipment_refs": "CIP-201",
+    "keywords": "cip; cleaning"
+  },
+  {
+    "doc_no": "DOC-SOP-BIO",
+    "title": "SOP: Bioreactor Operations",
+    "doc_type": "SOP",
+    "file": "SOP-BIOREACTOR-OPERATIONS.md",
+    "batch_ref": null,
+    "deviation_ref": null,
+    "equipment_refs": "BIO-101",
+    "keywords": "bioreactor; fermentation"
+  },
+  {
+    "doc_no": "DOC-BMR-B104",
+    "title": "Batch Record Excerpt: B-104",
+    "doc_type": "BMR",
+    "file": "BATCH-RECORD-B-104.md",
+    "batch_ref": "B104",
+    "deviation_ref": "DEV-104",
+    "equipment_refs": "BIO-101",
+    "keywords": "batch; B-104"
+  },
+  {
+    "doc_no": "DOC-SHIFT-B104",
+    "title": "Shift Handover: B-104",
+    "doc_type": "SHIFT",
+    "file": "SHIFT-HANDOVER-B-104.md",
+    "batch_ref": "B104",
+    "deviation_ref": "DEV-104",
+    "equipment_refs": "BIO-101; VLV-203",
+    "keywords": "shift; handover"
+  }
+]

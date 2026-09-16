@@ -1,0 +1,22 @@
+[
+  {
+    "event_ref": "EVT-B104-011",
+    "batch_ref": "B104",
+    "occurred": "2025-06-15T11:15:00.000",
+    "type": "Quality",
+    "severity": "High",
+    "summary": "Deviation DEV-104 opened",
+    "detail": "Temperature excursion and delayed pH correction",
+    "equipment": "BIO-101"
+  },
+  {
+    "event_ref": "EVT-B104-012",
+    "batch_ref": "B104",
+    "occurred": "2025-06-15T11:20:00.000",
+    "type": "Quality",
+    "severity": "Medium",
+    "summary": "QA review pending",
+    "detail": "Batch record and deviation under QA review",
+    "equipment": null
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "$comment": "Example MCP client config. Cursor: copy to .cursor/mcp.json (project) or ~/.cursor/mcp.json (global). Claude Desktop: merge into claude_desktop_config.json under mcpServers. Replace the cwd with your absolute repo path.",
+  "mcpServers": {
+    "pharmaops-copilot": {
+      "command": "npx",
+      "args": ["tsx", "server/mcp/index.ts"],
+      "cwd": "/ABSOLUTE/PATH/TO/PharmaOpsCopilot",
+      "env": {
+        "OPENAI_API_KEY": ""
+      }
+    }
+  }
+}

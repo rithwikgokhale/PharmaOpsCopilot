@@ -1,0 +1,6 @@
+ALARM_ID,TAG,TS_EPOCH_MS,CLASS,PRIORITY,ALARM_TEXT,ALARM_DETAIL,BATCH_CTX
+EVT-B104-002,CHI.CIP201.CT201.PV,1749990600000,PROC,2,CIP hold — conductivity threshold not met,Conductivity above rinse threshold; hold extended,B-104
+EVT-B104-005,CHI.BR101.PH101.PV,1749998400000,ALRM,2,pH drift detected,pH trending below target range,B-104
+EVT-B104-006,CHI.BR101.PH101.PV,1749999900000,ALRM,1,pH low alarm,pH below acceptable lower limit (6.95),B-104
+EVT-B104-007,CHI.BR101.TT101.PV,1750000320000,ALRM,1,Temperature excursion,Temperature above upper acceptable limit,B-104
+EVT-B104-008,CHI.BR101.AG101.SPD.PV,1750000440000,ALRM,2,Agitator speed dip,Agitation briefly below minimum setpoint,B-104

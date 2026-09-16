@@ -1,0 +1,641 @@
+{
+  "pipeline": "scripts/contextualize.py",
+  "plantUtcOffsetHours": -5,
+  "summary": {
+    "sources": 6,
+    "sourceRecords": 56,
+    "matches": 49,
+    "matchesByMethod": {
+      "alias": 2,
+      "exact": 20,
+      "master_data_join": 8,
+      "normalized": 19
+    },
+    "lowConfidenceMatches": 0,
+    "unresolved": 3,
+    "conversions": 6,
+    "duplicatesRemoved": 2,
+    "repairs": 2
+  },
+  "entities": {
+    "site": 1,
+    "areas": 4,
+    "assets": 5,
+    "equipment": 7,
+    "batches": 5,
+    "deviations": 1,
+    "events": 25,
+    "signals": 8,
+    "timeSeries": 26,
+    "anomalyWindows": 4,
+    "workOrders": 3,
+    "operatorNotes": 3,
+    "relationships": 13,
+    "documents": 5
+  },
+  "sources": [
+    {
+      "system": "Engineering register",
+      "layer": "ET",
+      "files": [
+        "engineering/asset_register.csv",
+        "engineering/equipment_register.csv"
+      ],
+      "records": 17,
+      "description": "Asset hierarchy, equipment register, instrument index, operating limits"
+    },
+    {
+      "system": "Historian",
+      "layer": "OT",
+      "files": [
+        "historian/tags.csv",
+        "historian/datapoints.csv",
+        "historian/alarms.csv",
+        "historian/batch_event_frames.csv"
+      ],
+      "records": 9,
+      "description": "Tag list, datapoints, alarms, batch event frames"
+    },
+    {
+      "system": "MES",
+      "layer": "IT",
+      "files": [
+        "mes/batch_records.csv",
+        "mes/batch_events.csv",
+        "mes/operator_log.csv"
+      ],
+      "records": 5,
+      "description": "Batch records, batch events, electronic logbook"
+    },
+    {
+      "system": "QMS",
+      "layer": "IT",
+      "files": [
+        "qms/deviations.json",
+        "qms/quality_events.json",
+        "qms/document_register.json"
+      ],
+      "records": 8,
+      "description": "Deviation records, quality events, document control register"
+    },
+    {
+      "system": "CMMS",
+      "layer": "IT",
+      "files": [
+        "cmms/equipment_master.csv",
+        "cmms/work_orders.json"
+      ],
+      "records": 13,
+      "description": "SAP-style equipment master and maintenance orders"
+    },
+    {
+      "system": "Analytics",
+      "layer": "derived",
+      "files": [
+        "analytics/anomaly_windows.json"
+      ],
+      "records": 4,
+      "description": "Anomaly-detection output over historian signals"
+    }
+  ],
+  "matches": [
+    {
+      "entity": "equipment",
+      "source": "Engineering register",
+      "sourceKey": "BIO-101",
+      "resolvedId": "BIO-101",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "loop SIG-TEMP-101"
+    },
+    {
+      "entity": "timeSeries",
+      "source": "Historian",
+      "sourceKey": "CHI.BR101.TT101.PV",
+      "resolvedId": "SIG-TEMP-101",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "instrument index historian tag found verbatim"
+    },
+    {
+      "entity": "timeSeries",
+      "source": "Historian",
+      "sourceKey": "CHI.BR101.PH-101.PV",
+      "resolvedId": "SIG-PH-101",
+      "method": "normalized",
+      "confidence": 0.9,
+      "note": "index tag 'CHI.BR101.PH-101.PV' matched historian tag 'CHI.BR101.PH101.PV' ignoring punctuation"
+    },
+    {
+      "entity": "timeSeries",
+      "source": "Historian",
+      "sourceKey": "CHI.BR101.AG101.SPD.PV",
+      "resolvedId": "SIG-AG-101",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "instrument index historian tag found verbatim"
+    },
+    {
+      "entity": "timeSeries",
+      "source": "Historian",
+      "sourceKey": "CHI.BR101.PT101.PV",
+      "resolvedId": "SIG-PRES-101",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "instrument index historian tag found verbatim"
+    },
+    {
+      "entity": "timeSeries",
+      "source": "Historian",
+      "sourceKey": "CHI.BR101.DO101.PV",
+      "resolvedId": "SIG-DO-101",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "instrument index historian tag found verbatim"
+    },
+    {
+      "entity": "equipment",
+      "source": "Engineering register",
+      "sourceKey": "CIP-201",
+      "resolvedId": "CIP-201",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "loop SIG-COND-201"
+    },
+    {
+      "entity": "timeSeries",
+      "source": "Historian",
+      "sourceKey": "CHI.CIP201.CT201.PV",
+      "resolvedId": "SIG-COND-201",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "instrument index historian tag found verbatim"
+    },
+    {
+      "entity": "timeSeries",
+      "source": "Historian",
+      "sourceKey": "CHI.CIP201.TT202.RET.PV",
+      "resolvedId": "SIG-RT-201",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "instrument index historian tag found verbatim"
+    },
+    {
+      "entity": "equipment",
+      "source": "Engineering register",
+      "sourceKey": "PUMP-205",
+      "resolvedId": "PUMP-205",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "loop SIG-FLOW-205"
+    },
+    {
+      "entity": "timeSeries",
+      "source": "Historian",
+      "sourceKey": "CHI.BR101.FT205.PV",
+      "resolvedId": "SIG-FLOW-205",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "instrument index historian tag found verbatim"
+    },
+    {
+      "entity": "batch",
+      "source": "QMS",
+      "sourceKey": "B104",
+      "resolvedId": "B-104",
+      "method": "normalized",
+      "confidence": 0.95,
+      "note": "deviation DEV-104 batch reference"
+    },
+    {
+      "entity": "equipment",
+      "source": "QMS",
+      "sourceKey": "BIO-101",
+      "resolvedId": "BIO-101",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "impacted equipment on DEV-104"
+    },
+    {
+      "entity": "equipment",
+      "source": "QMS",
+      "sourceKey": "PH-101",
+      "resolvedId": "PH-101",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "impacted equipment on DEV-104"
+    },
+    {
+      "entity": "equipment",
+      "source": "QMS",
+      "sourceKey": "TT-101",
+      "resolvedId": "TT-101",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "impacted equipment on DEV-104"
+    },
+    {
+      "entity": "equipment",
+      "source": "QMS",
+      "sourceKey": "AG-101",
+      "resolvedId": "AG-101",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "impacted equipment on DEV-104"
+    },
+    {
+      "entity": "batch",
+      "source": "MES",
+      "sourceKey": "B101",
+      "resolvedId": "B-101",
+      "method": "normalized",
+      "confidence": 0.95,
+      "note": "MES batch number without hyphen"
+    },
+    {
+      "entity": "equipment",
+      "source": "MES",
+      "sourceKey": "BR-101",
+      "resolvedId": "BIO-101",
+      "method": "alias",
+      "confidence": 0.95,
+      "note": "MES unit alias \u2014 primary unit for B-101"
+    },
+    {
+      "entity": "batch",
+      "source": "MES",
+      "sourceKey": "B102",
+      "resolvedId": "B-102",
+      "method": "normalized",
+      "confidence": 0.95,
+      "note": "MES batch number without hyphen"
+    },
+    {
+      "entity": "batch",
+      "source": "MES",
+      "sourceKey": "B103",
+      "resolvedId": "B-103",
+      "method": "normalized",
+      "confidence": 0.95,
+      "note": "MES batch number without hyphen"
+    },
+    {
+      "entity": "batch",
+      "source": "MES",
+      "sourceKey": "B104",
+      "resolvedId": "B-104",
+      "method": "normalized",
+      "confidence": 0.95,
+      "note": "MES batch number without hyphen"
+    },
+    {
+      "entity": "deviation",
+      "source": "QMS->MES",
+      "sourceKey": "DEV-104",
+      "resolvedId": "B-104",
+      "method": "normalized",
+      "confidence": 0.95,
+      "note": "deviation linked to batch via normalized batch reference"
+    },
+    {
+      "entity": "batch",
+      "source": "MES",
+      "sourceKey": "B105",
+      "resolvedId": "B-105",
+      "method": "normalized",
+      "confidence": 0.95,
+      "note": "MES batch number without hyphen"
+    },
+    {
+      "entity": "equipment",
+      "source": "MES",
+      "sourceKey": "CIP201",
+      "resolvedId": "CIP-201",
+      "method": "normalized",
+      "confidence": 0.9,
+      "note": "case/punctuation-insensitive match on 'CIP201' \u2014 event EVT-B104-001"
+    },
+    {
+      "entity": "equipment",
+      "source": "MES",
+      "sourceKey": "BR-101-TT",
+      "resolvedId": "TT-101",
+      "method": "alias",
+      "confidence": 0.95,
+      "note": "MES unit alias \u2014 event EVT-B104-010"
+    },
+    {
+      "entity": "event",
+      "source": "Historian",
+      "sourceKey": "CHI.CIP201.CT201.PV",
+      "resolvedId": "CIP-201",
+      "method": "master_data_join",
+      "confidence": 0.9,
+      "note": "alarm EVT-B104-002 tag -> instrument index -> equipment"
+    },
+    {
+      "entity": "event",
+      "source": "Historian",
+      "sourceKey": "CHI.BR101.PH101.PV",
+      "resolvedId": "PH-101",
+      "method": "master_data_join",
+      "confidence": 0.9,
+      "note": "alarm EVT-B104-005 tag -> instrument index -> equipment"
+    },
+    {
+      "entity": "event",
+      "source": "Historian",
+      "sourceKey": "CHI.BR101.PH101.PV",
+      "resolvedId": "PH-101",
+      "method": "master_data_join",
+      "confidence": 0.9,
+      "note": "alarm EVT-B104-006 tag -> instrument index -> equipment"
+    },
+    {
+      "entity": "event",
+      "source": "Historian",
+      "sourceKey": "CHI.BR101.TT101.PV",
+      "resolvedId": "TT-101",
+      "method": "master_data_join",
+      "confidence": 0.9,
+      "note": "alarm EVT-B104-007 tag -> instrument index -> equipment"
+    },
+    {
+      "entity": "event",
+      "source": "Historian",
+      "sourceKey": "CHI.BR101.AG101.SPD.PV",
+      "resolvedId": "AG-101",
+      "method": "master_data_join",
+      "confidence": 0.9,
+      "note": "alarm EVT-B104-008 tag -> instrument index -> equipment"
+    },
+    {
+      "entity": "equipment",
+      "source": "MES",
+      "sourceKey": "VLV203",
+      "resolvedId": "VLV-203",
+      "method": "normalized",
+      "confidence": 0.9,
+      "note": "case/punctuation-insensitive match on 'VLV203' \u2014 logbook entry LOG-104-001"
+    },
+    {
+      "entity": "batch",
+      "source": "Historian",
+      "sourceKey": "B-101",
+      "resolvedId": "B-101",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "event frame EF-B-101"
+    },
+    {
+      "entity": "batch",
+      "source": "Historian",
+      "sourceKey": "B-102",
+      "resolvedId": "B-102",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "event frame EF-B-102"
+    },
+    {
+      "entity": "batch",
+      "source": "Historian",
+      "sourceKey": "B-103",
+      "resolvedId": "B-103",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "event frame EF-B-103"
+    },
+    {
+      "entity": "batch",
+      "source": "Historian",
+      "sourceKey": "B-104",
+      "resolvedId": "B-104",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "event frame EF-B-104"
+    },
+    {
+      "entity": "equipment",
+      "source": "CMMS",
+      "sourceKey": "CHI-FERM-TRA-BIO101",
+      "resolvedId": "BIO-101",
+      "method": "normalized",
+      "confidence": 0.9,
+      "note": "functional-location suffix 'BIO101' normalized \u2014 equipment no. 10004401 (BIOREACTOR)"
+    },
+    {
+      "entity": "equipment",
+      "source": "CMMS",
+      "sourceKey": "CHI-FERM-TRA-PH 101",
+      "resolvedId": "PH-101",
+      "method": "normalized",
+      "confidence": 0.9,
+      "note": "functional-location suffix 'PH 101' normalized \u2014 equipment no. 10004402 (PH PROBE)"
+    },
+    {
+      "entity": "equipment",
+      "source": "CMMS",
+      "sourceKey": "CHI-FERM-TRA-TT101",
+      "resolvedId": "TT-101",
+      "method": "normalized",
+      "confidence": 0.9,
+      "note": "functional-location suffix 'TT101' normalized \u2014 equipment no. 10004403 (TEMPERATURE SENSOR)"
+    },
+    {
+      "entity": "equipment",
+      "source": "CMMS",
+      "sourceKey": "CHI-FERM-TRA-AG101",
+      "resolvedId": "AG-101",
+      "method": "normalized",
+      "confidence": 0.9,
+      "note": "functional-location suffix 'AG101' normalized \u2014 equipment no. 10004404 (AGITATOR)"
+    },
+    {
+      "entity": "equipment",
+      "source": "CMMS",
+      "sourceKey": "CHI-UTIL-CIP-CIP201",
+      "resolvedId": "CIP-201",
+      "method": "normalized",
+      "confidence": 0.9,
+      "note": "functional-location suffix 'CIP201' normalized \u2014 equipment no. 10004410 (CIP SKID)"
+    },
+    {
+      "entity": "equipment",
+      "source": "CMMS",
+      "sourceKey": "CHI-FERM-TRA-VLV203",
+      "resolvedId": "VLV-203",
+      "method": "normalized",
+      "confidence": 0.9,
+      "note": "functional-location suffix 'VLV203' normalized \u2014 equipment no. 10004411 (TRANSFER VALVE)"
+    },
+    {
+      "entity": "equipment",
+      "source": "CMMS",
+      "sourceKey": "CHI-FERM-TRA-PMP205",
+      "resolvedId": "PUMP-205",
+      "method": "normalized",
+      "confidence": 0.9,
+      "note": "functional-location suffix 'PUMP205' normalized \u2014 equipment no. 10004412 (TRANSFER PUMP)"
+    },
+    {
+      "entity": "workOrder",
+      "source": "CMMS",
+      "sourceKey": "10004402",
+      "resolvedId": "PH-101",
+      "method": "master_data_join",
+      "confidence": 0.9,
+      "note": "WO-731: equipment no. -> functional location -> engineering tag"
+    },
+    {
+      "entity": "workOrder",
+      "source": "CMMS",
+      "sourceKey": "10004411",
+      "resolvedId": "VLV-203",
+      "method": "master_data_join",
+      "confidence": 0.9,
+      "note": "WO-744: equipment no. -> functional location -> engineering tag"
+    },
+    {
+      "entity": "workOrder",
+      "source": "CMMS",
+      "sourceKey": "10004410",
+      "resolvedId": "CIP-201",
+      "method": "master_data_join",
+      "confidence": 0.9,
+      "note": "WO-752: equipment no. -> functional location -> engineering tag"
+    },
+    {
+      "entity": "equipment",
+      "source": "QMS",
+      "sourceKey": "CIP-201",
+      "resolvedId": "CIP-201",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "document DOC-SOP-CIP"
+    },
+    {
+      "entity": "document",
+      "source": "QMS",
+      "sourceKey": "B104",
+      "resolvedId": "B-104",
+      "method": "normalized",
+      "confidence": 0.95,
+      "note": "document DOC-BMR-B104 batch reference"
+    },
+    {
+      "entity": "equipment",
+      "source": "QMS",
+      "sourceKey": "VLV-203",
+      "resolvedId": "VLV-203",
+      "method": "exact",
+      "confidence": 1.0,
+      "note": "document DOC-SHIFT-B104"
+    },
+    {
+      "entity": "document",
+      "source": "QMS",
+      "sourceKey": "B104",
+      "resolvedId": "B-104",
+      "method": "normalized",
+      "confidence": 0.95,
+      "note": "document DOC-SHIFT-B104 batch reference"
+    }
+  ],
+  "lowConfidenceMatches": [],
+  "unresolved": [
+    {
+      "entity": "timeSeries",
+      "source": "Historian",
+      "sourceKey": "CHI.WFI.FT301.PV",
+      "reason": "historian tag has no instrument-index entry; datapoints not loaded"
+    },
+    {
+      "entity": "equipment",
+      "source": "CMMS",
+      "sourceKey": "CHI-UTIL-WFI-PMP301",
+      "reason": "no engineering tag matches (equipment no. 10009999 (WFI DISTRIBUTION PUMP))"
+    },
+    {
+      "entity": "workOrder",
+      "source": "CMMS",
+      "sourceKey": "WO-760",
+      "reason": "equipment no. 10009999 (CHI-UTIL-WFI-PMP301) not in engineering register; order excluded"
+    }
+  ],
+  "conversions": [
+    {
+      "kind": "timestamp",
+      "source": "QMS",
+      "key": "deviations.opened",
+      "detail": "ISO-8601 with milliseconds -> plant-local seconds precision",
+      "records": 1
+    },
+    {
+      "kind": "timestamp",
+      "source": "MES",
+      "key": "batch_records.*_START/_END",
+      "detail": "DD-MON-YYYY HH:MM:SS -> ISO-8601 plant local",
+      "records": 5
+    },
+    {
+      "kind": "timestamp",
+      "source": "Historian",
+      "key": "alarms.TS_EPOCH_MS",
+      "detail": "UTC epoch ms -> plant local (UTC-05:00)",
+      "records": 5
+    },
+    {
+      "kind": "unit",
+      "source": "Historian",
+      "key": "CHI.CIP201.TT202.RET.PV",
+      "detail": "DEGF -> \u00b0C (historian tag configured in Fahrenheit; SOP limits are Celsius)",
+      "records": 271
+    },
+    {
+      "kind": "timestamp",
+      "source": "Historian",
+      "key": "datapoints.TS_EPOCH_MS",
+      "detail": "UTC epoch ms -> plant local (UTC-05:00)",
+      "records": 5426
+    },
+    {
+      "kind": "timestamp",
+      "source": "CMMS",
+      "key": "work_orders.created_on/created_at",
+      "detail": "YYYYMMDD + HHMMSS -> ISO-8601",
+      "records": 3
+    }
+  ],
+  "duplicatesRemoved": [
+    {
+      "entity": "event",
+      "source": "MES",
+      "key": "EVT-B104-004",
+      "kept": "first occurrence",
+      "dropped": 1
+    },
+    {
+      "entity": "workOrder",
+      "source": "CMMS",
+      "key": "WO-744",
+      "kept": "revision 2",
+      "dropped": 1
+    }
+  ],
+  "repairs": [
+    {
+      "entity": "event",
+      "source": "MES",
+      "key": "EVT-B104-003",
+      "field": "severity",
+      "action": "blank in MES export; defaulted to 'info' for a PROC event"
+    },
+    {
+      "entity": "operatorNote",
+      "source": "MES",
+      "key": "NOTE-B104-001",
+      "field": "timestamp",
+      "action": "entry had time only (10:20); date inferred from batch B-104 start"
+    }
+  ]
+}
