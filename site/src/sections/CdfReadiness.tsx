@@ -61,6 +61,7 @@ export function CdfReadiness() {
           </p>
           <dl className="mt-3 grid grid-cols-2 gap-2 text-sm">
             <Metric label="Source systems" value={summary.sources} />
+            <Metric label="Historian datapoints" value={summary.datapointRows} />
             <Metric label="Cross-system matches" value={summary.matches} />
             <Metric label="Unresolved (excluded)" value={summary.unresolved} />
             <Metric label="Duplicates removed" value={summary.duplicatesRemoved} />

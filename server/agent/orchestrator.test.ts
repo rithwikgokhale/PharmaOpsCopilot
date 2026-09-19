@@ -54,4 +54,13 @@ describe("runCopilot (deterministic)", () => {
     expect(resp.answer).toContain("B-999");
     expect(resp.evidence).toHaveLength(0);
   });
+
+  it("never cites another batch's evidence for a non-demo batch", async () => {
+    const r = await runCopilot({ batchId: "B-103", question: "Why was Batch B-103 delayed?" }, { forceDeterministic: true });
+    const known = new Set(r.evidence.map((e) => e.id));
+    const text = [r.answer, ...r.whatHappened, ...r.whatToCheckNext, ...r.contributingFactors.map((f) => f.factor)].join("\n");
+    expect(text).not.toMatch(/B104|DEV-104|pH drift|temperature excursion|CIP (hold|delay)/);
+    expect(r.answer).toContain("B-103");
+    for (const f of r.contributingFactors) for (const id of f.evidenceIds) expect(known.has(id)).toBe(true);
+  });
 });

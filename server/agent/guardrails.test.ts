@@ -84,4 +84,21 @@ describe("sanitizeText", () => {
     expect(res.text).toBe(clean);
     expect(res.violations).toHaveLength(0);
   });
+
+  it("does not flag a negated root-cause statement", () => {
+    const r = sanitizeText("These are hypotheses, not a confirmed root cause — QA review is required.");
+    expect(r.violations).toEqual([]);
+    expect(r.text).not.toContain("[requires human review]");
+  });
+
+  it("still flags an asserted root cause", () => {
+    expect(sanitizeText("The confirmed root cause was the probe.").violations).toContain("unconfirmed root-cause claim");
+    expect(sanitizeText("The root cause is the probe.").violations).toContain("unconfirmed root-cause claim");
+  });
+
+  it("neutralizes every occurrence of a banned phrase", () => {
+    const r = sanitizeText("batch is safe. Yes, the batch is safe.");
+    expect(r.text).not.toMatch(/batch is safe/i);
+    expect(r.text).toContain("[requires human review]");
+  });
 });

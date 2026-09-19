@@ -53,28 +53,31 @@ export function getTimeSeriesStats(batchId: string, signalIds?: string[]): TimeS
     (ts) => ts.batchId === batchId && (!signalIds || signalIds.includes(ts.signalId))
   );
 
-  return series.map((s) => {
-    const signal = signals.find((sig) => sig.id === s.signalId)!;
-    const values = s.points.map((p) => p.value);
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    const mean = values.reduce((a, b) => a + b, 0) / (values.length || 1);
-    const excursionCount = values.filter(
-      (v) => v < signal.range.min || v > signal.range.max
-    ).length;
-    return {
-      signalId: s.signalId,
-      name: signal.name,
-      unit: signal.unit,
-      min: round(min),
-      max: round(max),
-      mean: round(mean),
-      target: signal.range.target,
-      rangeMin: signal.range.min,
-      rangeMax: signal.range.max,
-      excursionCount,
-    };
-  });
+  return series
+    .map((s): TimeSeriesStat | null => {
+      const signal = signals.find((sig) => sig.id === s.signalId);
+      if (!signal) return null;
+      const values = s.points.map((p) => p.value);
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const mean = values.reduce((a, b) => a + b, 0) / (values.length || 1);
+      const excursionCount = values.filter(
+        (v) => v < signal.range.min || v > signal.range.max
+      ).length;
+      return {
+        signalId: s.signalId,
+        name: signal.name,
+        unit: signal.unit,
+        min: round(min),
+        max: round(max),
+        mean: round(mean),
+        target: signal.range.target,
+        rangeMin: signal.range.min,
+        rangeMax: signal.range.max,
+        excursionCount,
+      };
+    })
+    .filter((s): s is TimeSeriesStat => s !== null);
 }
 
 export function detectAnomalies(batchId: string): AnomalyWindow[] {
@@ -96,7 +99,7 @@ export function getRelatedWorkOrders(batchId: string): WorkOrder[] {
 
   // Include CIP-related equipment via relationships (supports_cleaning)
   data.relationships
-    .filter((r) => r.relationshipType === "supports_cleaning")
+    .filter((r) => r.relationshipType === "supports_cleaning" && equipmentIds.has(r.targetId))
     .forEach((r) => equipmentIds.add(r.sourceId));
 
   return data.workOrders.filter((wo) => equipmentIds.has(wo.equipmentId));

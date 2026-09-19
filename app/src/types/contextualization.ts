@@ -5,6 +5,7 @@ export interface ContextualizationSource {
   layer: "IT" | "OT" | "ET" | "derived";
   files: string[];
   records: number;
+  datapoints?: number;
   description: string;
 }
 
@@ -55,6 +56,7 @@ export interface ContextualizationReport {
   summary: {
     sources: number;
     sourceRecords: number;
+    datapointRows: number;
     matches: number;
     matchesByMethod: Record<string, number>;
     lowConfidenceMatches: number;

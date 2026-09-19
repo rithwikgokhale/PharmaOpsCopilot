@@ -32,6 +32,12 @@ export function retrieveDocuments(
   const queryTerms = tokenize(query);
 
   const hits: RetrievalHit[] = getDocSections().map((section) => {
+    // A batch record or shift note belongs to exactly one batch. Never surface
+    // another batch's record as evidence — that is how a "citation" becomes a lie.
+    if (batchId && section.relatedBatchId && section.relatedBatchId !== batchId) {
+      return { section, score: 0 };
+    }
+
     const haystack = tokenize(`${section.title} ${section.content} ${section.tags.join(" ")}`);
     const haystackSet = new Set(haystack);
 

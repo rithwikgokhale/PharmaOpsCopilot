@@ -84,24 +84,32 @@ function buildDeterministic(
 ): CopilotResponse {
   const common = commonFields(packet, intent);
 
+  let resp: CopilotResponse;
   switch (intent) {
     case "release_decision":
-      return buildReleaseResponse(packet, common);
+      resp = buildReleaseResponse(packet, common);
+      break;
     case "maintenance_review":
-      return buildMaintenanceResponse(packet, common);
+      resp = buildMaintenanceResponse(packet, common);
+      break;
     case "shift_handover":
-      return buildHandoverResponse(packet, common);
+      resp = buildHandoverResponse(packet, common);
+      break;
     case "data_gaps":
-      return buildDataGapsResponse(packet, common);
+      resp = buildDataGapsResponse(packet, common);
+      break;
     case "sop_reference":
-      return buildSopResponse(packet, common, question);
+      resp = buildSopResponse(packet, common, question);
+      break;
     case "audience_framing":
-      return buildAudienceResponse(packet, common);
+      resp = buildAudienceResponse(packet, common);
+      break;
     case "deviation_triage":
     case "general":
     default:
-      return buildTriageResponse(packet, common);
+      resp = buildTriageResponse(packet, common);
   }
+  return groundToPacket(resp, packet);
 }
 
 type CommonFields = Pick<
@@ -181,12 +189,18 @@ function buildTriageResponse(packet: EvidencePacket, common: CommonFields): Copi
 
   const valveNote = packet.operatorNotes.find((n) => /valve|sticking/i.test(n.content));
 
-  const answer =
-    `Batch ${packet.batch.id} started late and is now under deviation ${dev?.id ?? "—"}. ` +
-    `The most relevant contributing factors are an extended CIP delay before the batch, a gradual pH drift ` +
-    `below the target range during fermentation, a temperature excursion above the upper limit, and a manual ` +
-    `operator intervention (buffer addition) after the pH low alarm. These are contributing factors and ` +
-    `hypotheses, not a confirmed root cause — QA/human review is required before escalation.`;
+  const isB104Story = Boolean(cipHold && phDrift && tempExc && buffer && dev);
+  const answer = isB104Story
+    ? `Batch ${packet.batch.id} started late and is now under deviation ${dev?.id ?? "—"}. ` +
+      `The most relevant contributing factors are an extended CIP delay before the batch, a gradual pH drift ` +
+      `below the target range during fermentation, a temperature excursion above the upper limit, and a manual ` +
+      `operator intervention (buffer addition) after the pH low alarm. These are contributing factors and ` +
+      `hypotheses, not a confirmed root cause — QA/human review is required before escalation.`
+    : dev
+      ? `Batch ${packet.batch.id} is under deviation ${dev.id} ("${dev.title}", ${dev.severity}, ${dev.status.replace("_", " ")}). ` +
+        `${packet.events.length} events, ${packet.anomalies.length} anomaly windows and ${packet.workOrders.length} related work orders are on record; see the evidence below. These are observations, not a confirmed root cause — QA/human review is required.`
+      : `Batch ${packet.batch.id} is ${packet.batch.status} with no deviation on record. ` +
+        `${packet.events.length} events and ${packet.workOrders.length} work orders on related equipment are available below; nothing in the evidence indicates a CIP, pH, or temperature issue for this batch.`;
 
   const whatHappened = [
     cipHold && `Pre-batch CIP cycle was held because conductivity did not reach the rinse threshold in time (${[cipHold.id, "ANOM-B104-CIP"].join(", ")}).`,
@@ -199,27 +213,27 @@ function buildTriageResponse(packet: EvidencePacket, common: CommonFields): Copi
   ].filter(Boolean) as string[];
 
   const contributingFactors: ContributingFactor[] = [
-    {
+    cipHold && {
       factor: "Extended CIP hold delayed batch start (conductivity slow to reach threshold).",
-      confidence: "medium",
+      confidence: "medium" as const,
       evidenceIds: [...id(cipHold), "ANOM-B104-CIP", "WO-752"],
     },
-    {
+    phDrift && {
       factor: "pH probe accuracy may be degraded — calibration due soon (WO-731) — potentially linked to the pH drift and late correction.",
-      confidence: "medium",
+      confidence: "medium" as const,
       evidenceIds: ["WO-731", ...id(phDrift)],
     },
-    {
+    tempExc && {
       factor: "Temperature excursion above the upper control limit during fermentation.",
-      confidence: "high",
+      confidence: "high" as const,
       evidenceIds: [...id(tempExc), "ANOM-B104-TEMP"],
     },
-    {
+    valveNote && {
       factor: "Transfer valve VLV-203 sticking noted by operator; inspection open (WO-744).",
-      confidence: "low",
-      evidenceIds: [valveNote ? valveNote.id : "NOTE-B104-001", "WO-744"],
+      confidence: "low" as const,
+      evidenceIds: [valveNote.id, "WO-744"],
     },
-  ];
+  ].filter(Boolean) as ContributingFactor[];
 
   const whatToCheckNext = [
     `Review deviation ${dev?.id ?? "record"} and the batch record (BMR-B104-004) for completeness.`,
@@ -301,7 +315,7 @@ function buildHandoverResponse(packet: EvidencePacket, common: CommonFields): Co
     answer,
     whatHappened: [
       `Current deviation status: ${dev?.id ?? "—"} is ${dev?.status.replace("_", " ") ?? "n/a"}; QA review pending (${dev?.id ?? ""}).`,
-      `Affected batch / assets: Batch ${packet.batch.id} on BIO-101 (Bioreactor Train A); equipment PH-101, TT-101, AG-101, VLV-203.`,
+      `Affected batch / assets: Batch ${packet.batch.id} on BIO-101 (Bioreactor Train A); equipment ${packet.relatedEquipment.map((e) => e.tag).join(", ")}.`,
       "Open actions: QA disposition of the deviation; inspect VLV-203 (WO-744); verify PH-101 calibration (WO-731); check CIP-201 conductivity sensor (WO-752).",
       "Next shift watchouts: monitor pH trend (probe calibration due), watch temperature stability after the excursion, and complete outstanding operator notes (NOTE-B104-001).",
     ],
@@ -347,6 +361,7 @@ function buildSopResponse(
   common: CommonFields,
   _question: string
 ): CopilotResponse {
+  const dev = packet.deviation;
   const sopHits = packet.docHits
     .map((d) => d.sectionId)
     .filter((sectionId) => sectionId.startsWith("SOP-"));
@@ -373,7 +388,7 @@ function buildSopResponse(
     ],
     contributingFactors: [],
     whatToCheckNext: [
-      "Apply SOP-DEV-005 escalation timing to DEV-104.",
+      ...(dev ? [`Apply SOP-DEV-005 escalation timing to ${dev.id}.`] : []),
       "Confirm temperature-excursion handling per SOP-BIO-OPS-003.",
       "Verify CIP acceptance per SOP-CIP-002.",
     ],
@@ -382,17 +397,22 @@ function buildSopResponse(
 }
 
 function buildAudienceResponse(packet: EvidencePacket, common: CommonFields): CopilotResponse {
+  const dev = packet.deviation;
+  const delayMin = delayMinutes(packet);
+  const delayLead = delayMin != null ? `${delayMin}-minute delayed start` : "schedule vs plan";
+  const devLabel = dev?.id ?? "the open deviation";
   const answer =
     "For an operations manager: lead with schedule and containment — the batch started late after a CIP delay, " +
     "there was a temperature excursion that returned to range, and the line is stable but under a deviation. " +
-    "For a QA reviewer: lead with compliance and evidence — deviation DEV-104, SOP adherence, calibration status " +
+    "For a QA reviewer: lead with compliance and evidence — deviation " +
+    `${devLabel}, SOP adherence, calibration status ` +
     "(WO-731), evidence completeness, and disposition readiness.";
 
   return {
     answer,
     whatHappened: [
-      "Operations manager view: 22-minute delayed start, temperature excursion recovered, current status under deviation, immediate containment actions.",
-      "QA reviewer view: deviation DEV-104 scope, SOP compliance (SOP-DEV / SOP-BIO-OPS), calibration verification (WO-731), data completeness, disposition pending.",
+      `Operations manager view: ${delayLead}, temperature excursion recovered, current status under deviation, immediate containment actions.`,
+      `QA reviewer view: deviation ${devLabel} scope, SOP compliance (SOP-DEV / SOP-BIO-OPS), calibration verification (WO-731), data completeness, disposition pending.`,
     ],
     contributingFactors: [],
     whatToCheckNext: [
@@ -406,6 +426,49 @@ function buildAudienceResponse(packet: EvidencePacket, common: CommonFields): Co
 // ---------------------------------------------------------------------------
 // Guardrail post-processing
 // ---------------------------------------------------------------------------
+
+/** Ids in the packet, plus SOP section ids (plant-wide procedures, not batch-scoped). */
+function knownIdSet(packet: EvidencePacket): Set<string> {
+  return new Set(packet.evidence.map((e) => e.id));
+}
+
+const ID_TOKEN = /(?<![A-Z]-)\b(EVT|ANOM|NOTE|WO|DEV|BMR|SHIFT|SIG)-[A-Z0-9-]+\b/g;
+
+/**
+ * True when free text names an evidence id that is not in this batch's packet.
+ * SOP-* ids are exempt (procedures apply to every batch). Ids that embed a
+ * batch number (…-B104-…) must match the packet's batch.
+ */
+function mentionsForeignId(text: string, packet: EvidencePacket, known: Set<string>): boolean {
+  const batchDigits = packet.batch.id.replace(/\D/g, "");
+  for (const m of text.matchAll(ID_TOKEN)) {
+    const id = m[0];
+    const embedded = /-B-?(\d+)-/.exec(id)?.[1];
+    if (embedded && embedded !== batchDigits) return true;
+    if (!known.has(id)) return true;
+  }
+  return false;
+}
+
+function groundToPacket(resp: CopilotResponse, packet: EvidencePacket): CopilotResponse {
+  const known = knownIdSet(packet);
+  const keep = (s: string) => !mentionsForeignId(s, packet, known);
+  return {
+    ...resp,
+    whatHappened: resp.whatHappened.filter(keep),
+    whatToCheckNext: resp.whatToCheckNext.filter(keep),
+    contributingFactors: resp.contributingFactors
+      .map((f) => ({ ...f, evidenceIds: f.evidenceIds.filter((id) => known.has(id)) }))
+      .filter((f) => f.evidenceIds.length > 0 && keep(f.factor)),
+  };
+}
+
+function delayMinutes(packet: EvidencePacket): number | null {
+  if (!packet.batch.actualStart || !packet.batch.plannedStart) return null;
+  const ms = Date.parse(packet.batch.actualStart) - Date.parse(packet.batch.plannedStart);
+  if (!Number.isFinite(ms) || ms <= 0) return null;
+  return Math.round(ms / 60_000);
+}
 
 function applyGuardrails(resp: CopilotResponse): CopilotResponse {
   const answerRes = sanitizeText(resp.answer);

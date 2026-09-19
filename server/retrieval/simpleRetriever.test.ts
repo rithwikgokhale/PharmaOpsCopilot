@@ -21,4 +21,9 @@ describe("retrieveDocuments", () => {
     const hits = retrieveDocuments("xyzzy nonsense query with no matches", { topK: 5 });
     expect(hits.every((h) => h.score > 0)).toBe(true);
   });
+
+  it("excludes documents that belong to a different batch", () => {
+    const hits = retrieveDocuments("batch record deviation", { batchId: "B-103", topK: 10 });
+    expect(hits.every((h) => !h.section.relatedBatchId || h.section.relatedBatchId === "B-103")).toBe(true);
+  });
 });

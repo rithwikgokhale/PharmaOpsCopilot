@@ -99,9 +99,10 @@ export function ContextualizationPanel() {
         data model, and the report is what a reviewer would check before trusting the knowledge graph.
       </p>
 
-      <motion.div variants={staggerContainer} initial="hidden" animate="show" className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <motion.div variants={staggerContainer} initial="hidden" animate="show" className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
         <Stat label="Source systems" value={summary.sources} />
         <Stat label="Source rows (excl. datapoints)" value={summary.sourceRecords.toLocaleString()} />
+        <Stat label="Historian datapoints" value={summary.datapointRows.toLocaleString()} />
         <Stat label="Cross-system matches" value={summary.matches} tone="good" />
         <Stat label="Unresolved" value={summary.unresolved} tone={summary.unresolved ? "warn" : "good"} />
         <Stat label="Duplicates removed" value={summary.duplicatesRemoved} />
@@ -126,7 +127,11 @@ export function ContextualizationPanel() {
                 <td className="py-2 pr-4">
                   <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${LAYER_STYLE[s.layer]}`}>{s.layer}</span>
                 </td>
-                <td className="py-2 pr-4 tabular-nums text-slate-700 dark:text-slate-300">{s.records.toLocaleString()}</td>
+                <td className="py-2 pr-4 tabular-nums text-slate-700 dark:text-slate-300">
+                  {s.datapoints
+                    ? `${s.records} (+${s.datapoints.toLocaleString()} datapoints)`
+                    : s.records}
+                </td>
                 <td className="py-2 text-slate-600 dark:text-slate-300">
                   {s.description}
                   <div className="mt-0.5 font-mono text-[11px] text-slate-500 dark:text-slate-400">{s.files.join(" · ")}</div>

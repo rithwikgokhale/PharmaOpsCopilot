@@ -217,14 +217,15 @@ def b104_events() -> list[dict]:
 
 
 def generic_batch_events(batch_id: str, start: datetime, normal: bool = True) -> list[dict]:
+    tag = batch_id.replace("-", "")
     events = [
-        {"id": f"EVT-{batch_id}-001", "batchId": batch_id, "timestamp": ts(start - timedelta(hours=1)), "title": "CIP cycle complete", "category": "process", "equipmentId": "CIP-201", "severity": "info"},
-        {"id": f"EVT-{batch_id}-002", "batchId": batch_id, "timestamp": ts(start), "title": "Batch started", "category": "process", "equipmentId": "BIO-101", "assetId": "BIOREACTOR-TRAIN-A", "severity": "info"},
-        {"id": f"EVT-{batch_id}-003", "batchId": batch_id, "timestamp": ts(start + timedelta(hours=2)), "title": "Fermentation phase stable", "category": "process", "equipmentId": "BIO-101", "severity": "info"},
+        {"id": f"EVT-{tag}-001", "batchId": batch_id, "timestamp": ts(start - timedelta(hours=1)), "title": "CIP cycle complete", "category": "process", "equipmentId": "CIP-201", "severity": "info"},
+        {"id": f"EVT-{tag}-002", "batchId": batch_id, "timestamp": ts(start), "title": "Batch started", "category": "process", "equipmentId": "BIO-101", "assetId": "BIOREACTOR-TRAIN-A", "severity": "info"},
+        {"id": f"EVT-{tag}-003", "batchId": batch_id, "timestamp": ts(start + timedelta(hours=2)), "title": "Fermentation phase stable", "category": "process", "equipmentId": "BIO-101", "severity": "info"},
     ]
     if not normal:
-        events.append({"id": f"EVT-{batch_id}-004", "batchId": batch_id, "timestamp": ts(start + timedelta(minutes=25)), "title": "Minor start delay logged", "category": "process", "equipmentId": "BIO-101", "severity": "warning"})
-    events.append({"id": f"EVT-{batch_id}-END", "batchId": batch_id, "timestamp": ts(start + timedelta(hours=11)), "title": "Batch complete", "category": "process", "equipmentId": "BIO-101", "severity": "info"})
+        events.append({"id": f"EVT-{tag}-004", "batchId": batch_id, "timestamp": ts(start + timedelta(minutes=25)), "title": "Minor start delay logged", "category": "process", "equipmentId": "BIO-101", "severity": "warning"})
+    events.append({"id": f"EVT-{tag}-END", "batchId": batch_id, "timestamp": ts(start + timedelta(hours=11)), "title": "Batch complete", "category": "process", "equipmentId": "BIO-101", "severity": "info"})
     return events
 
 

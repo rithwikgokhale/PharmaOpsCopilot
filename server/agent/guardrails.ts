@@ -36,7 +36,7 @@ const RELEASE_SAFETY_PATTERNS = [
 const BANNED_PHRASES: { pattern: RegExp; reason: string }[] = [
   { pattern: /\b(safe to release|cleared for release|approved for release|ok to release)\b/i, reason: "release decision" },
   { pattern: /\bbatch is safe\b/i, reason: "safety assertion" },
-  { pattern: /\b(root cause (is|confirmed|was)|confirmed root cause|definitive root cause)\b/i, reason: "unconfirmed root-cause claim" },
+  { pattern: /(?<!\bnot\s(?:a|the)\s)(?<!\bnot\s)(?<!\bno\s)(?<!\bnever\s)\b(root cause (is|confirmed|was)|confirmed root cause|definitive root cause)\b/i, reason: "unconfirmed root-cause claim" },
   { pattern: /\b(you (can|should) release|i (recommend|approve) releas)/i, reason: "release recommendation" },
   { pattern: /\b(do not release|reject the batch|fail the batch)\b/i, reason: "disposition decision" },
 ];
@@ -69,7 +69,10 @@ export function sanitizeText(text: string): SanitizeResult {
   for (const { pattern, reason } of BANNED_PHRASES) {
     if (pattern.test(out)) {
       violations.push(reason);
-      out = out.replace(pattern, "[requires human review]");
+      out = out.replace(
+        new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : pattern.flags + "g"),
+        "[requires human review]"
+      );
     }
   }
   return { text: out, violations };

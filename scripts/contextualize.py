@@ -59,8 +59,11 @@ class Report:
         self.repairs: list[dict] = []
         self.entities: dict[str, int] = {}
 
-    def source(self, system: str, layer: str, files: list[str], records: int, description: str) -> None:
-        self.sources.append({"system": system, "layer": layer, "files": files, "records": records, "description": description})
+    def source(self, system: str, layer: str, files: list[str], records: int, description: str, datapoints: int | None = None) -> None:
+        entry = {"system": system, "layer": layer, "files": files, "records": records, "description": description}
+        if datapoints is not None:
+            entry["datapoints"] = datapoints
+        self.sources.append(entry)
 
     def match(self, entity: str, source: str, source_key: str, resolved_id: str, method: str, confidence: float, note: str = "") -> None:
         self.matches.append({"entity": entity, "source": source, "sourceKey": source_key, "resolvedId": resolved_id, "method": method, "confidence": round(confidence, 2), "note": note})
@@ -86,6 +89,7 @@ class Report:
             "summary": {
                 "sources": len(self.sources),
                 "sourceRecords": sum(s["records"] for s in self.sources),
+                "datapointRows": sum(s.get("datapoints", 0) for s in self.sources),
                 "matches": len(self.matches),
                 "matchesByMethod": dict(sorted(by_method.items())),
                 "lowConfidenceMatches": len(low_confidence),
@@ -474,8 +478,18 @@ def build_signals(resolver: EquipmentResolver) -> tuple[list[dict], dict[str, st
     limits = {r["LOOP_ID"]: r for r in read_csv("engineering/operating_limits.csv")}
     hist_tags = read_csv("historian/tags.csv")
     hist_by_norm = {norm_key(t["TAG"]): t for t in hist_tags}
-    hist_records = len(hist_tags) + len(read_csv("historian/datapoints.csv")) + len(read_csv("historian/alarms.csv")) + len(read_csv("historian/batch_event_frames.csv"))
-    report.source("Historian", "OT", ["historian/tags.csv", "historian/datapoints.csv", "historian/alarms.csv", "historian/batch_event_frames.csv"], hist_records, "Tag list, datapoints, alarms, batch event frames")
+    hist_datapoints = read_csv("historian/datapoints.csv")
+    hist_alarms = read_csv("historian/alarms.csv")
+    hist_frames = read_csv("historian/batch_event_frames.csv")
+    hist_records = len(hist_tags) + len(hist_alarms) + len(hist_frames)
+    report.source(
+        "Historian",
+        "OT",
+        ["historian/tags.csv", "historian/datapoints.csv", "historian/alarms.csv", "historian/batch_event_frames.csv"],
+        hist_records,
+        "Tag list, datapoints, alarms, batch event frames",
+        datapoints=len(hist_datapoints),
+    )
 
     signals = []
     tag_to_signal: dict[str, str] = {}

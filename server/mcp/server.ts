@@ -160,7 +160,7 @@ export function createMcpServer(): McpServer {
     },
     async ({ batchId, start, end }) => {
       if (!getBatchSummary(batchId)) return notFound(batchId);
-      const window = start && end ? { start, end } : undefined;
+      const window = start || end ? { start: start ?? "0000-01-01T00:00:00", end: end ?? "9999-12-31T23:59:59" } : undefined;
       return json({ events: getEvents(batchId, window) });
     }
   );

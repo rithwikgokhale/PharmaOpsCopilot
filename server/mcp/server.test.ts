@@ -74,6 +74,22 @@ describe("PharmaOps MCP server", () => {
     expect([...stamps].sort()).toEqual(stamps);
   });
 
+  it("honors a single start bound on query_events", async () => {
+    const unbounded = await client.callTool({
+      name: "query_events",
+      arguments: { batchId: "B-104" },
+    });
+    const bounded = await client.callTool({
+      name: "query_events",
+      arguments: { batchId: "B-104", start: "2025-06-15T10:00:00" },
+    });
+    const all = JSON.parse(firstText(unbounded)).events as { timestamp: string }[];
+    const sliced = JSON.parse(firstText(bounded)).events as { timestamp: string }[];
+    expect(sliced.length).toBeGreaterThan(0);
+    expect(sliced.length).toBeLessThan(all.length);
+    expect(sliced.every((e) => e.timestamp >= "2025-06-15T10:00:00")).toBe(true);
+  });
+
   it("downsamples datapoints to maxPoints", async () => {
     const res = await client.callTool({
       name: "query_time_series_datapoints",

@@ -3,7 +3,8 @@
   "plantUtcOffsetHours": -5,
   "summary": {
     "sources": 6,
-    "sourceRecords": 56,
+    "sourceRecords": 65,
+    "datapointRows": 5426,
     "matches": 49,
     "matchesByMethod": {
       "alias": 2,
@@ -53,8 +54,9 @@
         "historian/alarms.csv",
         "historian/batch_event_frames.csv"
       ],
-      "records": 9,
-      "description": "Tag list, datapoints, alarms, batch event frames"
+      "records": 18,
+      "description": "Tag list, datapoints, alarms, batch event frames",
+      "datapoints": 5426
     },
     {
       "system": "MES",
