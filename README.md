@@ -83,7 +83,7 @@ The eval suite verifies required mentions, banned release/safety phrasing, and e
 
 ## Environment variables
 
-An LLM is **optional** — the copilot and evals run deterministically without a key. Copy `.env.example` to `.env` (not committed). Set one of `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `GEMINI_API_KEY`. `LLM_PROVIDER` selects among them; if unset, the first key present wins (openai → anthropic → gemini). Embedding settings are reserved for future vector retrieval. Evals always force deterministic mode and ignore keys.
+An LLM is **optional** — the copilot and evals run deterministically without a key. Copy `.env.example` to `.env` (not committed). Set one of `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `GEMINI_API_KEY`. `LLM_PROVIDER` selects among them; if unset, the first key present wins (openai → anthropic → gemini). Document retrieval is hybrid keyword + a committed TF-IDF index (`npm run embed-sops`); `OPENAI_EMBEDDING_MODEL` is only used if you rebuild the index with `--provider openai`. Evals always force deterministic mode and ignore keys.
 
 ```
 # LLM_PROVIDER=openai|anthropic|gemini
@@ -106,11 +106,11 @@ app/src/components/      Dashboard, copilot, ContextualizationPanel, CdfReadines
 app/src/pages/           Dashboard, Copilot, CDF-ready, Evals, About
 server/agent/            Orchestrator, tools, evidence builder, guardrails
 server/mcp/              Local MCP server (Industrial MCP-shaped)
-server/retrieval/        Keyword retriever (RAG Option A)
+server/retrieval/        Hybrid keyword + TF-IDF retriever (packet contract unchanged)
 data/raw/                Siloed MES / Historian / CMMS / QMS / engineering exports
-data/generated/          Unified model + contextualization_report.json
+data/generated/          Unified model + contextualization_report.json + sop_embeddings.json
 data/documents/          SOP markdown (cite IDs)
-scripts/                 generate_synthetic_pharma_data.py, contextualize.py, export-atlas-agent.ts
+scripts/                 generate_synthetic_pharma_data.py, contextualize.py, embed_sops.py, export-atlas-agent.ts
 cdf/modules/             Toolkit module (deviation view, Records stream, agent, skill)
 cdf/agents/              Cognite CLI agent + eval.yaml
 evals/                   18 eval cases + runner
@@ -147,7 +147,7 @@ See [COGNITE_MAPPING.md](./COGNITE_MAPPING.md). Toolkit YAML under `cdf/` is a *
 ## Limitations
 
 - Synthetic data only; not validated for any GxP/regulatory use.
-- Keyword retrieval (no vector DB yet) — adequate for the bounded SOP set.
+- Hybrid keyword + TF-IDF retrieval over a bounded SOP set (no vector DB). On CDF this is Atlas AI `askDocument`. The evidence-packet contract does not change.
 - Single demo deviation (B-104) is fully modeled; other batches are simpler.
 - Toolkit YAML is a module skeleton. This repo has no `cdf.toml` and cannot `cdf deploy` on its own. `CdfDataProvider` is a stub.
 

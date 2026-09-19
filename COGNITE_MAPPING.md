@@ -43,6 +43,7 @@ Three records stay **unresolved** on purpose — the pipeline does not invent li
 |---|---|
 | `server/mcp` (`npm run mcp`) | [Industrial MCP](https://docs.cognite.com/cdf/build/industrial_mcp) endpoint |
 | `npm run export:atlas` YAML | Atlas AI agent + skill + [`cognite agents eval run`](https://docs.cognite.com/dev/sdks/cognite-cli/agents-eval) |
+| Hybrid keyword + TF-IDF (`server/retrieval`) | Atlas AI [`askDocument`](https://docs.cognite.com/dev/sdks/cognite-cli/agent-yaml#tools) | Local `sop_embeddings.json` | Packet contract unchanged. Committed TF-IDF index; not a live CDF call. |
 | `IDataProvider` / `LocalDataProvider` | `CdfDataProvider` + `connectToHostApp()` in Flows |
 
 ## Toolkit module

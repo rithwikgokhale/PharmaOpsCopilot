@@ -153,8 +153,8 @@ export function CdfReadiness() {
             Atlas YAML) and the CLI eval suite.
           </li>
           <li>
-            Retrieval today is keyword overlap over a bounded SOP set; the evidence packet contract
-            is unchanged when it becomes embedding search or Atlas AI&apos;s{" "}
+            Retrieval is hybrid keyword + TF-IDF over a bounded SOP set; the evidence packet
+            contract is unchanged. On CDF this is Atlas AI&apos;s{" "}
             <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">askDocument</code>.
           </li>
         </ul>

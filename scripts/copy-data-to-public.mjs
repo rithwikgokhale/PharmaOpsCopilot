@@ -13,7 +13,11 @@ if (!existsSync(src)) {
 }
 
 mkdirSync(dest, { recursive: true });
+let copied = 0;
 for (const file of readdirSync(src)) {
+  // Server-only retrieval index — the browser never reads embeddings.
+  if (file === "sop_embeddings.json") continue;
   cpSync(join(src, file), join(dest, file));
+  copied += 1;
 }
-console.log(`Copied ${readdirSync(src).length} files to public/data/generated/`);
+console.log(`Copied ${copied} files to public/data/generated/`);

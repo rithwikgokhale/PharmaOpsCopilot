@@ -15,12 +15,13 @@ describe("runCopilot (deterministic)", () => {
   });
 
   it("cites only evidence IDs that exist in the packet", async () => {
-    const packet = buildEvidencePacket("B-104", "Why delayed?");
+    const question = "Why was Batch B-104 delayed?";
+    const packet = buildEvidencePacket("B-104", question);
     expect(packet).not.toBeNull();
     const validIds = new Set(packet!.evidence.map((e) => e.id));
 
     const resp = await runCopilot(
-      { batchId: "B-104", question: "Why was Batch B-104 delayed?" },
+      { batchId: "B-104", question },
       { forceDeterministic: true }
     );
 

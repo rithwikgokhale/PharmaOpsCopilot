@@ -21,8 +21,13 @@ for (const dir of [serverDir, publicDir]) {
   }
 }
 
-const serverFiles = readdirSync(serverDir).sort();
-const publicFiles = readdirSync(publicDir).sort();
+const SERVER_ONLY = new Set(["sop_embeddings.json"]);
+const serverFiles = readdirSync(serverDir)
+  .filter((f) => !SERVER_ONLY.has(f))
+  .sort();
+const publicFiles = readdirSync(publicDir)
+  .filter((f) => !SERVER_ONLY.has(f))
+  .sort();
 
 const problems = [];
 

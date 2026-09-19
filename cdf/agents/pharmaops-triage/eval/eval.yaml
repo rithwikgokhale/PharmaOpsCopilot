@@ -51,8 +51,8 @@ cases:
               - BMR-B104-004 [document_section]: Deviation Reference — Batch Record Excerpt: B-104
               - BMR-B104-001 [document_section]: Batch Header — Batch Record Excerpt: B-104
               - SHIFT-B104-NOTE-001 [document_section]: Shift Summary — Shift Handover: B-104
-              - BMR-B104-002 [document_section]: CIP Record — Batch Record Excerpt: B-104
-              - BMR-B104-003 [document_section]: Fermentation Log — Batch Record Excerpt: B-104
+              - BMR-B104-009 [document_section]: Open Items — Batch Record Excerpt: B-104
+              - SHIFT-B104-NOTE-002 [document_section]: Watchouts — Shift Handover: B-104
   - id: eval-02
     tags:
       - ci
@@ -102,9 +102,9 @@ cases:
               - SIG-FLOW-205 [signal]: Transfer Flow (L/min) — min 11.5 / max 12.497 / 0 OOS pts
               - BMR-B104-004 [document_section]: Deviation Reference — Batch Record Excerpt: B-104
               - BMR-B104-009 [document_section]: Open Items — Batch Record Excerpt: B-104
-              - SOP-DEV-003 [document_section]: Immediate Actions — SOP: Batch Deviation Procedure
               - SOP-DEV-006 [document_section]: Batch Disposition — SOP: Batch Deviation Procedure
-              - BMR-B104-001 [document_section]: Batch Header — Batch Record Excerpt: B-104
+              - SOP-DEV-003 [document_section]: Immediate Actions — SOP: Batch Deviation Procedure
+              - SOP-DEV-002 [document_section]: Deviation Classification — SOP: Batch Deviation Procedure
               Batch release, disposition, and safety are QA decisions and are not determined by any of the above.
   - id: eval-03
     tags:
@@ -206,9 +206,9 @@ cases:
               - SIG-RT-201 [signal]: CIP Return Temp (°C) — min 72.047 / max 75.499 / 0 OOS pts
               - SIG-FLOW-205 [signal]: Transfer Flow (L/min) — min 11.5 / max 12.497 / 0 OOS pts
               - SHIFT-B104-NOTE-001 [document_section]: Shift Summary — Shift Handover: B-104
-              - SHIFT-B104-NOTE-002 [document_section]: Watchouts — Shift Handover: B-104
               - SHIFT-B104-NOTE-003 [document_section]: Open Actions — Shift Handover: B-104
               - SHIFT-B104-NOTE-004 [document_section]: Data Gaps — Shift Handover: B-104
+              - SHIFT-B104-NOTE-002 [document_section]: Watchouts — Shift Handover: B-104
               - BMR-B104-001 [document_section]: Batch Header — Batch Record Excerpt: B-104
   - id: eval-05
     tags:
@@ -258,8 +258,8 @@ cases:
               - SIG-RT-201 [signal]: CIP Return Temp (°C) — min 72.047 / max 75.499 / 0 OOS pts
               - SIG-FLOW-205 [signal]: Transfer Flow (L/min) — min 11.5 / max 12.497 / 0 OOS pts
               - SHIFT-B104-NOTE-004 [document_section]: Data Gaps — Shift Handover: B-104
-              - SOP-DEV-002 [document_section]: Deviation Classification — SOP: Batch Deviation Procedure
               - SOP-DEV-003 [document_section]: Immediate Actions — SOP: Batch Deviation Procedure
+              - SOP-DEV-002 [document_section]: Deviation Classification — SOP: Batch Deviation Procedure
               - BMR-B104-001 [document_section]: Batch Header — Batch Record Excerpt: B-104
               - BMR-B104-002 [document_section]: CIP Record — Batch Record Excerpt: B-104
   - id: eval-06
@@ -309,8 +309,8 @@ cases:
               - SIG-COND-201 [signal]: CIP Conductivity (mS/cm) — min 0 / max 0.139 / 36 OOS pts
               - SIG-RT-201 [signal]: CIP Return Temp (°C) — min 72.047 / max 75.499 / 0 OOS pts
               - SIG-FLOW-205 [signal]: Transfer Flow (L/min) — min 11.5 / max 12.497 / 0 OOS pts
-              - BMR-B104-003 [document_section]: Fermentation Log — Batch Record Excerpt: B-104
               - BMR-B104-004 [document_section]: Deviation Reference — Batch Record Excerpt: B-104
+              - BMR-B104-003 [document_section]: Fermentation Log — Batch Record Excerpt: B-104
               - SHIFT-B104-NOTE-002 [document_section]: Watchouts — Shift Handover: B-104
               - SOP-BIO-OPS-003 [document_section]: Temperature Excursions — SOP: Bioreactor Operations
               - SHIFT-B104-NOTE-003 [document_section]: Open Actions — Shift Handover: B-104
@@ -361,11 +361,11 @@ cases:
               - SIG-COND-201 [signal]: CIP Conductivity (mS/cm) — min 0 / max 0.139 / 36 OOS pts
               - SIG-RT-201 [signal]: CIP Return Temp (°C) — min 72.047 / max 75.499 / 0 OOS pts
               - SIG-FLOW-205 [signal]: Transfer Flow (L/min) — min 11.5 / max 12.497 / 0 OOS pts
+              - SOP-BIO-OPS-003 [document_section]: Temperature Excursions — SOP: Bioreactor Operations
+              - SOP-BIO-OPS-004 [document_section]: Agitator Monitoring — SOP: Bioreactor Operations
+              - SOP-BIO-OPS-002 [document_section]: pH Control — SOP: Bioreactor Operations
+              - SOP-BIO-OPS-001 [document_section]: Operating Ranges — SOP: Bioreactor Operations
               - BMR-B104-001 [document_section]: Batch Header — Batch Record Excerpt: B-104
-              - BMR-B104-002 [document_section]: CIP Record — Batch Record Excerpt: B-104
-              - BMR-B104-003 [document_section]: Fermentation Log — Batch Record Excerpt: B-104
-              - BMR-B104-004 [document_section]: Deviation Reference — Batch Record Excerpt: B-104
-              - BMR-B104-009 [document_section]: Open Items — Batch Record Excerpt: B-104
   - id: eval-08
     tags:
       - ci
@@ -415,9 +415,9 @@ cases:
               - SIG-FLOW-205 [signal]: Transfer Flow (L/min) — min 11.5 / max 12.497 / 0 OOS pts
               - SHIFT-B104-NOTE-003 [document_section]: Open Actions — Shift Handover: B-104
               - BMR-B104-004 [document_section]: Deviation Reference — Batch Record Excerpt: B-104
+              - SOP-BIO-OPS-003 [document_section]: Temperature Excursions — SOP: Bioreactor Operations
               - BMR-B104-009 [document_section]: Open Items — Batch Record Excerpt: B-104
               - SHIFT-B104-NOTE-002 [document_section]: Watchouts — Shift Handover: B-104
-              - SOP-DEV-003 [document_section]: Immediate Actions — SOP: Batch Deviation Procedure
   - id: eval-09
     tags:
       - ci
@@ -466,10 +466,10 @@ cases:
               - SIG-RT-201 [signal]: CIP Return Temp (°C) — min 72.047 / max 75.499 / 0 OOS pts
               - SIG-FLOW-205 [signal]: Transfer Flow (L/min) — min 11.5 / max 12.497 / 0 OOS pts
               - BMR-B104-001 [document_section]: Batch Header — Batch Record Excerpt: B-104
-              - BMR-B104-002 [document_section]: CIP Record — Batch Record Excerpt: B-104
-              - BMR-B104-003 [document_section]: Fermentation Log — Batch Record Excerpt: B-104
               - BMR-B104-004 [document_section]: Deviation Reference — Batch Record Excerpt: B-104
               - BMR-B104-009 [document_section]: Open Items — Batch Record Excerpt: B-104
+              - SHIFT-B104-NOTE-001 [document_section]: Shift Summary — Shift Handover: B-104
+              - BMR-B104-002 [document_section]: CIP Record — Batch Record Excerpt: B-104
               Batch release, disposition, and safety are QA decisions and are not determined by any of the above.
   - id: eval-10
     tags:
@@ -518,11 +518,11 @@ cases:
               - SIG-COND-201 [signal]: CIP Conductivity (mS/cm) — min 0 / max 0.139 / 36 OOS pts
               - SIG-RT-201 [signal]: CIP Return Temp (°C) — min 72.047 / max 75.499 / 0 OOS pts
               - SIG-FLOW-205 [signal]: Transfer Flow (L/min) — min 11.5 / max 12.497 / 0 OOS pts
+              - SHIFT-B104-NOTE-003 [document_section]: Open Actions — Shift Handover: B-104
               - BMR-B104-001 [document_section]: Batch Header — Batch Record Excerpt: B-104
-              - BMR-B104-002 [document_section]: CIP Record — Batch Record Excerpt: B-104
-              - BMR-B104-003 [document_section]: Fermentation Log — Batch Record Excerpt: B-104
               - BMR-B104-004 [document_section]: Deviation Reference — Batch Record Excerpt: B-104
               - BMR-B104-009 [document_section]: Open Items — Batch Record Excerpt: B-104
+              - SHIFT-B104-NOTE-001 [document_section]: Shift Summary — Shift Handover: B-104
   - id: eval-11
     tags:
       - ci
@@ -622,11 +622,11 @@ cases:
               - SIG-COND-201 [signal]: CIP Conductivity (mS/cm) — min 0 / max 0.139 / 36 OOS pts
               - SIG-RT-201 [signal]: CIP Return Temp (°C) — min 72.047 / max 75.499 / 0 OOS pts
               - SIG-FLOW-205 [signal]: Transfer Flow (L/min) — min 11.5 / max 12.497 / 0 OOS pts
-              - BMR-B104-003 [document_section]: Fermentation Log — Batch Record Excerpt: B-104
               - BMR-B104-004 [document_section]: Deviation Reference — Batch Record Excerpt: B-104
+              - BMR-B104-003 [document_section]: Fermentation Log — Batch Record Excerpt: B-104
               - SHIFT-B104-NOTE-002 [document_section]: Watchouts — Shift Handover: B-104
+              - SHIFT-B104-NOTE-003 [document_section]: Open Actions — Shift Handover: B-104
               - SOP-BIO-OPS-001 [document_section]: Operating Ranges — SOP: Bioreactor Operations
-              - BMR-B104-009 [document_section]: Open Items — Batch Record Excerpt: B-104
   - id: eval-13
     tags:
       - ci
@@ -675,10 +675,10 @@ cases:
               - SIG-RT-201 [signal]: CIP Return Temp (°C) — min 72.047 / max 75.499 / 0 OOS pts
               - SIG-FLOW-205 [signal]: Transfer Flow (L/min) — min 11.5 / max 12.497 / 0 OOS pts
               - BMR-B104-001 [document_section]: Batch Header — Batch Record Excerpt: B-104
-              - BMR-B104-002 [document_section]: CIP Record — Batch Record Excerpt: B-104
-              - BMR-B104-003 [document_section]: Fermentation Log — Batch Record Excerpt: B-104
               - BMR-B104-004 [document_section]: Deviation Reference — Batch Record Excerpt: B-104
               - BMR-B104-009 [document_section]: Open Items — Batch Record Excerpt: B-104
+              - SHIFT-B104-NOTE-001 [document_section]: Shift Summary — Shift Handover: B-104
+              - BMR-B104-002 [document_section]: CIP Record — Batch Record Excerpt: B-104
               Batch release, disposition, and safety are QA decisions and are not determined by any of the above.
   - id: eval-14
     tags:
@@ -727,11 +727,11 @@ cases:
               - SIG-COND-201 [signal]: CIP Conductivity (mS/cm) — min 0 / max 0.139 / 36 OOS pts
               - SIG-RT-201 [signal]: CIP Return Temp (°C) — min 72.047 / max 75.499 / 0 OOS pts
               - SIG-FLOW-205 [signal]: Transfer Flow (L/min) — min 11.5 / max 12.497 / 0 OOS pts
-              - SOP-DEV-003 [document_section]: Immediate Actions — SOP: Batch Deviation Procedure
               - SOP-DEV-006 [document_section]: Batch Disposition — SOP: Batch Deviation Procedure
-              - BMR-B104-004 [document_section]: Deviation Reference — Batch Record Excerpt: B-104
-              - BMR-B104-009 [document_section]: Open Items — Batch Record Excerpt: B-104
+              - SOP-DEV-003 [document_section]: Immediate Actions — SOP: Batch Deviation Procedure
               - SOP-BIO-OPS-002 [document_section]: pH Control — SOP: Bioreactor Operations
+              - SOP-DEV-002 [document_section]: Deviation Classification — SOP: Batch Deviation Procedure
+              - BMR-B104-004 [document_section]: Deviation Reference — Batch Record Excerpt: B-104
               Batch release, disposition, and safety are QA decisions and are not determined by any of the above.
   - id: eval-15
     tags:
@@ -834,9 +834,9 @@ cases:
               - SIG-RT-201 [signal]: CIP Return Temp (°C) — min 72.047 / max 75.499 / 0 OOS pts
               - SIG-FLOW-205 [signal]: Transfer Flow (L/min) — min 11.5 / max 12.497 / 0 OOS pts
               - BMR-B104-009 [document_section]: Open Items — Batch Record Excerpt: B-104
+              - SOP-DEV-006 [document_section]: Batch Disposition — SOP: Batch Deviation Procedure
               - BMR-B104-004 [document_section]: Deviation Reference — Batch Record Excerpt: B-104
               - SOP-DEV-001 [document_section]: Purpose and Scope — SOP: Batch Deviation Procedure
-              - SOP-DEV-006 [document_section]: Batch Disposition — SOP: Batch Deviation Procedure
               - SHIFT-B104-NOTE-004 [document_section]: Data Gaps — Shift Handover: B-104
               Batch release, disposition, and safety are QA decisions and are not determined by any of the above.
   - id: eval-17
@@ -887,10 +887,10 @@ cases:
               - SIG-RT-201 [signal]: CIP Return Temp (°C) — min 72.047 / max 75.499 / 0 OOS pts
               - SIG-FLOW-205 [signal]: Transfer Flow (L/min) — min 11.5 / max 12.497 / 0 OOS pts
               - BMR-B104-001 [document_section]: Batch Header — Batch Record Excerpt: B-104
-              - BMR-B104-002 [document_section]: CIP Record — Batch Record Excerpt: B-104
-              - BMR-B104-003 [document_section]: Fermentation Log — Batch Record Excerpt: B-104
+              - SOP-BIO-OPS-002 [document_section]: pH Control — SOP: Bioreactor Operations
               - BMR-B104-004 [document_section]: Deviation Reference — Batch Record Excerpt: B-104
               - BMR-B104-009 [document_section]: Open Items — Batch Record Excerpt: B-104
+              - SHIFT-B104-NOTE-001 [document_section]: Shift Summary — Shift Handover: B-104
               Batch release, disposition, and safety are QA decisions and are not determined by any of the above.
   - id: eval-18
     tags:

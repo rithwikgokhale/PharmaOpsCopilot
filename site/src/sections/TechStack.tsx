@@ -12,7 +12,7 @@ const STACK = [
   },
   {
     layer: "Data",
-    items: ["Siloed IT/OT/ET exports", "Python contextualizer", "IDataProvider abstraction", "Keyword document retrieval"],
+    items: ["Siloed IT/OT/ET exports", "Python contextualizer", "IDataProvider abstraction", "Hybrid keyword + TF-IDF retrieval"],
   },
   {
     layer: "Quality",

@@ -35,7 +35,7 @@
 
 - Not a validated GxP application.
 - No live Cognite CDF or Atlas integration (`CdfDataProvider` is a stub).
-- Keyword document retrieval only (embeddings documented as future work).
+- Hybrid keyword + TF-IDF document retrieval (packet contract unchanged; on CDF this is `askDocument`).
 
 ## Where to go next
 

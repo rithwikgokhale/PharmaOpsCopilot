@@ -1,62 +1,37 @@
-import { getDocSections, type DocSectionRecord } from "./documentStore";
+import { getDocSections } from "./documentStore";
+import { hybridRetrieve } from "./hybridRetriever";
+import { keywordScore, type RetrievalHit, type RetrieveOpts } from "./scoring";
+import { sectionInScope } from "./scope";
+import { tokenize } from "./tokenize";
 
-const STOPWORDS = new Set([
-  "the", "a", "an", "and", "or", "of", "to", "in", "on", "for", "is", "are",
-  "was", "were", "what", "why", "how", "which", "should", "i", "before",
-  "this", "that", "be", "do", "does", "can", "with", "at", "it",
-]);
-
-export interface RetrievalHit {
-  section: DocSectionRecord;
-  score: number;
-}
-
-function tokenize(text: string): string[] {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, " ")
-    .split(/\s+/)
-    .filter((t) => t.length > 1 && !STOPWORDS.has(t));
-}
+export type { RetrievalHit, RetrieveOpts } from "./scoring";
+export { keywordScore } from "./scoring";
 
 /**
- * Keyword-based retrieval (RAG Option A). Scores doc sections by term overlap
- * with the query, with a small boost for sections tied to the active batch or
- * equipment. Returns top-K hits. Swappable for embeddings later (Option B).
+ * Keyword-based retrieval. Scores doc sections by term overlap with the query,
+ * with a small boost for sections tied to the active batch or equipment.
  */
-export function retrieveDocuments(
-  query: string,
-  opts: { batchId?: string; equipmentIds?: string[]; topK?: number } = {}
-): RetrievalHit[] {
+export function keywordRetrieve(query: string, opts: RetrieveOpts = {}): RetrievalHit[] {
   const { batchId, equipmentIds = [], topK = 5 } = opts;
   const queryTerms = tokenize(query);
 
-  const hits: RetrievalHit[] = getDocSections().map((section) => {
-    // A batch record or shift note belongs to exactly one batch. Never surface
-    // another batch's record as evidence — that is how a "citation" becomes a lie.
-    if (batchId && section.relatedBatchId && section.relatedBatchId !== batchId) {
-      return { section, score: 0 };
-    }
-
-    const haystack = tokenize(`${section.title} ${section.content} ${section.tags.join(" ")}`);
-    const haystackSet = new Set(haystack);
-
-    let score = 0;
-    for (const term of queryTerms) {
-      if (haystackSet.has(term)) score += 2;
-      else if (haystack.some((h) => h.includes(term) || term.includes(h))) score += 1;
-    }
-
-    if (batchId && section.relatedBatchId === batchId) score += 1.5;
-    if (equipmentIds.length && section.relatedEquipmentIds?.some((id) => equipmentIds.includes(id))) {
-      score += 1;
-    }
-
-    return { section, score };
-  });
+  const hits: RetrievalHit[] = getDocSections()
+    .filter((section) => sectionInScope(section, batchId))
+    .map((section) => ({
+      section,
+      score: keywordScore(section, queryTerms, { batchId, equipmentIds }),
+    }));
 
   return hits
     .filter((h) => h.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, topK);
+}
+
+/**
+ * Hybrid retrieval when a TF-IDF index is present; otherwise keyword-only.
+ * The evidence-packet contract is unchanged: `{ section, score }[]` with cite IDs.
+ */
+export function retrieveDocuments(query: string, opts: RetrieveOpts = {}): RetrievalHit[] {
+  return hybridRetrieve(query, opts) ?? keywordRetrieve(query, opts);
 }

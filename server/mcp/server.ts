@@ -268,7 +268,7 @@ export function createMcpServer(): McpServer {
     {
       title: "Search SOPs and batch documents",
       description:
-        "Keyword retrieval over SOP sections, batch record excerpts, and shift notes. Returns the top matching sections with citable section ids (SOP-…, BMR-…). Optionally scope to a batch.",
+        "Hybrid keyword + TF-IDF retrieval over SOP sections, batch record excerpts, and shift notes. Returns the top matching sections with citable section ids (SOP-…, BMR-…). Optionally scope to a batch. Same families as Atlas AI askDocument; this is the local index, not a live CDF call.",
       inputSchema: {
         query: z.string().min(1).max(500),
         batchId: batchIdSchema.optional(),

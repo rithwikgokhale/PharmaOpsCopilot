@@ -26,7 +26,7 @@ export function HowItWorks() {
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
               <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">evidenceBuilder.ts</code>{" "}
               calls tools to load batch summary, events, anomaly windows, time-series stats, work
-              orders, operator notes, and keyword-retrieved SOP sections into one packet.
+              orders, operator notes, and hybrid-retrieved SOP sections into one packet.
             </p>
           </Card>
           <Card>
