@@ -8,7 +8,7 @@ import express from "express";
 import { z } from "zod";
 import { runCopilot } from "./agent/orchestrator";
 import { buildEvidencePacket } from "./agent/evidenceBuilder";
-import { isLlmEnabled, getModelName } from "./agent/llm";
+import { describeLlm } from "./agent/llm";
 import { runEvals } from "./agent/evalRunner";
 import { getDataLoadError, isDataReady } from "./data/localDataAccess";
 
@@ -40,7 +40,7 @@ export function createApp(): express.Express {
       status: "ok",
       service: "pharmaops-copilot-api",
       dataReady: isDataReady(),
-      llm: isLlmEnabled() ? { enabled: true, model: getModelName() } : { enabled: false },
+      llm: describeLlm(),
     });
   });
 

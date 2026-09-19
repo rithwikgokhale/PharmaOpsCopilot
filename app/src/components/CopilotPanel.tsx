@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Bot, Loader2, Send, Sparkles } from "lucide-react";
 import { askCopilot, getHealth } from "../agent/agentClient";
 import { useCopilotBus } from "../context/CopilotContext";
-import { DEMO_PROMPTS, type CopilotResponse } from "../types/agent";
+import { DEMO_PROMPTS, llmProviderLabel, type CopilotResponse } from "../types/agent";
 import { CopilotResponseView } from "./CopilotResponseView";
 
 interface Props {
@@ -56,7 +56,11 @@ export function CopilotPanel({ batchId, compact = false }: Props) {
     getHealth()
       .then((h) => {
         setLlmEnabled(h.llm.enabled);
-        setLlmLabel(h.llm.enabled ? `OpenAI · ${h.llm.model}` : "deterministic mode (no API key)");
+        setLlmLabel(
+          h.llm.enabled
+            ? `${llmProviderLabel(h.llm.provider ?? "openai")} · ${h.llm.model}`
+            : "deterministic mode (no API key)"
+        );
       })
       .catch(() => setLlmLabel("deterministic mode"));
   }, []);

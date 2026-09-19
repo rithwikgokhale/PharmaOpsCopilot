@@ -6,7 +6,7 @@ const PIPELINE = [
   { label: "User question", sublabel: "e.g. Why was B-104 delayed?", tone: "source" as const },
   { label: "Intent classification", sublabel: "triage / release / SOP / maintenance…", tone: "process" as const },
   { label: "Deterministic evidence packet", sublabel: "events, anomalies, stats, WOs, notes, SOPs", tone: "model" as const },
-  { label: "Optional LLM narrative", sublabel: "OpenAI enriches prose only — citations stay deterministic", tone: "ai" as const },
+  { label: "Optional LLM narrative", sublabel: "OpenAI / Anthropic / Gemini enrich prose only — citations stay deterministic", tone: "ai" as const },
   { label: "Guardrails sanitization", sublabel: "neutralize release/safety/root-cause overreach", tone: "process" as const },
   { label: "Structured answer", sublabel: "answer, timeline, factors, evidence IDs", tone: "app" as const },
 ];
@@ -32,9 +32,10 @@ export function HowItWorks() {
           <Card>
             <h3 className="font-semibold text-slate-900 dark:text-slate-100">Deterministic core</h3>
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-              The orchestrator builds a full structured response per intent without an API key.
-              OpenAI, when configured, only rewrites narrative fields — evidence IDs are validated
-              against the packet.
+              The orchestrator is a prompt chain: classify → tools → packet → optional narrative →
+              sanitize. It builds a full structured response per intent without an API key. When a
+              provider key is set, the model only rewrites narrative fields — evidence IDs are
+              validated against the packet.
             </p>
           </Card>
           <Card>

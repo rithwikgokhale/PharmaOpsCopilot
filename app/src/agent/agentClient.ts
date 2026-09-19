@@ -3,7 +3,7 @@ import type { CopilotRequest, CopilotResponse } from "../types/agent";
 export interface HealthResponse {
   status: string;
   service: string;
-  llm: { enabled: boolean; model?: string };
+  llm: { enabled: boolean; provider?: string; model?: string };
 }
 
 export async function askCopilot(req: CopilotRequest): Promise<CopilotResponse> {

@@ -30,7 +30,7 @@ export function Hero() {
             <Badge>Local MCP</Badge>
             <Badge>ISA-88/95</Badge>
             <Badge>Agents as code</Badge>
-            <Badge>OpenAI optional</Badge>
+            <Badge>LLM optional</Badge>
             <Badge>MIT</Badge>
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-3">

@@ -1,7 +1,7 @@
 /**
  * Integration tests for the Express API. Uses the real data layer (committed
  * synthetic JSON) and the real orchestrator in deterministic mode — no OpenAI
- * key is required.
+ * key is required. Evals and this suite stay deterministic regardless of keys.
  */
 
 import { describe, expect, it } from "vitest";

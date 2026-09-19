@@ -6,7 +6,7 @@
 
 **[Project website →](https://rithwikgokhale.github.io/PharmaOpsCopilot/)** — architecture, screenshots, agent design, evals, setup guide, and CDF-ready mapping.
 
-**Batch Deviation Triage Prototype** — a Cognite-inspired, CDF-ready demo for pharma manufacturing deviation triage. Local-first React dashboard + evidence-grounded copilot over synthetic Batch **B-104** data (events, time series, work orders, SOPs). Runs without OpenAI; optional LLM enriches narrative only after deterministic evidence is assembled.
+**Batch Deviation Triage Prototype** — a Cognite-inspired, CDF-ready demo for pharma manufacturing deviation triage. Local-first React dashboard + evidence-grounded copilot over synthetic Batch **B-104** data (events, time series, work orders, SOPs). Runs without an LLM key; optional OpenAI, Anthropic, or Gemini enrich narrative only after deterministic evidence is assembled.
 
 > This is not a validated GxP application and should not be used for real batch release, QA disposition, safety, or regulatory decisions. It is a field-engineering prototype demonstrating how contextualized industrial data and LLM-based reasoning could support human-reviewed deviation triage.
 
@@ -83,15 +83,20 @@ The eval suite verifies required mentions, banned release/safety phrasing, and e
 
 ## Environment variables
 
-OpenAI is **optional** — the copilot and evals run deterministically without a key. Copy `.env.example` to `.env` (not committed). Only `OPENAI_API_KEY` and `OPENAI_MODEL` are used today; embedding settings are reserved for future vector retrieval.
+An LLM is **optional** — the copilot and evals run deterministically without a key. Copy `.env.example` to `.env` (not committed). Set one of `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `GEMINI_API_KEY`. `LLM_PROVIDER` selects among them; if unset, the first key present wins (openai → anthropic → gemini). Embedding settings are reserved for future vector retrieval. Evals always force deterministic mode and ignore keys.
 
 ```
+# LLM_PROVIDER=openai|anthropic|gemini
 OPENAI_API_KEY=your_key_here
 OPENAI_MODEL=gpt-4.1-mini
+ANTHROPIC_API_KEY=your_key_here
+ANTHROPIC_MODEL=claude-sonnet-4-5
+GEMINI_API_KEY=your_key_here
+GEMINI_MODEL=gemini-2.5-flash
 PORT=3001
 ```
 
-The key is only ever read server-side (`server/agent/llm.ts`) and is never exposed to the browser.
+Keys are only ever read server-side (`server/agent/llm.ts`) and are never exposed to the browser.
 
 ## Project structure
 
@@ -114,7 +119,7 @@ site/                    GitHub Pages docs site
 
 ## Agent design
 
-- **Evidence-first.** `server/agent/evidenceBuilder.ts` gathers facts via deterministic tools; the LLM only reasons over that packet. Citations come from data, never the model.
+- **Prompt chain, evidence-first.** The orchestrator is one chain — classify intent → run tools → build the packet → optional narrative → sanitize. `server/agent/evidenceBuilder.ts` gathers facts via deterministic tools; the optional LLM (OpenAI, Anthropic, or Gemini) only rewrites prose over that packet. Citations come from data, never the model. There is no second “critic” hop.
 - **Guardrails.** Release / GMP / safety questions are declined and routed to QA. A post-processor neutralizes overreaching phrasing (`server/agent/guardrails.ts`).
 - **Scoped intents.** Triage, release-decision, maintenance review, shift handover, data gaps, SOP reference, audience framing.
 - **Evaluated.** 18 cases check required mentions, banned phrases, and expected evidence IDs — including adversarial jailbreak and prompt-injection attempts. Run them from the **Evals** tab or `npm run eval`.

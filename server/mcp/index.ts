@@ -14,7 +14,7 @@ import "dotenv/config";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { createMcpServer, MCP_SERVER_NAME, MCP_SERVER_VERSION } from "./server";
 import { DataLoadError, isDataReady } from "../data/localDataAccess";
-import { isLlmEnabled } from "../agent/llm";
+import { describeLlm } from "../agent/llm";
 
 async function main() {
   try {
@@ -28,8 +28,11 @@ async function main() {
   const server = createMcpServer();
   const transport = new StdioServerTransport();
   await server.connect(transport);
+  const llm = describeLlm();
   console.error(
-    `[mcp] ${MCP_SERVER_NAME} v${MCP_SERVER_VERSION} ready on stdio (llm: ${isLlmEnabled() ? "enabled" : "deterministic"})`
+    `[mcp] ${MCP_SERVER_NAME} v${MCP_SERVER_VERSION} ready on stdio (llm: ${
+      llm.enabled ? `${llm.provider}/${llm.model}` : "deterministic"
+    })`
   );
 }
 

@@ -12,7 +12,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useToast } from "../context/ToastContext";
-import type { CopilotResponse, EvidenceRef } from "../types/agent";
+import { llmProviderLabel, type CopilotResponse, type EvidenceRef } from "../types/agent";
 import { formatTimeOnly } from "../utils/time";
 import { staggerContainer, fadeUpItem } from "../utils/motion";
 import { Tooltip } from "./ui/Tooltip";
@@ -91,9 +91,9 @@ export function CopilotResponseView({ resp }: { resp: CopilotResponse }) {
           intent: {resp.intent.replace(/_/g, " ")}
         </span>
         <span className="inline-flex items-center gap-1 rounded bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600 dark:bg-slate-700 dark:text-slate-300">
-          {resp.generatedBy === "openai" ? (
+          {resp.generatedBy !== "deterministic" ? (
             <>
-              <Sparkles size={11} /> OpenAI · {resp.model}
+              <Sparkles size={11} /> {llmProviderLabel(resp.generatedBy)} · {resp.model}
             </>
           ) : (
             "deterministic engine"

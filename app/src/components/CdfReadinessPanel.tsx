@@ -10,7 +10,7 @@ const TODAY_FLOW: FlowStep[] = [
   { label: "LocalDataProvider (IDataProvider)", tone: "app" },
   { label: "React dashboard ←→ Express /api/copilot", tone: "app" },
   { label: "Evidence builder + deterministic tools", sublabel: "also exposed as a local MCP server (npm run mcp)", tone: "process" },
-  { label: "OpenAI (optional, server-side)", sublabel: "evidence-grounded response", tone: "ai" },
+  { label: "Optional LLM (OpenAI / Anthropic / Gemini)", sublabel: "server-side narrative only — citations stay deterministic", tone: "ai" },
 ];
 
 const FUTURE_FLOW: FlowStep[] = [

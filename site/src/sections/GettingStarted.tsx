@@ -25,12 +25,16 @@ export function GettingStarted() {
           </div>
         ))}
         <Card>
-          <h3 className="font-semibold text-slate-900 dark:text-slate-100">Optional: OpenAI</h3>
+          <h3 className="font-semibold text-slate-900 dark:text-slate-100">Optional: LLM narrative</h3>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
             Copy <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">.env.example</code> to{" "}
-            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">.env</code> and set{" "}
-            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">OPENAI_API_KEY</code>.
-            The key is read server-side only. The copilot and evals work without it.
+            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">.env</code> and set one of{" "}
+            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">OPENAI_API_KEY</code>,{" "}
+            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">ANTHROPIC_API_KEY</code>, or{" "}
+            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">GEMINI_API_KEY</code>.{" "}
+            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">LLM_PROVIDER</code> selects
+            among them; if unset, the first key present wins. Keys are read server-side only. The
+            copilot and evals work without any key — evals always stay deterministic.
           </p>
         </Card>
         <Card>

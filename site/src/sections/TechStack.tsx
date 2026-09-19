@@ -8,7 +8,7 @@ const STACK = [
   },
   {
     layer: "Backend",
-    items: ["Node.js", "Express", "MCP SDK", "OpenAI SDK (optional)", "dotenv"],
+    items: ["Node.js", "Express", "MCP SDK", "Optional LLM (OpenAI / Anthropic / Gemini)", "dotenv"],
   },
   {
     layer: "Data",
@@ -29,7 +29,7 @@ export function TechStack() {
     <Section
       id="tech"
       title="Tech stack"
-      subtitle="Local-first development with no Cognite or OpenAI credentials required for the core demo."
+      subtitle="Local-first development with no Cognite or LLM credentials required for the core demo."
     >
       <div className="grid gap-4 sm:grid-cols-2">
         {STACK.map((s) => (

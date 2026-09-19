@@ -28,7 +28,7 @@ const TODAY = [
   { label: "contextualize.py", sublabel: "ID resolution · units · timezones · dedupe", tone: "process" as const },
   { label: "Unified model (JSON)", sublabel: "ISA-88/95-shaped", tone: "model" as const },
   { label: "LocalDataProvider → React + Express", tone: "app" as const },
-  { label: "Evidence tools + optional OpenAI", sublabel: "also served as a local MCP server", tone: "ai" as const },
+  { label: "Evidence tools + optional LLM", sublabel: "OpenAI / Anthropic / Gemini; also served as a local MCP server", tone: "ai" as const },
 ];
 
 const FUTURE = [

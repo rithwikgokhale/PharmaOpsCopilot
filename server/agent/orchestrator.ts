@@ -3,7 +3,7 @@
  *   1. Classify intent (guardrails).
  *   2. Build a deterministic evidence packet (tools + retrieval).
  *   3. Produce a deterministic, evidence-grounded structured response.
- *   4. Optionally enrich the narrative with OpenAI (citations stay deterministic).
+ *   4. Optionally enrich the narrative with OpenAI, Anthropic, or Gemini (citations stay deterministic).
  *   5. Run guardrails sanitization on all free text.
  *
  * The deterministic path means the demo and evals work with NO API key.
@@ -16,7 +16,7 @@ import {
   sanitizeStringList,
   sanitizeText,
 } from "./guardrails";
-import { generateNarrative, getModelName, isLlmEnabled } from "./llm";
+import { generateNarrative, getLlmProvider, getModelName, isLlmEnabled } from "./llm";
 import { buildSystemPrompt, buildUserPrompt } from "./promptTemplates";
 import type {
   ContributingFactor,
@@ -65,7 +65,7 @@ export async function runCopilot(
         }));
       }
       if (narrative.whatToCheckNext.length) base.whatToCheckNext = narrative.whatToCheckNext;
-      base.generatedBy = "openai";
+      base.generatedBy = getLlmProvider() ?? "openai";
       base.model = getModelName();
     }
   }

@@ -16,7 +16,7 @@ export function AboutPage() {
           synthetic pilot plant — assets, equipment, time series, activities/events,
           files/documents, and source systems — and demonstrates how a scoped industrial AI agent
           could be grounded, guardrailed, and evaluated. It runs entirely locally with synthetic
-          data and no Cognite or OpenAI credentials required.
+          data and no Cognite or LLM credentials required.
         </p>
       </motion.section>
 

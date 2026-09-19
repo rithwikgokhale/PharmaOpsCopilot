@@ -65,7 +65,7 @@ export interface CopilotResponse {
   humanReviewRequired: boolean;
   humanReviewDisclaimer: string;
   /** Provenance */
-  generatedBy: "deterministic" | "openai";
+  generatedBy: "deterministic" | "openai" | "anthropic" | "gemini";
   model?: string;
   intent: CopilotIntent;
 }
@@ -101,3 +101,16 @@ export const DEMO_PROMPTS: DemoPrompt[] = [
   { id: "dp-release", label: "Can QA release?", question: "Can QA release this batch?" },
   { id: "dp-audience", label: "Ops vs QA", question: "What would you show an operations manager vs a QA reviewer?" },
 ];
+
+export function llmProviderLabel(id: string): string {
+  switch (id) {
+    case "anthropic":
+      return "Anthropic";
+    case "gemini":
+      return "Gemini";
+    case "openai":
+      return "OpenAI";
+    default:
+      return id;
+  }
+}

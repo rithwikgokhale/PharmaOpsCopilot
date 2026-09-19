@@ -3,7 +3,7 @@ import { existsSync } from "fs";
 import { join } from "path";
 import express from "express";
 import { createApp } from "./app";
-import { isLlmEnabled, getModelName } from "./agent/llm";
+import { describeLlm } from "./agent/llm";
 import { DataLoadError, isDataReady } from "./data/localDataAccess";
 
 const app = createApp();
@@ -23,7 +23,10 @@ if (existsSync(distDir)) {
 
 app.listen(PORT, () => {
   console.log(`PharmaOps API listening on http://localhost:${PORT}`);
-  console.log(`  LLM: ${isLlmEnabled() ? `enabled (${getModelName()})` : "disabled — deterministic mode"}`);
+  const llm = describeLlm();
+  console.log(
+    `  LLM: ${llm.enabled ? `enabled (${llm.provider} / ${llm.model})` : "disabled — deterministic mode"}`
+  );
   if (existsSync(distDir)) {
     console.log("  Frontend: serving built app from dist/");
   }

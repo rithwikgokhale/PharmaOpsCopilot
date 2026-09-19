@@ -31,8 +31,10 @@ export function AgentDesign() {
           <ShieldCheck className="text-green-600 dark:text-green-400" size={24} />
           <h3 className="mt-2 font-semibold text-slate-900 dark:text-slate-100">Evidence-first</h3>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-            Every citation ID exists in the data packet before the model sees anything.
-            Hallucinated references are structurally prevented.
+            Prompt chain: classify intent → run deterministic tools → assemble the packet → optional
+            narrative → sanitize. Every citation ID exists in the packet before the model sees
+            anything. Hallucinated references are structurally prevented. One optional model call —
+            no extra critic hop.
           </p>
         </Card>
         <Card>

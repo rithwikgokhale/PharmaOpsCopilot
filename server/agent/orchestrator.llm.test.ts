@@ -14,6 +14,7 @@ const { generateNarrativeMock } = vi.hoisted(() => ({
 vi.mock("./llm", () => ({
   isLlmEnabled: () => true,
   getModelName: () => "mock-model",
+  getLlmProvider: () => "openai",
   generateNarrative: generateNarrativeMock,
 }));
 
