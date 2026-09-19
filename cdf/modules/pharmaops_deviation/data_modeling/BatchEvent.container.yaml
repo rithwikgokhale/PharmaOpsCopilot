@@ -1,0 +1,55 @@
+space: sp_pharmaops_records
+externalId: BatchEvent
+usedFor: record
+name: BatchEvent
+description: Immutable process event, alarm, or operator action for a batch. High-volume; query via Records, not as graph nodes.
+properties:
+  eventId:
+    type:
+      type: text
+      list: false
+      collation: ucs_basic
+    nullable: false
+  batchExternalId:
+    type:
+      type: text
+      list: false
+      collation: ucs_basic
+    nullable: false
+    description: ISA-88 Batch external id (e.g. B-104). Stored as text because Records are not graph nodes.
+  equipmentExternalId:
+    type:
+      type: text
+      list: false
+      collation: ucs_basic
+    nullable: true
+  category:
+    type:
+      type: text
+      list: false
+      collation: ucs_basic
+    nullable: false
+    description: process | alarm | operator_action | quality
+  severity:
+    type:
+      type: text
+      list: false
+      collation: ucs_basic
+    nullable: true
+  sourceSystem:
+    type:
+      type: text
+      list: false
+      collation: ucs_basic
+    nullable: false
+    description: MES | Historian | CMMS | QMS
+  title:
+    type:
+      type: text
+      list: false
+      collation: ucs_basic
+    nullable: true
+  occurredAt:
+    type:
+      type: timestamp
+    nullable: false

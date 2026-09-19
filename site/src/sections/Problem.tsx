@@ -26,8 +26,8 @@ export function Problem() {
         <Card>
           <h3 className="font-semibold text-slate-900 dark:text-slate-100">For field engineers</h3>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-            A local-first prototype showing how contextualized industrial data and scoped AI
-            agents could plug into Cognite CDF and Atlas.
+            A local-first prototype showing how messy MES / historian / CMMS identifiers become one
+            model, and how scoped AI agents could plug into Cognite CDF, Industrial MCP, and Atlas.
           </p>
         </Card>
       </div>

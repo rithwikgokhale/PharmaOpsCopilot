@@ -20,13 +20,16 @@ export function Hero() {
             PharmaOps Copilot
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600 dark:text-slate-300">
-            Evidence-grounded batch deviation triage for pharma manufacturing — synthetic
-            data, guardrailed AI, and an architecture ready for Cognite Data Fusion.
+            Evidence-grounded batch deviation triage for pharma manufacturing — siloed IT/OT/ET
+            sources into one model, guardrailed AI, and an architecture ready for Cognite Data Fusion.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-2">
             <Badge>TypeScript</Badge>
             <Badge>React</Badge>
             <Badge>Node.js</Badge>
+            <Badge>Local MCP</Badge>
+            <Badge>ISA-88/95</Badge>
+            <Badge>Agents as code</Badge>
             <Badge>OpenAI optional</Badge>
             <Badge>MIT</Badge>
           </div>

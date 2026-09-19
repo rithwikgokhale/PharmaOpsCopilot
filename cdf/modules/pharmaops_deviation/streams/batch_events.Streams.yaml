@@ -1,0 +1,8 @@
+# Records container: sp_pharmaops_records:BatchEvent.
+# BasicArchive is the production-like immutable template (append-only history at
+# single-facility scale). See https://docs.cognite.com/cdf/deploy/cdf_toolkit/references/resource_library#streams
+# and https://docs.cognite.com/cdf/dm/records/guides/choose_and_size_streams
+externalId: pharmaops-batch-events
+settings:
+  template:
+    name: BasicArchive

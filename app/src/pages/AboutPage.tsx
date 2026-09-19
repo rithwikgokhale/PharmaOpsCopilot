@@ -43,16 +43,18 @@ export function AboutPage() {
           <li>Facts are separated from hypotheses; no confirmed root cause is asserted.</li>
           <li>Release / GMP / safety questions are declined and routed to human QA review.</li>
           <li>Output is checked by guardrails that neutralize overreaching phrasing.</li>
-          <li>A 12-case eval suite verifies behavior whenever prompts or tools change.</li>
+          <li>An 18-case eval suite verifies behavior whenever prompts or tools change.</li>
         </ul>
       </motion.section>
 
       <motion.section variants={fadeUpItem}>
         <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">Cognite mapping</h2>
         <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">
-          Assets/equipment/time series/files/activities map to the CDF core data model; the UI is
-          structured like a Flows custom app; the agent mirrors an Atlas AI tool design. See the{" "}
-          <span className="font-medium">CDF-ready</span> tab for the full mapping and architecture.
+          The plant is modeled as ISA-88/95 (Batch, Unit, Equipment) plus Records for high-volume
+          events and a <code className="rounded bg-slate-100 px-1 dark:bg-slate-700">PharmaDeviation</code>{" "}
+          extension. Agent tools are exported as Atlas YAML and served locally over MCP (the same
+          families Industrial MCP hosts on CDF). The UI is structured like a Flows custom app. See
+          the <span className="font-medium">CDF-ready</span> tab for the mapping and architecture.
         </p>
       </motion.section>
     </motion.div>

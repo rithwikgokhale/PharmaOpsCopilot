@@ -7,9 +7,10 @@
 ## Goals
 
 - Show an evidence-grounded copilot that cites real IDs from events, anomalies, work orders, operator notes, and SOP sections.
-- Mirror Cognite CDF concepts (assets, equipment, time series, activities, files) via an `IDataProvider` abstraction.
+- Unify messy IT/OT/ET exports (`data/raw/` + `contextualize.py`) into one model mapped onto ISA-88/95 + Records + a `PharmaDeviation` extension.
+- Expose the same tools over a local MCP server and export them as Atlas AI agent/skill/eval YAML.
 - Run fully without OpenAI or Cognite credentials; optional LLM enriches narrative only after deterministic evidence is assembled.
-- Prove behavior with a 12-case eval suite (guardrails, citations, release refusal).
+- Prove behavior with an 18-case eval suite (guardrails, citations, release refusal, adversarial prompts).
 
 ## Primary demo storyline (B-104)
 
@@ -24,15 +25,16 @@
 | Layer | Technology |
 |-------|------------|
 | Frontend | React, TypeScript, Vite, Tailwind, Recharts |
-| Backend | Node.js, Express |
-| Data | Synthetic JSON + Python generator |
+| Backend | Node.js, Express, MCP SDK |
+| Data | Siloed IT/OT/ET exports + Python contextualizer |
 | AI | Deterministic orchestrator + optional OpenAI (server-side only) |
-| Quality | Vitest + 12-case eval runner |
+| Quality | Vitest + 18-case eval runner |
+| CDF-shaped | Toolkit YAML skeleton, Atlas agents-as-code, Industrial MCP tool families |
 
 ## Out of scope
 
 - Not a validated GxP application.
-- No real Cognite CDF or Atlas integration yet (`CdfDataProvider` is a stub).
+- No live Cognite CDF or Atlas integration (`CdfDataProvider` is a stub).
 - Keyword document retrieval only (embeddings documented as future work).
 
 ## Where to go next

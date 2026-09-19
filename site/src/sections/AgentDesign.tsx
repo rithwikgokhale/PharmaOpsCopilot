@@ -49,7 +49,8 @@ export function AgentDesign() {
           <h3 className="mt-2 font-semibold text-slate-900 dark:text-slate-100">Post-sanitization</h3>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
             Banned phrases (e.g. &quot;safe to release&quot;, &quot;confirmed root cause&quot;) are
-            rewritten to &quot;[requires human review]&quot; in all output fields.
+            rewritten to &quot;[requires human review]&quot; in all output fields. The same tools
+            are exposed over the local MCP server and exported as Atlas agent YAML.
           </p>
         </Card>
       </div>

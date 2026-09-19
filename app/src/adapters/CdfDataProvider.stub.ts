@@ -2,7 +2,8 @@
  * CdfDataProvider — STUB for future Cognite Data Fusion integration.
  *
  * In production, this provider would replace LocalDataProvider and fetch data
- * from a CDF project using the Cognite SDK and CDM views.
+ * from a CDF project using the Cognite SDK against the ISA-88/95 manufacturing
+ * pack plus the PharmaDeviation extension and BatchEvent Records stream.
  *
  * Flows integration:
  *   import { connectToHostApp } from "@cognite/app-sdk";
@@ -14,18 +15,20 @@
  *
  * Atlas AI integration:
  *   The local agent orchestrator (server/agent/orchestrator.ts) would be replaced
- *   by a configured Atlas AI agent with tools like queryKnowledgeGraph,
- *   queryTimeSeriesDatapoints, and askDocument.
+ *   by a configured Atlas AI agent with tools query, queryTimeSeriesDatapoints,
+ *   and askDocument.
  *
- * CDM mapping reference:
- *   Site/Area/Asset     -> CogniteAsset (parent hierarchy via parent relation)
- *   Equipment           -> CogniteEquipment (asset direct relation)
- *   Time series         -> CogniteTimeSeries (assets relation + datapoints API)
- *   Batch/Deviation/CIP -> CogniteActivity (domain extension)
- *   SOP/Documents       -> CogniteFile (assets relation)
- *   Work orders         -> CogniteMaintenanceOrder
+ * Mapping reference (see app/src/types/cdfMapping.ts):
+ *   Site/Area/Unit      -> ISA-95 pack views
+ *   Batch               -> ISA-88 Batch view (pack)
+ *   Events/alarms       -> Records stream BatchEvent (usedFor: record)
+ *   Deviation           -> sp_pharmaops_model:PharmaDeviation
+ *   Time series         -> ISATimeSeries / CogniteTimeSeries + datapoints API
+ *   SOP/Documents       -> ISAFile / CogniteFile
+ *   Work orders         -> ISA WorkOrder (or CogniteMaintenanceOrder)
  *
- * @see https://docs.cognite.com/cdf/dm/dm_reference/dm_core_data_model
+ * @see https://docs.cognite.com/cdf/deploy/cdf_toolkit/references/packages/isa_data_model
+ * @see https://docs.cognite.com/cdf/dm/records/concepts/records_and_streams
  * @see https://docs.cognite.com/cdf/flows/reference/api/auth
  */
 
@@ -84,7 +87,7 @@ export class CdfDataProvider implements IDataProvider {
   }
 
   async listBatches(): Promise<Batch[]> {
-    // TODO: Query domain-specific Batch view extending CogniteActivity
+    // TODO: Query ISA-88 Batch view (isa_manufacturing:Batch)
     throw new Error(NOT_IMPLEMENTED);
   }
 
@@ -105,12 +108,12 @@ export class CdfDataProvider implements IDataProvider {
     _batchId: string,
     _filters?: EventFilters
   ): Promise<ProcessEvent[]> {
-    // TODO: Query CogniteActivity or event stream filtered by batch relation
+    // TODO: Query Records stream BatchEvent filtered by batchExternalId
     throw new Error(NOT_IMPLEMENTED);
   }
 
   async listWorkOrders(_equipmentOrAssetId?: string): Promise<WorkOrder[]> {
-    // TODO: Query CogniteMaintenanceOrder by mainAsset relation
+    // TODO: Query ISA WorkOrder (or CogniteMaintenanceOrder) by equipment relation
     throw new Error(NOT_IMPLEMENTED);
   }
 

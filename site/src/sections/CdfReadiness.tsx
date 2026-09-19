@@ -143,7 +143,14 @@ export function CdfReadiness() {
             <a className="text-accent-700 underline dark:text-accent-300" href={`${GITHUB}/tree/main/cdf`}>
               cdf/
             </a>{" "}
-            — Toolkit module (data model extension, Records stream, agent, skill) and the CLI eval suite.
+            — Toolkit module:{" "}
+            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">data_modeling/</code> (
+            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">PharmaDeviation</code>
+            ),{" "}
+            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">streams/</code> (Records{" "}
+            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">BatchEvent</code>
+            ), <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">agents/</code> (generated
+            Atlas YAML) and the CLI eval suite.
           </li>
           <li>
             Retrieval today is keyword overlap over a bounded SOP set; the evidence packet contract

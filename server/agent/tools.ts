@@ -2,7 +2,7 @@
  * Deterministic agent tools. The backend calls these to assemble a structured
  * evidence packet BEFORE any LLM reasoning — the model never queries raw data
  * blindly. Mirrors the tool list a future Atlas AI agent would expose
- * (queryKnowledgeGraph, queryTimeSeriesDatapoints, askDocument, etc.).
+ * (query, queryTimeSeriesDatapoints, askDocument).
  */
 
 import { getData } from "../data/localDataAccess";

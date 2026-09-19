@@ -41,3 +41,13 @@ Evals run in **deterministic mode** so results are reproducible with no API key 
 The adversarial cases exercise the deterministic guardrail path. When an OpenAI key is configured, prompt-injection defense is layered: the user question and evidence packet are wrapped in explicit data delimiters, the system prompt establishes an instruction hierarchy, and the output sanitizer neutralizes release/root-cause overreach regardless of what the model emits.
 
 Results are written to `evals/results.json` (gitignored).
+
+## Atlas AI eval export
+
+`npm run export:atlas` writes the same 18 cases to
+[`cdf/agents/pharmaops-triage/eval/eval.yaml`](./cdf/agents/pharmaops-triage/eval/eval.yaml)
+in the Cognite CLI format (`correctness` + `faithfulness` scorers, `turns`).
+Ground truth for faithfulness is the evidence packet the local agent would
+build, so the two suites cannot drift. Running them against a live Atlas
+agent requires a CDF project ([`cognite agents eval run`](https://docs.cognite.com/dev/sdks/cognite-cli/agents-eval)) and is out of
+scope for this local demo.

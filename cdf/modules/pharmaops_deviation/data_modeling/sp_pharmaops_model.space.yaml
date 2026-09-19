@@ -1,0 +1,3 @@
+space: sp_pharmaops_model
+name: pharmaops:model
+description: PharmaOps deviation extension on top of the ISA-88/95 manufacturing data model. Not a replacement for dm_dom_isa_manufacturing.

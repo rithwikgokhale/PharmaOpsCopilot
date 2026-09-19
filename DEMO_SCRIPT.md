@@ -20,6 +20,7 @@
 
 ## 4. CDF-ready story
 - Open the **CDF-ready** tab.
-- Show the local → CDF mapping (CogniteAsset / Equipment / TimeSeries / Activity / File).
-- Walk the two architecture diagrams: local-first today vs. CDF + Flows + Atlas tomorrow.
+- Show the **contextualization panel**: 6 source systems, 65 source rows + 5,426 historian datapoints, 49 matches, 3 unresolved (WFI tag, WFI pump, WO-760), 6 unit/time conversions, 2 duplicates removed — this is why industrial data quality is a field-engineering problem.
+- Mapping table: ISA-88 Batch, Records for events, PharmaDeviation extension, Industrial MCP.
+- Two diagrams: siloed raw → `contextualize.py` → local MCP today vs extractors → ISA pack → Atlas + Industrial MCP tomorrow.
 - Close: the app depends only on `IDataProvider`; swapping `LocalDataProvider` for a `CdfDataProvider` (auth via `connectToHostApp`) moves it into CDF without UI changes.

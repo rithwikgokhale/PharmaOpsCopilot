@@ -1,0 +1,3 @@
+space: sp_pharmaops_records
+name: pharmaops:records
+description: Records space for high-volume batch events, alarms, and operator actions.

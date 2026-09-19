@@ -1,0 +1,57 @@
+externalId: PharmaDeviation
+name: PharmaDeviation
+description: Quality deviation raised against an ISA-88 Batch. Status and severity are the fields a QA reviewer filters on; related process events live in Records, not on this node.
+version: '1'
+space: sp_pharmaops_model
+implements:
+  - type: view
+    externalId: CogniteDescribable
+    space: cdf_cdm
+    version: v1
+  - type: view
+    externalId: CogniteSourceable
+    space: cdf_cdm
+    version: v1
+properties:
+  status:
+    description: open | under_review | closed
+    container:
+      type: container
+      space: sp_pharmaops_model
+      externalId: PharmaDeviation
+    containerPropertyIdentifier: status
+  severity:
+    description: minor | major | critical
+    container:
+      type: container
+      space: sp_pharmaops_model
+      externalId: PharmaDeviation
+    containerPropertyIdentifier: severity
+  openedAt:
+    description: When the deviation was opened in the QMS.
+    container:
+      type: container
+      space: sp_pharmaops_model
+      externalId: PharmaDeviation
+    containerPropertyIdentifier: openedAt
+  title:
+    description: Short title from the QMS deviation record.
+    container:
+      type: container
+      space: sp_pharmaops_model
+      externalId: PharmaDeviation
+    containerPropertyIdentifier: title
+  batch:
+    description: Intended target is isa_manufacturing:Batch once the ISA pack is deployed. source is omitted so this skeleton does not pin a pack version.
+    container:
+      type: container
+      space: sp_pharmaops_model
+      externalId: PharmaDeviation
+    containerPropertyIdentifier: batch
+  equipment:
+    description: Intended target is isa_manufacturing:Equipment once the ISA pack is deployed. source is omitted so this skeleton does not pin a pack version.
+    container:
+      type: container
+      space: sp_pharmaops_model
+      externalId: PharmaDeviation
+    containerPropertyIdentifier: equipment

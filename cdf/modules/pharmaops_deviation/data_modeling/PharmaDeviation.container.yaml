@@ -1,0 +1,43 @@
+externalId: PharmaDeviation
+usedFor: node
+space: sp_pharmaops_model
+name: PharmaDeviation
+description: Quality deviation raised against an ISA-88 Batch. Status and severity are the fields a QA reviewer filters on; related process events live in Records, not on this node.
+properties:
+  status:
+    type:
+      type: text
+      list: false
+      collation: ucs_basic
+    nullable: false
+    description: open | under_review | closed
+  severity:
+    type:
+      type: text
+      list: false
+      collation: ucs_basic
+    nullable: false
+    description: minor | major | critical
+  openedAt:
+    type:
+      type: timestamp
+    nullable: true
+    description: When the deviation was opened in the QMS.
+  title:
+    type:
+      type: text
+      list: false
+      collation: ucs_basic
+    nullable: true
+  batch:
+    type:
+      type: direct
+      list: false
+    nullable: true
+    description: ISA-88 Batch this deviation belongs to (isa_manufacturing:Batch once the pack is deployed).
+  equipment:
+    type:
+      type: direct
+      list: false
+    nullable: true
+    description: Primary equipment involved (isa_manufacturing:Equipment once the pack is deployed).

@@ -16,11 +16,17 @@ jobs:
           node-version: "20"
           cache: npm
       - run: npm ci
+      - run: npm run generate-data
+      - name: Generated data must be committed
+        run: git diff --exit-code -- data/raw data/generated public/data/generated
       - run: npm run check-data-sync
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
       - run: npm run eval
+      - run: npm run export:atlas
+      - name: Atlas artifacts must match export
+        run: git diff --exit-code -- cdf/
       - run: npm run build
 
   site:

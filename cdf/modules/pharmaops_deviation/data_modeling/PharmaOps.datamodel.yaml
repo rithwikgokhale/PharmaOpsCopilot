@@ -1,0 +1,10 @@
+externalId: PharmaOps
+name: PharmaOps deviation extension
+version: '1'
+space: sp_pharmaops_model
+description: Small extension deployed beside ISA_Manufacturing_DOM. Contains PharmaDeviation. Batch events are Records in sp_pharmaops_records and are not views in this model.
+views:
+  - type: view
+    space: sp_pharmaops_model
+    externalId: PharmaDeviation
+    version: '1'

@@ -8,15 +8,19 @@ const STACK = [
   },
   {
     layer: "Backend",
-    items: ["Node.js", "Express", "OpenAI SDK (optional)", "dotenv"],
+    items: ["Node.js", "Express", "MCP SDK", "OpenAI SDK (optional)", "dotenv"],
   },
   {
     layer: "Data",
-    items: ["Synthetic JSON", "Python generator", "IDataProvider abstraction", "Keyword document retrieval"],
+    items: ["Siloed IT/OT/ET exports", "Python contextualizer", "IDataProvider abstraction", "Keyword document retrieval"],
   },
   {
     layer: "Quality",
-    items: ["Vitest unit tests", "12-case eval runner", "Deterministic copilot mode", "Guardrail sanitization"],
+    items: ["Vitest unit tests", "18-case eval runner", "Deterministic copilot mode", "Guardrail sanitization"],
+  },
+  {
+    layer: "Cognite-shaped",
+    items: ["Industrial MCP tool families", "Atlas agents-as-code", "ISA-88/95 mapping", "Records stream skeleton"],
   },
 ];
 

@@ -34,6 +34,18 @@ export function GettingStarted() {
           </p>
         </Card>
         <Card>
+          <h3 className="font-semibold text-slate-900 dark:text-slate-100">Optional: MCP and Atlas export</h3>
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">npm run mcp</code> starts
+            the local stdio MCP server (see{" "}
+            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">mcp.json.example</code>).{" "}
+            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">npm run export:atlas</code>{" "}
+            regenerates the Atlas AI agent, skill, and eval YAML under{" "}
+            <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">cdf/</code>. Neither requires
+            a CDF tenant.
+          </p>
+        </Card>
+        <Card>
           <h3 className="font-semibold text-slate-900 dark:text-slate-100">Demo question</h3>
           <p className="mt-2 text-sm italic text-slate-700 dark:text-slate-300">
             &quot;Why was Batch B-104 delayed, and what should I check before escalating the

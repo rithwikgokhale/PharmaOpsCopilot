@@ -38,6 +38,17 @@ export function HowItWorks() {
             </p>
           </Card>
           <Card>
+            <h3 className="font-semibold text-slate-900 dark:text-slate-100">Contextualization pipeline</h3>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+              Siloed exports in{" "}
+              <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">data/raw/</code> (MES,
+              historian, CMMS, QMS, engineering register) are resolved by{" "}
+              <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">contextualize.py</code>{" "}
+              into the unified JSON the dashboard and copilot read. The join report is on the
+              CDF-ready page.
+            </p>
+          </Card>
+          <Card>
             <h3 className="font-semibold text-slate-900 dark:text-slate-100">IDataProvider</h3>
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
               The UI reads synthetic JSON via <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">LocalDataProvider</code>.

@@ -9,7 +9,7 @@ const LINKS = [
   { href: "#agent", label: "Agent" },
   { href: "#evals", label: "Evals" },
   { href: "#tech", label: "Stack" },
-  { href: "#cdf", label: "CDF-ready" },
+  { href: "#cdf", label: "CDF / MCP" },
   { href: "#setup", label: "Setup" },
 ];
 
