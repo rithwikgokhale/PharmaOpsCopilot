@@ -28,7 +28,7 @@ At production scale the TypeScript agent is replaced by Atlas AI + Industrial MC
 | `lucide-react` | ^1.22.0 | Icons | Tree-shakeable | Heroicons, Font Awesome | Aura icons |
 | `recharts` | ^2.15.0 | Line charts + `ReferenceArea` | SVG, no canvas tax for this volume | visx, Plotly, uPlot | CDF Charts / Grafana |
 
-Site reuses `react`, `react-dom`, `framer-motion`, `lucide-react` at the same ranges. No router on the site today.
+Site (`site/package.json`) reuses `react`, `react-dom`, `framer-motion`, `lucide-react` at the same ranges, plus `react-router-dom` ^6.28.0, `react-markdown` ^10.1.0, `remark-gfm` ^4.0.1, `rehype-slug` ^6.0.0, and `mermaid` ^12.0.0 (lazy-loaded so the landing page does not pay for the diagram runtime).
 
 ## Backend
 

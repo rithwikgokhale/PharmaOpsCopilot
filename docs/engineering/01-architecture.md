@@ -113,7 +113,7 @@ Timeout 20s, one retry (`REQUEST_TIMEOUT_MS`, `MAX_RETRIES` in `llm.ts`). No key
 - App: `vite build` from repo root (`root: "app"`), output `app/dist`.
 - API in production: `tsx server/index.ts` (no separate `tsc` emit; `tsconfig` is `noEmit`).
 - CI (`.github/workflows/ci.yml`): two jobs. `test` runs `generate-data`, requires a clean `git diff` on `data/raw`, `data/generated`, `public/data/generated`, then `check-data-sync`, lint, typecheck, test, eval, `export:atlas` with a clean `git diff` on `cdf/`, then `npm run build`. `site` builds `site/` on Node 20.
-- Pages (`.github/workflows/deploy-pages.yml`) rebuilds when `site/**`, the contextualization report, or the workflow file change. Path filters mean a docs-only change under `docs/engineering/` does **not** deploy until T4-2 adds that path.
+- Pages (`.github/workflows/deploy-pages.yml`) rebuilds when `site/**`, `docs/engineering/**`, the contextualization report, eval cases, or the workflow file change.
 
 The site is a separate Vite app because the dashboard is a product UI and the Pages site is a public write-up with a different base path. Mixing them would force `/PharmaOpsCopilot/` onto the local demo.
 

@@ -1,4 +1,5 @@
 import { Bot, GitBranch, Plug } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Section } from "../components/Section";
 import { FlowDiagram } from "../components/FlowDiagram";
 import { Card } from "../components/Card";
@@ -46,7 +47,7 @@ export function CdfReadiness() {
     <Section
       id="cdf"
       title="CDF-ready architecture"
-      subtitle="Messy IT / OT / ET exports become one ISA-88/95-shaped model; the app depends only on IDataProvider, and the agent's tools are the ones Atlas AI and Industrial MCP expose."
+      subtitle="Messy IT / OT / ET exports become one ISA-88/95-shaped model; the app depends only on IDataProvider, and the agent's tools are the ones Atlas AI and Industrial MCP expose. Step-by-step tenant path: CDF migration."
     >
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
@@ -130,6 +131,12 @@ export function CdfReadiness() {
         <FlowDiagram title="Today — local-first" steps={TODAY} />
         <FlowDiagram title="Future — CDF / Atlas" steps={FUTURE} />
       </div>
+      <p className="mt-4 text-sm">
+        <Link to="/docs/11-cdf-migration-path" className="text-accent-700 underline dark:text-accent-300">
+          CDF migration path
+        </Link>
+        {" — "}from this repo to ISA pack, Records, Atlas evals, Industrial MCP, and Flows.
+      </p>
       <Card className="mt-4">
         <h3 className="font-semibold text-slate-900 dark:text-slate-100">What is already written down</h3>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-600 dark:text-slate-300">

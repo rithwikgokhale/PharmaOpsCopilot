@@ -1,18 +1,20 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Activity, ExternalLink, Moon, Sun } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme";
 
 const LINKS = [
-  { href: "#problem", label: "Problem" },
-  { href: "#value", label: "Value" },
-  { href: "#gallery", label: "Gallery" },
-  { href: "#how-it-works", label: "How it works" },
-  { href: "#agent", label: "Agent" },
-  { href: "#evals", label: "Evals" },
-  { href: "#tech", label: "Stack" },
-  { href: "#cdf", label: "CDF / MCP" },
-  { href: "#field-notes", label: "Field notes" },
-  { href: "#setup", label: "Setup" },
+  { hash: "#engineering", label: "Engineering" },
+  { hash: "#problem", label: "Problem" },
+  { hash: "#value", label: "Value" },
+  { hash: "#gallery", label: "Gallery" },
+  { hash: "#how-it-works", label: "How it works" },
+  { hash: "#agent", label: "Agent" },
+  { hash: "#evals", label: "Evals" },
+  { hash: "#tech", label: "Stack" },
+  { hash: "#cdf", label: "CDF / MCP" },
+  { hash: "#field-notes", label: "Field notes" },
+  { hash: "#setup", label: "Setup" },
 ];
 
 const GITHUB_URL = "https://github.com/rithwikgokhale/PharmaOpsCopilot";
@@ -22,25 +24,43 @@ export function Nav() {
 
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/90 backdrop-blur-md dark:border-slate-700/60 dark:bg-brand-900/90">
-      <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
-        <a href="#" className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
+        <Link to="/" className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white dark:bg-accent-700">
             <Activity size={18} />
           </span>
           <span className="font-semibold">PharmaOps Copilot</span>
-        </a>
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Page sections">
+        </Link>
+        <nav className="hidden items-center gap-1 md:flex md:flex-wrap" aria-label="Site">
+          <NavLink
+            to="/docs"
+            className={({ isActive }) =>
+              `rounded-md px-2 py-1 text-xs font-semibold ${
+                isActive
+                  ? "bg-slate-100 text-brand-700 dark:bg-brand-800 dark:text-accent-300"
+                  : "text-slate-600 hover:text-brand-700 dark:text-slate-300 dark:hover:text-accent-300"
+              }`
+            }
+          >
+            Docs
+          </NavLink>
           {LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
+            <Link
+              key={l.hash}
+              to={{ pathname: "/", hash: l.hash }}
               className="rounded-md px-2 py-1 text-xs font-medium text-slate-600 hover:text-brand-700 dark:text-slate-300 dark:hover:text-accent-300"
             >
               {l.label}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="flex items-center gap-2">
+          <NavLink
+            to="/docs"
+            className="rounded-md px-2 py-1 text-xs font-semibold text-slate-600 md:hidden dark:text-slate-300"
+          >
+            Docs
+          </NavLink>
           <button
             type="button"
             onClick={toggleTheme}

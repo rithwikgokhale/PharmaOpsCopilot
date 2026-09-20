@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const GITHUB_URL = "https://github.com/rithwikgokhale/PharmaOpsCopilot";
 const PAGES_URL = "https://rithwikgokhale.github.io/PharmaOpsCopilot/";
 
@@ -14,8 +16,12 @@ export function Footer() {
             GitHub repository
           </a>
           {" · "}
+          <Link to="/docs" className="text-accent-700 underline dark:text-accent-300">
+            Engineering docs
+          </Link>
+          {" · "}
           <a href={PAGES_URL} className="text-accent-700 underline dark:text-accent-300">
-            Project docs (this site)
+            Project site
           </a>
           {" · "}
           MIT License © 2026 Rithwik Gokhale

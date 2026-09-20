@@ -32,9 +32,9 @@ export function AgentDesign() {
           <h3 className="mt-2 font-semibold text-slate-900 dark:text-slate-100">Evidence-first</h3>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
             Prompt chain: classify intent → run deterministic tools → assemble the packet → optional
-            narrative → sanitize. Every citation ID exists in the packet before the model sees
-            anything. Hallucinated references are structurally prevented. One optional model call —
-            no extra critic hop.
+            narrative (OpenAI, Anthropic, or Gemini) → sanitize. Retrieval is hybrid keyword + TF-IDF.
+            Every citation ID exists in the packet before the model sees anything. Hallucinated
+            references are structurally prevented. One optional model call — no extra critic hop.
           </p>
         </Card>
         <Card>

@@ -32,7 +32,7 @@ Then the remaining files as needed: [frontend](./06-frontend.md), [tech stack](.
 | [10-security-and-compliance.md](./10-security-and-compliance.md) | Keys, injection, GxP posture, provenance. |
 | [11-cdf-migration-path.md](./11-cdf-migration-path.md) | Step-by-step from this repo to a CDF project. |
 
-Entity mapping lives in [COGNITE_MAPPING.md](../../COGNITE_MAPPING.md). Field friction lives in [FIELD_NOTES.md](../../FIELD_NOTES.md).
+Entity mapping lives in [COGNITE_MAPPING.md](../../COGNITE_MAPPING.md). Field friction lives in [FIELD_NOTES.md](../../FIELD_NOTES.md). Source to keep open while reading: [guardrails.ts](../../server/agent/guardrails.ts), [orchestrator.ts](../../server/agent/orchestrator.ts), [evidenceBuilder.ts](../../server/agent/evidenceBuilder.ts), [llm.ts](../../server/agent/llm.ts), [hybridRetriever.ts](../../server/retrieval/hybridRetriever.ts), [contextualize.py](../../scripts/contextualize.py).
 
 ## Repo map
 

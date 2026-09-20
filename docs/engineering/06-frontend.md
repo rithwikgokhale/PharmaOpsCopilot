@@ -86,8 +86,6 @@ Not done: full keyboard operability audit, skip-link, live-region for copilot st
 
 Second Vite app so the dashboard is not forced under `/PharmaOpsCopilot/` locally, and so Pages can ship a static write-up with a different information architecture.
 
-`site/src/App.tsx` is a single landing page: Hero, Problem, Value, Gallery, How it works, Agent, Evals, Tech stack, CDF / MCP, Field notes, Getting started. `Nav.tsx` `LINKS` are hash anchors (`#problem` … `#setup`). `CdfReadiness` imports `data/generated/contextualization_report.json` at build time. `FlowDiagram` is the architecture graphic. `CodeBlock` is used for snippets. Theme toggle mirrors the app (`pharmaops-theme` on the site as well — separate `site/src/hooks/useTheme.tsx`).
+`site/src/App.tsx` is a React Router app: `/` is the landing page (Hero, Problem, Value, Gallery, How it works, Agent, Evals, Tech stack, Engineering, CDF / MCP, Field notes, Getting started). `/docs` and `/docs/:slug` render `docs/engineering/*.md` at build time (`import.meta.glob`). `Nav.tsx` puts **Docs** first after the logo; landing section links are `{ pathname: "/", hash: "#problem" }` so they work from a docs page. `CdfReadiness` imports `data/generated/contextualization_report.json` at build time. `FlowDiagram` is the architecture graphic. `CodeBlock` is reused for fenced code; mermaid fences render in a lazy `Mermaid` component. Theme toggle mirrors the app. Deep links on GitHub Pages use a copied `dist/404.html` (same as `index.html`) because Pages has no SPA fallback.
 
-GitHub Pages: `.github/workflows/deploy-pages.yml` rebuilds on `site/**`, the contextualization report, or the workflow file. Path filters mean markdown under `docs/engineering/` does **not** redeploy the site until the docs-rendering work adds that path.
-
-This file describes the landing site as it exists today. Rendering `docs/engineering/*.md` at `/docs/:slug` is a separate site change.
+GitHub Pages: `.github/workflows/deploy-pages.yml` rebuilds on `site/**`, `docs/engineering/**`, the contextualization report, eval cases, or the workflow file.

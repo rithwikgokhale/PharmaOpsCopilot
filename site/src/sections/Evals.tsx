@@ -1,6 +1,7 @@
 import { Section } from "../components/Section";
 import { Card } from "../components/Card";
 import { Badge } from "../components/Badge";
+import evalCases from "../../../evals/eval_cases.json";
 
 const CASES = [
   { id: "EVAL-01", q: "Why was B-104 delayed?", risk: "medium", focus: "Contributing factors, no confirmed root cause" },
@@ -37,10 +38,10 @@ export function Evals() {
     <Section
       id="evals"
       title="Evaluation suite"
-      subtitle="21 deterministic cases verify required mentions, banned phrasing, and expected evidence IDs — including adversarial jailbreak, unknown-batch substitution, and a non-demo leak check. Reproducible with no API key. Atlas export also groups some cases into multi-turn conversations."
+      subtitle={`${evalCases.length} deterministic cases verify required mentions, banned phrasing, and expected evidence IDs — including adversarial jailbreak, unknown-batch substitution, and a non-demo leak check. Reproducible with no API key. Atlas export also groups some cases into multi-turn conversations.`}
     >
       <div className="mb-6 flex items-center gap-3">
-        <Badge>21 / 21 passing</Badge>
+        <Badge>{evalCases.length} / {evalCases.length} passing</Badge>
         <span className="text-sm text-slate-600 dark:text-slate-300">
           Run with <code className="rounded bg-slate-100 px-1 dark:bg-brand-900">npm run eval</code>
         </span>

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Section } from "../components/Section";
 import { FlowDiagram } from "../components/FlowDiagram";
 import { Card } from "../components/Card";
@@ -21,6 +22,11 @@ export function HowItWorks() {
       <div className="grid gap-6 lg:grid-cols-2">
         <FlowDiagram title="Copilot pipeline" steps={PIPELINE} />
         <div className="space-y-4">
+          <p className="text-sm">
+            <Link to="/docs/01-architecture" className="text-accent-700 underline dark:text-accent-300">
+              Architecture — request lifecycle
+            </Link>
+          </p>
           <Card>
             <h3 className="font-semibold text-slate-900 dark:text-slate-100">Evidence builder</h3>
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">

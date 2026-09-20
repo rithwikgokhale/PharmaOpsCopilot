@@ -5,7 +5,9 @@ on:
     branches: [main]
     paths:
       - "site/**"
+      - "docs/engineering/**"
       - "data/generated/contextualization_report.json"
+      - "evals/eval_cases.json"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 

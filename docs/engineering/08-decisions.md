@@ -156,7 +156,7 @@ Format: Context / Decision / Alternatives / Consequences / Status.
 
 **Alternatives.** One app with a `/docs` route from day one; GitHub markdown only; Docusaurus.
 
-**Consequences.** Two `package-lock` files, two Tailwind configs. Engineering markdown in `docs/engineering/` is canonical for GitHub; site rendering of those files is a follow-on change.
+**Consequences.** Two `package-lock` files, two Tailwind configs. Engineering markdown in `docs/engineering/` is canonical; the site renders it at `/docs` via `import.meta.glob`.
 
 **Status.** Accepted.
 

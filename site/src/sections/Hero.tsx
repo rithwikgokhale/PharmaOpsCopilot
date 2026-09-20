@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { ArrowDown, ExternalLink, Play } from "lucide-react";
+import { ArrowDown, BookOpen, ExternalLink, Play } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Badge } from "../components/Badge";
 
 const GITHUB_URL = "https://github.com/rithwikgokhale/PharmaOpsCopilot";
@@ -43,21 +44,28 @@ export function Hero() {
               <ExternalLink size={18} />
               View on GitHub
             </a>
-            <a
-              href="#gallery"
+            <Link
+              to="/docs"
+              className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 hover:border-accent-500 dark:border-slate-600 dark:bg-brand-800 dark:text-slate-200"
+            >
+              <BookOpen size={18} />
+              Engineering docs
+            </Link>
+            <Link
+              to={{ pathname: "/", hash: "#gallery" }}
               className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 hover:border-accent-500 dark:border-slate-600 dark:bg-brand-800 dark:text-slate-200"
             >
               <Play size={18} />
               See it in action
-            </a>
+            </Link>
           </div>
-          <a
-            href="#problem"
+          <Link
+            to={{ pathname: "/", hash: "#problem" }}
             className="mt-12 inline-flex flex-col items-center gap-1 text-sm text-slate-500 dark:text-slate-400"
           >
             <span>Learn more</span>
             <ArrowDown size={18} className="animate-bounce" aria-hidden />
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

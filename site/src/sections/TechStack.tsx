@@ -22,6 +22,10 @@ const STACK = [
     layer: "Cognite-shaped",
     items: ["Industrial MCP tool families", "Atlas agents-as-code", "ISA-88/95 mapping", "Records stream skeleton"],
   },
+  {
+    layer: "Docs site",
+    items: ["react-router-dom", "react-markdown", "remark-gfm", "rehype-slug", "mermaid (lazy)"],
+  },
 ];
 
 export function TechStack() {

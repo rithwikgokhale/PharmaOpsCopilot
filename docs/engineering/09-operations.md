@@ -62,7 +62,7 @@ See [01-architecture.md](./01-architecture.md) for the same table in runtime con
 
 **Atlas export drift.** CI `git diff --exit-code -- cdf/`. Re-run `npm run export:atlas` after changing `guardrails.ts` or `eval_cases.json`.
 
-**Pages did not rebuild.** `deploy-pages.yml` path filters are `site/**`, `data/generated/contextualization_report.json`, and the workflow file. A docs-only change under `docs/engineering/` does not deploy. Use `workflow_dispatch` or wait for the site-rendering change that adds that path.
+**Pages did not rebuild.** `deploy-pages.yml` path filters are `site/**`, `docs/engineering/**`, `data/generated/contextualization_report.json`, `evals/eval_cases.json`, and the workflow file. Use `workflow_dispatch` if a change outside those paths should still ship.
 
 **`chrome-error://chromewebdata/` on localhost.** Some sandboxed browsers cannot reach the host loopback. Use a normal browser, or `curl http://localhost:5173` / `curl http://127.0.0.1:3001/api/health`. Vite may bind IPv6 `localhost` only — try the hostname `localhost` not `127.0.0.1` if one fails.
 
