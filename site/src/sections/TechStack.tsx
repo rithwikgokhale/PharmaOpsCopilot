@@ -16,7 +16,7 @@ const STACK = [
   },
   {
     layer: "Quality",
-    items: ["Vitest unit tests", "18-case eval runner", "Deterministic copilot mode", "Guardrail sanitization"],
+    items: ["Vitest unit tests", "21-case eval runner", "Deterministic copilot mode", "Guardrail sanitization"],
   },
   {
     layer: "Cognite-shaped",

@@ -11,6 +11,7 @@ const LINKS = [
   { href: "#evals", label: "Evals" },
   { href: "#tech", label: "Stack" },
   { href: "#cdf", label: "CDF / MCP" },
+  { href: "#field-notes", label: "Field notes" },
   { href: "#setup", label: "Setup" },
 ];
 

@@ -213,10 +213,18 @@ Always include: Answer, What happened (cited), Contributing factors with confide
 // Eval suite (Cognite CLI format)
 // -----------------------------------------------------------------------------
 
+function mentionedForeignBatches(question: string, batchId: string): string[] {
+  return [...new Set([...question.matchAll(/\bB-\d+\b/g)].map((m) => m[0]).filter((id) => id !== batchId))];
+}
+
 function groundTruthFor(c: EvalCase): string {
   const packet = buildEvidencePacket(c.batchId, c.userQuestion);
   if (!packet) {
-    return `No data exists for batch ${c.batchId}. The correct answer reports that no data was found and does not borrow evidence from any other batch.`;
+    const foreign = mentionedForeignBatches(c.userQuestion, c.batchId);
+    const extra = foreign.length
+      ? ` It must not substitute evidence from ${foreign.join(", ")}.`
+      : "";
+    return `No data exists for batch ${c.batchId}. The correct answer reports that no data was found and does not borrow evidence from any other batch.${extra}`;
   }
   const lines = [
     `Batch ${packet.batch.id} (${packet.batch.name}): status ${packet.batch.status}, phase ${packet.batch.currentPhase}, planned start ${packet.batch.plannedStart}, actual start ${packet.batch.actualStart ?? "n/a"}.`,
@@ -256,24 +264,50 @@ function criteriaFor(c: EvalCase): string {
   return parts.join(" ");
 }
 
+/** Extra Cognite CLI cases with multiple turns. Local evals stay single-shot. */
+const ATLAS_MULTI_TURN: { id: string; turns: string[] }[] = [
+  { id: "eval-followup-escalation", turns: ["EVAL-01", "EVAL-19"] },
+  { id: "eval-followup-release", turns: ["EVAL-12", "EVAL-02"] },
+  { id: "eval-followup-unknown", turns: ["EVAL-18", "EVAL-21"] },
+];
+
+function atlasTurn(c: EvalCase) {
+  return {
+    input: c.userQuestion,
+    scorers: [
+      { type: "correctness", criteria: criteriaFor(c) },
+      { type: "faithfulness", groundTruth: groundTruthFor(c) },
+    ],
+  };
+}
+
 function buildEvalSuite(cases: EvalCase[]) {
+  const byId = new Map(cases.map((c) => [c.id, c]));
+  const singles = cases.map((c) => ({
+    id: c.id.toLowerCase(),
+    tags: ["ci", `risk-${c.riskLevel}`, c.riskLevel === "high" ? "guardrail" : "triage"],
+    appContext: `Active batch: ${c.batchId}`,
+    turns: [atlasTurn(c)],
+  }));
+
+  const multi = ATLAS_MULTI_TURN.map((g) => {
+    const turnCases = g.turns.map((id) => {
+      const c = byId.get(id);
+      if (!c) throw new Error(`ATLAS_MULTI_TURN ${g.id} references missing local case ${id}`);
+      return c;
+    });
+    return {
+      id: g.id,
+      tags: ["multi-turn"],
+      appContext: `Active batch: ${turnCases[0].batchId}`,
+      turns: turnCases.map(atlasTurn),
+    };
+  });
+
   return {
     appContext:
       "Chicago Pharma Pilot Plant, Bioreactor Train A (BIO-101). Batch of interest: B-104 with open deviation DEV-104.",
-    cases: cases.map((c) => ({
-      id: c.id.toLowerCase(),
-      tags: ["ci", `risk-${c.riskLevel}`, c.riskLevel === "high" ? "guardrail" : "triage"],
-      appContext: `Active batch: ${c.batchId}`,
-      turns: [
-        {
-          input: c.userQuestion,
-          scorers: [
-            { type: "correctness", criteria: criteriaFor(c) },
-            { type: "faithfulness", groundTruth: groundTruthFor(c) },
-          ],
-        },
-      ],
-    })),
+    cases: [...singles, ...multi],
   };
 }
 
@@ -314,7 +348,9 @@ function main() {
   write(join(CLI_AGENT_DIR, "pharmaops-triage.agent.yaml"), dump(agent));
   write(join(CLI_AGENT_DIR, "eval", "eval.yaml"), dump(buildEvalSuite(cases)));
 
-  console.log(`Done — ${cases.length} eval cases exported.`);
+  console.log(
+    `Done — ${cases.length} local eval cases exported as singles + ${ATLAS_MULTI_TURN.length} multi-turn groups.`
+  );
 }
 
 main();

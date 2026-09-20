@@ -10,7 +10,7 @@
 - Unify messy IT/OT/ET exports (`data/raw/` + `contextualize.py`) into one model mapped onto ISA-88/95 + Records + a `PharmaDeviation` extension.
 - Expose the same tools over a local MCP server and export them as Atlas AI agent/skill/eval YAML.
 - Run fully without LLM or Cognite credentials; optional OpenAI, Anthropic, or Gemini enrich narrative only after deterministic evidence is assembled.
-- Prove behavior with an 18-case eval suite (guardrails, citations, release refusal, adversarial prompts).
+- Prove behavior with a 21-case eval suite (guardrails, citations, release refusal, adversarial prompts).
 
 ## Primary demo storyline (B-104)
 
@@ -28,7 +28,7 @@
 | Backend | Node.js, Express, MCP SDK |
 | Data | Siloed IT/OT/ET exports + Python contextualizer |
 | AI | Deterministic orchestrator + optional OpenAI / Anthropic / Gemini (server-side only) |
-| Quality | Vitest + 18-case eval runner |
+| Quality | Vitest + 21-case eval runner |
 | CDF-shaped | Toolkit YAML skeleton, Atlas agents-as-code, Industrial MCP tool families |
 
 ## Out of scope

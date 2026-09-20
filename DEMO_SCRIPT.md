@@ -15,7 +15,7 @@
 - Mention: the backend builds a deterministic evidence packet first; the LLM only reasons over it, so citations can't be hallucinated. Works with no API key.
 
 ## 3. Evals
-- Open the **Evals** tab, click **Run evals** → 18/18 pass.
+- Open the **Evals** tab, click **Run evals** → 21/21 pass.
 - Note the high-risk release/safety cases verify the agent refuses to decide — including adversarial jailbreak, false-authority, and role-play attempts (EVAL-13…17).
 
 ## 4. CDF-ready story

@@ -85,7 +85,7 @@ describe("POST /api/eval/run", () => {
   it("runs the full eval suite and reports all passing", async () => {
     const res = await request(app).post("/api/eval/run");
     expect(res.status).toBe(200);
-    expect(res.body.total).toBe(18);
+    expect(res.body.total).toBe(21);
     expect(res.body.failed).toBe(0);
   }, 30_000);
 });

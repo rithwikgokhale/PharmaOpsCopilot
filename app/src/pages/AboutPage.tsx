@@ -43,7 +43,7 @@ export function AboutPage() {
           <li>Facts are separated from hypotheses; no confirmed root cause is asserted.</li>
           <li>Release / GMP / safety questions are declined and routed to human QA review.</li>
           <li>Output is checked by guardrails that neutralize overreaching phrasing.</li>
-          <li>An 18-case eval suite verifies behavior whenever prompts or tools change.</li>
+          <li>A 21-case eval suite verifies behavior whenever prompts or tools change.</li>
         </ul>
       </motion.section>
 

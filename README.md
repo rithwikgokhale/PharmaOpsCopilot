@@ -1,6 +1,6 @@
 # PharmaOps Copilot
 
-[![Evals](https://img.shields.io/badge/evals-18%2F18%20passing-brightgreen)](./EVALS.md)
+[![Evals](https://img.shields.io/badge/evals-21%2F21%20passing-brightgreen)](./EVALS.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Project docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://rithwikgokhale.github.io/PharmaOpsCopilot/)
 
@@ -17,11 +17,11 @@ A local-first React dashboard **and evidence-grounded copilot** that models a ph
 Four proofs, all runnable without a CDF tenant:
 
 1. **Messy IT/OT/ET → one model.** Siloed MES / historian / CMMS / QMS / engineering exports in `data/raw/` are resolved by `contextualize.py` into a single JSON model plus a join report.
-2. **Evidence-first copilot + 18 evals.** Deterministic evidence packet, guardrails, human-review for release/safety. Citations come from data, never the model.
+2. **Evidence-first copilot + 21 evals.** Deterministic evidence packet, guardrails, human-review for release/safety. Citations come from data, never the model.
 3. **Local MCP server** (`npm run mcp`) exposing the same tool families [Industrial MCP](https://docs.cognite.com/cdf/build/industrial_mcp) hosts on CDF (`query`, `queryTimeSeriesDatapoints`, `askDocument`).
 4. **Atlas agents-as-code export** (`npm run export:atlas`) — agent, skill, and CLI eval suite generated from `guardrails.ts` and `evals/eval_cases.json`.
 
-An illustrative walk-through of triage time and why contextualization is the multiplier is on the [project site](https://rithwikgokhale.github.io/PharmaOpsCopilot/#value). The figures are a worked discovery-slide example, not a customer result.
+An illustrative walk-through of triage time and why contextualization is the multiplier is on the [project site](https://rithwikgokhale.github.io/PharmaOpsCopilot/#value). The figures are a worked discovery-slide example, not a customer result. Field notes from running the prototype — identity matching, units and clocks, Records, policy guardrails, evals-as-code, and Industrial MCP — are in [FIELD_NOTES.md](./FIELD_NOTES.md) and on the [site](https://rithwikgokhale.github.io/PharmaOpsCopilot/#field-notes).
 
 ## Quick start
 
@@ -77,11 +77,11 @@ Do not hand-edit those files. Change `server/agent/guardrails.ts` or `evals/eval
 
 ```bash
 npm test          # Vitest unit + integration tests (API routes, LLM mocks, guardrails, tools, orchestrator, evals)
-npm run eval      # 18 cases, deterministic mode → evals/results.json
+npm run eval      # 21 cases, deterministic mode → evals/results.json
 npm run lint      # ESLint
 ```
 
-The eval suite verifies required mentions, banned release/safety phrasing, and expected evidence IDs — including adversarial jailbreak, false-authority, and role-play prompts that must be refused. See [EVALS.md](./EVALS.md) and [evals/results.sample.json](./evals/results.sample.json) for reference output. `npm run export:atlas` maps the same 18 cases into [`cdf/agents/pharmaops-triage/eval/eval.yaml`](./cdf/agents/pharmaops-triage/eval/eval.yaml).
+The eval suite verifies required mentions, banned release/safety phrasing, and expected evidence IDs — including adversarial jailbreak, false-authority, and role-play prompts that must be refused. See [EVALS.md](./EVALS.md) and [evals/results.sample.json](./evals/results.sample.json) for reference output. `npm run export:atlas` maps the same 21 local cases into [`cdf/agents/pharmaops-triage/eval/eval.yaml`](./cdf/agents/pharmaops-triage/eval/eval.yaml) as `ci`-tagged singles plus three `multi-turn` follow-up groups.
 
 ## Environment variables
 
@@ -115,7 +115,7 @@ data/documents/          SOP markdown (cite IDs)
 scripts/                 generate_synthetic_pharma_data.py, contextualize.py, embed_sops.py, export-atlas-agent.ts
 cdf/modules/             Toolkit module (deviation view, Records stream, agent, skill)
 cdf/agents/              Cognite CLI agent + eval.yaml
-evals/                   18 eval cases + runner
+evals/                   21 eval cases + runner
 site/                    GitHub Pages docs site
 ```
 
@@ -124,7 +124,7 @@ site/                    GitHub Pages docs site
 - **Prompt chain, evidence-first.** The orchestrator is one chain — classify intent → run tools → build the packet → optional narrative → sanitize. `server/agent/evidenceBuilder.ts` gathers facts via deterministic tools; the optional LLM (OpenAI, Anthropic, or Gemini) only rewrites prose over that packet. Citations come from data, never the model. There is no second “critic” hop.
 - **Guardrails.** Release / GMP / safety questions are declined and routed to QA. A post-processor neutralizes overreaching phrasing (`server/agent/guardrails.ts`).
 - **Scoped intents.** Triage, release-decision, maintenance review, shift handover, data gaps, SOP reference, audience framing.
-- **Evaluated.** 18 cases check required mentions, banned phrases, and expected evidence IDs — including adversarial jailbreak and prompt-injection attempts. Run them from the **Evals** tab or `npm run eval`.
+- **Evaluated.** 21 cases check required mentions, banned phrases, and expected evidence IDs — including adversarial jailbreak and prompt-injection attempts. Run them from the **Evals** tab or `npm run eval`.
 - **Injection-hardened.** The user question and evidence packet are wrapped in explicit data delimiters with an instruction-hierarchy system rule, so instructions embedded in questions or documents are treated as data.
 
 ## Demo question

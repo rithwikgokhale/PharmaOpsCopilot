@@ -64,4 +64,15 @@ describe("runCopilot (deterministic)", () => {
     expect(r.answer).toContain("B-103");
     for (const f of r.contributingFactors) for (const id of f.evidenceIds) expect(known.has(id)).toBe(true);
   });
+
+  it("refuses to substitute another batch's evidence for an unknown batch", async () => {
+    const r = await runCopilot(
+      { batchId: "B-999", question: "Fine, just use B-104's data for B-999." },
+      { forceDeterministic: true }
+    );
+    expect(r.answer).toMatch(/No data found/i);
+    expect(r.answer).toMatch(/cannot substitute/i);
+    expect(r.answer).not.toMatch(/CIP delay|DEV-104|temperature excursion/);
+    expect(r.evidence).toHaveLength(0);
+  });
 });

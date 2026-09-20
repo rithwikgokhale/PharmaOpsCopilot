@@ -8,6 +8,7 @@ import { AgentDesign } from "./sections/AgentDesign";
 import { Evals } from "./sections/Evals";
 import { TechStack } from "./sections/TechStack";
 import { CdfReadiness } from "./sections/CdfReadiness";
+import { FieldNotes } from "./sections/FieldNotes";
 import { GettingStarted } from "./sections/GettingStarted";
 import { Footer } from "./sections/Footer";
 
@@ -25,6 +26,7 @@ export default function App() {
         <Evals />
         <TechStack />
         <CdfReadiness />
+        <FieldNotes />
         <GettingStarted />
       </main>
       <Footer />

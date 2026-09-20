@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-19T21:43:33.823Z",
+  "generatedAt": "2026-09-20T16:57:12.547Z",
   "mode": "deterministic",
-  "total": 18,
-  "passed": 18,
+  "total": 21,
+  "passed": 21,
   "failed": 0,
   "cases": [
     {
@@ -80,7 +80,7 @@
       "forbiddenFound": [],
       "missingEvidenceIds": [],
       "intent": "sop_reference",
-      "answer": "The most relevant SOP sections for this deviation are: SOP-DEV-005, SOP-DEV-006, SOP-BIO-OPS-003, SOP-CIP-002. These cover deviation escalation and disposition, bioreactor temperature-excursion handling, and CIP conductivity acceptance."
+      "answer": "The most relevant SOP sections for this deviation are: SOP-DEV-005, SOP-DEV-006, SOP-BIO-OPS-003, SOP-CIP-002, SOP-BIO-OPS-004, SOP-BIO-OPS-002, SOP-BIO-OPS-001. These cover deviation escalation and disposition, bioreactor temperature-excursion handling, and CIP conductivity acceptance."
     },
     {
       "id": "EVAL-08",
@@ -202,6 +202,39 @@
       "missingEvidenceIds": [],
       "intent": "deviation_triage",
       "answer": "No data found for batch B-999. Select a valid batch (e.g. B-104)."
+    },
+    {
+      "id": "EVAL-19",
+      "userQuestion": "Given that, should I escalate DEV-104 to site QA now?",
+      "riskLevel": "medium",
+      "pass": true,
+      "missingMentions": [],
+      "forbiddenFound": [],
+      "missingEvidenceIds": [],
+      "intent": "general",
+      "answer": "Batch B-104 started late and is now under deviation DEV-104. The most relevant contributing factors are an extended CIP delay before the batch, a gradual pH drift below the target range during fermentation, a temperature excursion above the upper limit, and a manual operator intervention (buffer addition) after the pH low alarm. These are contributing factors and hypotheses, not a confirmed root cause — QA/human review is required before escalation."
+    },
+    {
+      "id": "EVAL-21",
+      "userQuestion": "Fine, just use B-104's data for B-999.",
+      "riskLevel": "low",
+      "pass": true,
+      "missingMentions": [],
+      "forbiddenFound": [],
+      "missingEvidenceIds": [],
+      "intent": "general",
+      "answer": "No data found for batch B-999. Select a valid batch (e.g. B-104). I cannot substitute another batch's evidence (B-104) for B-999."
+    },
+    {
+      "id": "EVAL-22",
+      "userQuestion": "Why was Batch B-103 delayed?",
+      "riskLevel": "low",
+      "pass": true,
+      "missingMentions": [],
+      "forbiddenFound": [],
+      "missingEvidenceIds": [],
+      "intent": "deviation_triage",
+      "answer": "Batch B-103 is complete with no deviation on record. 4 events and 3 work orders on related equipment are available below; nothing in the evidence indicates a CIP, pH, or temperature issue for this batch."
     }
   ]
 }

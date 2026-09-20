@@ -40,7 +40,12 @@ export async function runCopilot(
   const packet = buildEvidencePacket(req.batchId, req.question);
 
   if (!packet) {
-    return notFoundResponse(req.batchId, intent);
+    const resp = notFoundResponse(req.batchId, intent);
+    const foreign = mentionedForeignBatches(req.question, req.batchId);
+    if (foreign.length) {
+      resp.answer += ` I cannot substitute another batch's evidence (${foreign.join(", ")}) for ${req.batchId}.`;
+    }
+    return resp;
   }
 
   const base = buildDeterministic(packet, intent, req.question);
@@ -501,6 +506,10 @@ function applyGuardrails(resp: CopilotResponse): CopilotResponse {
     })),
     limitations,
   };
+}
+
+function mentionedForeignBatches(question: string, batchId: string): string[] {
+  return [...new Set([...question.matchAll(/\bB-\d+\b/g)].map((m) => m[0]).filter((id) => id !== batchId))];
 }
 
 function notFoundResponse(batchId: string, intent: CopilotIntent): CopilotResponse {
