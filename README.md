@@ -146,6 +146,10 @@ The dashboard surfaces: CIP delay, pH drift, temperature excursion, operator not
 
 See [COGNITE_MAPPING.md](./COGNITE_MAPPING.md). Toolkit YAML under `cdf/` is a **skeleton**, not a deployed project.
 
+## Engineering documentation
+
+Architecture, data, agent, evals, MCP, decisions, and the CDF path: **[engineering docs on the project site](https://rithwikgokhale.github.io/PharmaOpsCopilot/docs)** (canonical rendered pages) and the same markdown in [`docs/engineering/`](./docs/engineering/README.md).
+
 ## Limitations
 
 - Synthetic data only; not validated for any GxP/regulatory use.
