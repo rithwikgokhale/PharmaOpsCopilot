@@ -18,7 +18,7 @@ export function DocsIndex() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <div className="lg:grid lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-10">
+      <div className="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-10">
         <aside className="mb-6 lg:mb-0">
           <button
             type="button"
@@ -29,7 +29,7 @@ export function DocsIndex() {
           </button>
           <nav
             aria-label="Engineering docs"
-            className={`${open ? "block" : "hidden"} lg:sticky lg:top-24 lg:block`}
+            className={`${open ? "block" : "hidden"} lg:sticky lg:top-20 lg:block`}
           >
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               Engineering
@@ -44,7 +44,7 @@ export function DocsIndex() {
                 <li key={d.slug}>
                   <Link
                     to={`/docs/${d.slug}`}
-                    className="text-slate-600 hover:text-brand-700 dark:text-slate-300 dark:hover:text-accent-300"
+                    className="block break-words text-slate-600 hover:text-brand-700 dark:text-slate-300 dark:hover:text-accent-300"
                   >
                     {d.title}
                   </Link>
@@ -53,7 +53,7 @@ export function DocsIndex() {
             </ul>
           </nav>
         </aside>
-        <div>
+        <div className="min-w-0">
           <article className="max-w-[72ch]">
             {INDEX_DOC && <MarkdownDoc markdown={INDEX_DOC.markdown} />}
           </article>

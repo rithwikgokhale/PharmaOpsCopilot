@@ -26,7 +26,7 @@ export function AgentDesign() {
       title="Agent design & guardrails"
       subtitle="The assistant summarizes operational evidence but must not make batch release, GMP, safety, or regulatory decisions."
     >
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Card>
           <ShieldCheck className="text-green-600 dark:text-green-400" size={24} />
           <h3 className="mt-2 font-semibold text-slate-900 dark:text-slate-100">Evidence-first</h3>

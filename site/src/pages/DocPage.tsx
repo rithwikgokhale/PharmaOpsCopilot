@@ -63,7 +63,7 @@ export function DocPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <div className="lg:grid lg:grid-cols-[14rem_minmax(0,72ch)_14rem] lg:justify-center lg:gap-8">
+      <div className="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-8 2xl:grid-cols-[15rem_minmax(0,72ch)_14rem] 2xl:justify-center">
         <aside className="mb-6 lg:mb-0">
           <button
             type="button"
@@ -74,7 +74,7 @@ export function DocPage() {
           </button>
           <nav
             aria-label="Engineering docs"
-            className={`${navOpen ? "block" : "hidden"} lg:sticky lg:top-24 lg:block`}
+            className={`${navOpen ? "block" : "hidden"} lg:sticky lg:top-20 lg:block`}
           >
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               Engineering
@@ -91,8 +91,8 @@ export function DocPage() {
                     to={`/docs/${d.slug}`}
                     className={
                       d.slug === slug
-                        ? "font-medium text-brand-700 dark:text-accent-300"
-                        : "text-slate-600 hover:text-brand-700 dark:text-slate-300 dark:hover:text-accent-300"
+                        ? "block break-words font-medium text-brand-700 dark:text-accent-300"
+                        : "block break-words text-slate-600 hover:text-brand-700 dark:text-slate-300 dark:hover:text-accent-300"
                     }
                   >
                     {d.title}
@@ -135,8 +135,8 @@ export function DocPage() {
           </p>
         </article>
 
-        <aside className="hidden xl:block">
-          <nav aria-label="On this page" className="sticky top-24 text-sm">
+        <aside className="hidden 2xl:block">
+          <nav aria-label="On this page" className="sticky top-20 text-sm">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               On this page
             </p>
@@ -146,9 +146,11 @@ export function DocPage() {
                   <a
                     href={`#${h.id}`}
                     className={
+                      `block break-words ${
                       activeId === h.id
                         ? "font-medium text-brand-700 dark:text-accent-300"
                         : "text-slate-600 hover:text-brand-700 dark:text-slate-400 dark:hover:text-accent-300"
+                      }`
                     }
                   >
                     {h.text}

@@ -100,7 +100,7 @@ export function Value() {
         </p>
       </Card>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-3">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Card>
           <Clock className="text-accent-600 dark:text-accent-400" size={22} />
           <h3 className="mt-2 font-semibold text-slate-900 dark:text-slate-100">Triage time</h3>

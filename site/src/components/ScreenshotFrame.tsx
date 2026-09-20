@@ -20,16 +20,16 @@ export function ScreenshotFrame({ src, alt, caption }: Props) {
           PharmaOps Copilot
         </span>
       </div>
-      <div className="relative aspect-video bg-slate-100 dark:bg-brand-900">
+      <div className="bg-slate-100 dark:bg-brand-900">
         {!failed ? (
           <img
             src={src}
             alt={alt}
-            className="h-full w-full object-cover object-top"
+            className="block h-auto w-full"
             onError={() => setFailed(true)}
           />
         ) : (
-          <div className="flex h-full flex-col items-center justify-center gap-2 text-slate-500 dark:text-slate-400">
+          <div className="flex min-h-[12rem] flex-col items-center justify-center gap-2 px-4 py-8 text-slate-500 dark:text-slate-400">
             <ImageOff size={32} aria-hidden />
             <p className="text-sm">Screenshot placeholder — replace with {src.split("/").pop()}</p>
           </div>

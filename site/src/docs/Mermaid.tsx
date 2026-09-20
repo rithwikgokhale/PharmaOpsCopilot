@@ -49,7 +49,7 @@ export function Mermaid({ chart }: { chart: string }) {
 
   return (
     <div
-      className="my-4 overflow-x-auto rounded-lg border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-brand-800"
+      className="my-4 overflow-x-auto rounded-lg border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-brand-800 [&_svg]:h-auto [&_svg]:max-w-full"
       dangerouslySetInnerHTML={{ __html: svg }}
     />
   );

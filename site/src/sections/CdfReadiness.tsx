@@ -49,7 +49,7 @@ export function CdfReadiness() {
       title="CDF-ready architecture"
       subtitle="Messy IT / OT / ET exports become one ISA-88/95-shaped model; the app depends only on IDataProvider, and the agent's tools are the ones Atlas AI and Industrial MCP expose. Step-by-step tenant path: CDF migration."
     >
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Card>
           <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
             <GitBranch size={18} className="text-accent-700 dark:text-accent-300" />

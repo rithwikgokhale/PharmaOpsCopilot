@@ -10,7 +10,7 @@ interface Props {
 
 export function Section({ id, title, subtitle, children }: Props) {
   return (
-    <section id={id} className="scroll-mt-28 py-16 md:py-20">
+    <section id={id} className="scroll-mt-20 py-16 md:py-20">
       <div className="mx-auto max-w-5xl px-4">
         <motion.div
           initial={{ opacity: 0, y: 12 }}

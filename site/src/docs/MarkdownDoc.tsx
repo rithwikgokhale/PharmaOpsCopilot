@@ -72,17 +72,17 @@ export function MarkdownDoc({ markdown }: { markdown: string }) {
           </h1>
         ),
         h2: ({ children, id }) => (
-          <h2 id={id} className="mt-10 scroll-mt-24 text-xl font-bold text-slate-900 dark:text-slate-100">
+          <h2 id={id} className="mt-10 scroll-mt-20 break-words text-xl font-bold text-slate-900 dark:text-slate-100">
             {children}
           </h2>
         ),
         h3: ({ children, id }) => (
-          <h3 id={id} className="mt-6 scroll-mt-24 text-lg font-semibold text-slate-900 dark:text-slate-100">
+          <h3 id={id} className="mt-6 scroll-mt-20 text-lg font-semibold text-slate-900 dark:text-slate-100">
             {children}
           </h3>
         ),
         p: ({ children }) => (
-          <p className="mt-4 text-slate-700 dark:text-slate-300">{children}</p>
+          <p className="mt-4 break-words text-slate-700 dark:text-slate-300">{children}</p>
         ),
         ul: ({ children }) => (
           <ul className="mt-4 list-disc space-y-1 pl-5 text-slate-700 dark:text-slate-300">{children}</ul>

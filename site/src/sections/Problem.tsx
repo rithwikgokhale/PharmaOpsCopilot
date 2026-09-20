@@ -8,7 +8,7 @@ export function Problem() {
       title="The problem"
       subtitle="Batch deviations in pharma require fast triage across events, sensors, work orders, operator notes, and SOPs — with strict human review for QA and release decisions."
     >
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Card>
           <h3 className="font-semibold text-slate-900 dark:text-slate-100">For supervisors</h3>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
