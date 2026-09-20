@@ -21,6 +21,8 @@ Four proofs, all runnable without a CDF tenant:
 3. **Local MCP server** (`npm run mcp`) exposing the same tool families [Industrial MCP](https://docs.cognite.com/cdf/build/industrial_mcp) hosts on CDF (`query`, `queryTimeSeriesDatapoints`, `askDocument`).
 4. **Atlas agents-as-code export** (`npm run export:atlas`) — agent, skill, and CLI eval suite generated from `guardrails.ts` and `evals/eval_cases.json`.
 
+An illustrative walk-through of triage time and why contextualization is the multiplier is on the [project site](https://rithwikgokhale.github.io/PharmaOpsCopilot/#value). The figures are a worked discovery-slide example, not a customer result.
+
 ## Quick start
 
 ```bash

@@ -1,6 +1,7 @@
 import { Nav } from "./components/Nav";
 import { Hero } from "./sections/Hero";
 import { Problem } from "./sections/Problem";
+import { Value } from "./sections/Value";
 import { Gallery } from "./sections/Gallery";
 import { HowItWorks } from "./sections/HowItWorks";
 import { AgentDesign } from "./sections/AgentDesign";
@@ -17,6 +18,7 @@ export default function App() {
       <main>
         <Hero />
         <Problem />
+        <Value />
         <Gallery />
         <HowItWorks />
         <AgentDesign />
